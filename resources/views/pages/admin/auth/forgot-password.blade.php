@@ -1,6 +1,6 @@
 @extends('pages.user.auth.auth-master')
 @section('authTitle')
-User | Send Email
+Admin | Send Email
 @endsection
 @section('content')
 <body class="login-page bg-body-secondary">
@@ -24,14 +24,14 @@ User | Send Email
 
             <div class="card-header"> <a href="#"
                     class="link-dark text-center link-offset-2 link-opacity-100 link-opacity-50-hover">
-                    <h1 class="mb-0"> <b>Admin</b>LTE
+                    <h1 class="mb-0"> <b>Admin</b>
                     </h1>
                 </a> </div>
             <div class="card-body login-card-body">
                 <p class="login-box-msg">Forgot Your Password? Enter Your Email</p>
 
                 {{-- login form start --}}
-                <form action="{{ route('password.email') }}" method="post">
+                <form action="{{ route('admin.forgot_password_submit') }}" method="post">
                     @csrf
                     <!-- Email Field -->
                     <div class="mb-3">

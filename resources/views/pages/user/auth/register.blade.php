@@ -1,6 +1,6 @@
 @extends('pages.user.auth.auth-master')
 @section('authTitle')
-Register
+User | Register
 @endsection
 @section('content')
 <body class="login-page bg-body-secondary">

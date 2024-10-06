@@ -13,8 +13,6 @@ Route::controller(UserAuthController::class)->group(function () {
     Route::get('/register', 'registerPage')->name('register_page');
     Route::post('/register', 'registerSubmit')->name('register_submit');
     Route::post('/logout', 'logout')->name('logout');
-    Route::get('/forgot-password', 'forgetPasswordPage')->name('forget_password_page');
-    Route::post('/forgot-password', 'forgetPasswordSubmit')->name('forget_password_submit');
 });
 
 Route::controller(PasswordResetController::class)->group(function () {
@@ -27,3 +25,5 @@ Route::controller(PasswordResetController::class)->group(function () {
     // Handle the actual password reset
     Route::post('/password/reset', 'reset')->name('password.update');
 });
+
+
