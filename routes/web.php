@@ -5,7 +5,7 @@ use App\Http\Controllers\User\Auth\UserAuthController;
 use App\Http\Controllers\User\HomeController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/',[HomeController::class,'home'])->name('index');
+Route::get('/', [HomeController::class, 'home'])->name('index');
 
 Route::controller(UserAuthController::class)->group(function () {
     Route::get('/login', 'loginPage')->name('login');
@@ -26,4 +26,20 @@ Route::controller(PasswordResetController::class)->group(function () {
     Route::post('/password/reset', 'reset')->name('password.update');
 });
 
+Route::get('/product-details', function () {
+    return view('pages.frontend.product-details');
+});
 
+Route::get('/add-to-cart', function () {
+    return view('pages.frontend.add-to-cart');
+});
+Route::get('/contact', function () {
+    return view('pages.frontend.contact');
+});
+
+Route::get('/checkout', function () {
+    return view('pages.frontend.checkout');
+});
+Route::get('/products', function () {
+    return view('pages.frontend.product-sorting');
+});
