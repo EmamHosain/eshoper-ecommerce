@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User\Auth;
 use App\Models\User;
+use App\Helper\FlashMessage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -19,9 +20,8 @@ class UserAuthController extends Controller
     {
         $loginRequest->authenticate();
         $loginRequest->session()->regenerate();
-        // FlashMessage::flash('success', 'Login successful.');
-        // return redirect()->route('dashboard');
-        return redirect()->back();
+        FlashMessage::flash('success', 'Login successful.');
+        return redirect()->route('user_dashboard');
     }
 
     public function registerPage()
@@ -49,8 +49,8 @@ class UserAuthController extends Controller
         Auth::login($user);
 
         // Redirect to a specific page after successful registration
-        // return redirect()->route('dashboard');
-        return redirect()->back();
+        FlashMessage::flash('success', 'Registration successful.');
+        return redirect()->route('user_dashboard');
     }
 
     public function logout(Request $request)
@@ -63,9 +63,14 @@ class UserAuthController extends Controller
 
         // Regenerate the CSRF token to avoid security issues
         $request->session()->regenerateToken();
-
+        FlashMessage::flash('success', 'Logout successful.');
         // Redirect to the login or home page after logout
-        return redirect()->route('login');
+        return redirect()->route('index');
+    }
+
+    public function userDashboard()
+    {
+        return view('layouts.user.backend.dashboard.user-dashboard');
     }
 
 }

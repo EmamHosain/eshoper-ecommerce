@@ -21,8 +21,30 @@
             <a href="contact.html" class="nav-item nav-link">Contact</a>
         </div>
         <div class="navbar-nav ml-auto py-0">
-            <a href="" class="nav-item nav-link">Login</a>
-            <a href="" class="nav-item nav-link">Register</a>
+            @auth
+            <a href="{{ route('user_dashboard') }}" class="nav-item nav-link">Dashboard</a>
+
+
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
+            <a href="{{ route('logout') }}" class="nav-item nav-link"
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                Logout
+            </a>
+            @endauth
+
+            @auth('admin')
+            <a href="{{ route('admin.admin_dasboard') }}" class="nav-item nav-link">Dashboard</a>
+            <a href="{{ route('admin.logout') }}" class="nav-item nav-link">Logout</a>
+            @endauth
+
+
+
+            @guest
+            <a href="{{ route('login') }}" class="nav-item nav-link">Login</a>
+            <a href="{{ route('register_page') }}" class="nav-item nav-link">Register</a>
+            @endguest
         </div>
     </div>
 </nav>

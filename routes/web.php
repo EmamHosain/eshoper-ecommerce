@@ -7,13 +7,27 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'home'])->name('index');
 
-Route::controller(UserAuthController::class)->group(function () {
+
+
+Route::controller(UserAuthController::class)->middleware('guest')->group(function () {
     Route::get('/login', 'loginPage')->name('login');
     Route::post('/login', 'loginSubmit')->name('login_submit');
     Route::get('/register', 'registerPage')->name('register_page');
     Route::post('/register', 'registerSubmit')->name('register_submit');
-    Route::post('/logout', 'logout')->name('logout');
+
 });
+
+
+
+// user auth route start
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [UserAuthController::class, 'logout'])->name('logout');
+    Route::get('/dashboard', [UserAuthController::class, 'userDashboard'])->name('user_dashboard');
+});
+// user auth route end
+
+
+
 
 Route::controller(PasswordResetController::class)->group(function () {
     // Show the form for requesting the password reset link
@@ -42,4 +56,8 @@ Route::get('/checkout', function () {
 });
 Route::get('/products', function () {
     return view('pages.frontend.product-sorting');
+});
+
+Route::get('/user-dashboard', function () {
+    return view('layouts.user.backend.dashboard.user-dashboard');
 });

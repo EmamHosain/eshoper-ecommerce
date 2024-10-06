@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Auth;
 use Carbon\Carbon;
 use App\Models\Admin;
+use App\Helper\FlashMessage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Mail\AdminResetPasswordMail;
@@ -22,8 +23,7 @@ class AdminAuthController extends Controller
     {
         $adminLoginRequest->authenticate();
         $adminLoginRequest->session()->regenerate();
-        // FlashMessage::flash('success', 'Login successful.');
-        // return redirect()->route('dashboard');
+        FlashMessage::flash('success', 'Login successful.');
         return redirect()->route('admin.admin_dasboard');
     }
 
@@ -35,6 +35,7 @@ class AdminAuthController extends Controller
         $request->session()->invalidate();
         // Regenerate the CSRF token to avoid security issues
         $request->session()->regenerateToken();
+        FlashMessage::flash('success', 'Logout successful.');
         return redirect()->route('admin.login');
 
     }
@@ -69,7 +70,7 @@ class AdminAuthController extends Controller
             $reset_link = url(route('admin.reset_password_page', $token) . '?email=' . $admin->email);
             Mail::to($admin->email)->send(new AdminResetPasswordMail($admin->name, $reset_link));
 
-
+            FlashMessage::flash('success', 'Reset password link sent to your email.');
             return redirect()->back()->with(['status' => 'Reset password link sent to your email.']);
         }
 
@@ -115,7 +116,7 @@ class AdminAuthController extends Controller
             'token' => null
         ]);
 
-        // Redirect with a success message
+        FlashMessage::flash('success', 'Your password has been successfully reset.');
         return redirect()->route('login')->with(['status' => 'Your password has been successfully reset.']);
     }
 
