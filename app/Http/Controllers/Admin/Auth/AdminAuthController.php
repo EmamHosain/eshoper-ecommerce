@@ -24,7 +24,7 @@ class AdminAuthController extends Controller
         $adminLoginRequest->session()->regenerate();
         // FlashMessage::flash('success', 'Login successful.');
         // return redirect()->route('dashboard');
-        return redirect()->back();
+        return redirect()->route('admin.admin_dasboard');
     }
 
     public function logout(Request $request)

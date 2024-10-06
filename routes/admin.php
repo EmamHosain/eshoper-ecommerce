@@ -1,7 +1,9 @@
 <?php
+use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\Auth\AdminAuthController;
 
 
+// admin auth route start here
 Route::controller(AdminAuthController::class)->group(function () {
     Route::get('/login', 'login')->name('login');
     Route::post('/login', 'loginSubmit')->name('login_submit');
@@ -10,3 +12,11 @@ Route::controller(AdminAuthController::class)->group(function () {
     Route::get('/reset-password/{token}', 'resetPasswordPage')->name('reset_password_page');
     Route::post('/reset-password', 'resetPasswordSubmit')->name('reset_password_submit');
 });
+// admin auth route end here
+
+
+// admin backend route start here
+Route::controller(AdminDashboardController::class)->group(function () {
+    Route::get('/dashboard', 'adminDashboard')->name('admin_dasboard');
+});
+// admin backend route end here
