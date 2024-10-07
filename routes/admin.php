@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\Auth\AdminAuthController;
 
@@ -42,6 +43,17 @@ Route::middleware('adminAuth')->group(function () {
     });
 
 
-    
+    // category route start
+    Route::controller(CategoryController::class)->group(function () {
+        Route::get('/all-category', 'index')->name('all_category'); // List all categories
+        Route::get('/add-category', 'add')->name('add_category'); // Show add category form
+        Route::post('/store-category', 'store')->name('store_category'); // Store a new category
+        Route::get('/edit-category/{category}', 'edit')->name('edit_category'); // Show edit category form
+        Route::patch('/update-category/{category}', 'update')->name('update_category'); // Update a category
+        Route::get('/delete-category/{category}', 'delete')->name('delete_category'); // Delete a category
+    });
+
+
+
 
 });

@@ -11,7 +11,8 @@ class Category extends Model
     protected $fillable = [
         'category_name',
         'slug',
-        'category_image', // Nullable, can hold the image path or URL
+        'status',
+        'category_logo', // Nullable, can hold the image path or URL
     ];
 
     /**

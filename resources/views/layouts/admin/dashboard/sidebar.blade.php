@@ -28,6 +28,7 @@
                     </a>
                 </li>
 
+                {{-- brand --}}
                 <li class="nav-item">
                     <a href="javascript:void(0)" class="nav-link"> <i class="nav-icon bi bi-box-seam-fill"></i>
                         <p>
@@ -54,23 +55,26 @@
                 </li>
 
 
+                {{-- category --}}
                 <li class="nav-item">
                     <a href="javascript:void(0)" class="nav-link"> <i class="nav-icon bi bi-box-seam-fill"></i>
                         <p>
-                            Skill
+                            Category
                             <i class="nav-arrow bi bi-chevron-right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
-                                <p>All Skill</p>
+                            <a href="{{ route('admin.all_category') }}" class="nav-link"> <i
+                                    class="nav-icon bi bi-circle"></i>
+                                <p>All Category</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="#" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
-                                <p>Add Skill</p>
+                            <a href="{{ route('admin.add_category') }}" class="nav-link"> <i
+                                    class="nav-icon bi bi-circle"></i>
+                                <p>Add Category</p>
                             </a>
                         </li>
 

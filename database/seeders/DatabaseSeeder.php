@@ -21,7 +21,9 @@ class DatabaseSeeder extends Seeder
             'password' => 'password',
         ]);
         $this->call([
-            AdminSeeder::class
+            AdminSeeder::class,
+            BrandSeeder::class,
+            CategorySeeder::class
         ]);
     }
 }

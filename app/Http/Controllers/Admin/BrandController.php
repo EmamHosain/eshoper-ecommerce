@@ -79,7 +79,7 @@ class BrandController extends Controller
             // Resize and store image
             $manager = new ImageManager(new Driver());
             $img = $manager->read($image);
-            $img->resize(300, 300)->save(public_path('upload/brand_logo/' . $image_name));
+            $img->resize(150, 150)->save(public_path('upload/brand_logo/' . $image_name));
 
             // Store image path in the database
             $validated['brand_logo'] = 'upload/brand_logo/' . $image_name;
@@ -114,6 +114,8 @@ class BrandController extends Controller
             'status' => 'required|between:0,1',
         ]);
 
+        $oldBrand = $brand->replicate();
+        
         // Handle brand logo update
         if ($request->hasFile('brand_logo')) {
             // Delete old brand logo if exists
@@ -128,7 +130,7 @@ class BrandController extends Controller
             // Resize and store image
             $manager = new ImageManager(new Driver());
             $img = $manager->read($image);
-            $img->resize(300, 300)->save(public_path('upload/brand_logo/' . $image_name));
+            $img->resize(150, 150)->save(public_path('upload/brand_logo/' . $image_name));
 
             // Store new image path in the database
             $validated['brand_logo'] = 'upload/brand_logo/' . $image_name;
@@ -142,7 +144,9 @@ class BrandController extends Controller
             'status' => $validated['status'],
         ]);
 
-        FlashMessage::flash('success', 'Brand updated successfully.');
+        if ($oldBrand->isDirty()) {
+            FlashMessage::flash('success', 'Brand updated successfully.');
+        }
         return redirect()->route('admin.all_brand');
     }
 

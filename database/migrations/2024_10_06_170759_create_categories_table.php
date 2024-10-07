@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('category_name')->unique();
             $table->string('slug');
-            $table->string('category_image')->nullable();
+            $table->tinyInteger('status')->default(1);
+            $table->string('category_logo')->nullable();
             $table->timestamps();
         });
     }
