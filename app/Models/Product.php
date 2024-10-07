@@ -47,7 +47,7 @@ class Product extends Model
      */
     public function sizes()
     {
-        return $this->belongsToMany(Size::class, '_product_size'); // Define the pivot table
+        return $this->belongsToMany(Size::class, 'product_size'); // Define the pivot table
     }
 
     /**

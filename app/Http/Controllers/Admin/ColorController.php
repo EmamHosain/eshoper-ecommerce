@@ -60,12 +60,12 @@ class ColorController extends Controller
         ]);
 
         // for data comparision
-        $color->replicate();
+       $oldColor = $color->replicate();
 
         $color->update($validated);
 
         // is color updated flash message will be show
-        if($color->isDirty()){
+        if($oldColor->isDirty()){
             FlashMessage::flash('success', 'Color updated successfully.');
         }
         return redirect()->route('admin.all_color');

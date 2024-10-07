@@ -39,10 +39,12 @@ class SizeController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'size_name' => 'required|string|max:255|unique:sizes,size_name',
+            'size' => 'required|string|max:255|unique:sizes,size',
         ]);
 
-        Size::create($validated);
+        Size::create([
+            'size' => $validated['size'],
+        ]);
 
         FlashMessage::flash('success', 'Size created successfully.');
         return redirect()->route('admin.all_size');
@@ -56,19 +58,22 @@ class SizeController extends Controller
     public function update(Request $request, Size $size)
     {
         $validated = $request->validate([
-            'size_name' => ['required', 'string', 'max:255', Rule::unique(Size::class)->ignore($size->id)],
+            'size' => ['required', 'string', 'max:255', Rule::unique(Size::class)->ignore($size->id)],
         ]);
 
+        $oldSize = $size->replicate();
         $size->update($validated);
 
-        FlashMessage::flash('success', 'Size updated successfully.');
+        if ($oldSize->isDirty()) {
+            FlashMessage::flash('success', 'Size updated successfully.');
+        }
+
         return redirect()->route('admin.all_size');
     }
 
     public function delete(Size $size)
     {
         $size->delete();
-
         FlashMessage::flash('success', 'Size deleted successfully.');
         return redirect()->back();
     }
