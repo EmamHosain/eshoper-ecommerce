@@ -1,5 +1,7 @@
 <?php
+use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\Auth\AdminAuthController;
@@ -53,6 +55,28 @@ Route::middleware('adminAuth')->group(function () {
         Route::get('/delete-category/{category}', 'delete')->name('delete_category'); // Delete a category
     });
 
+
+    // color route start
+    Route::controller(ColorController::class)->group(function () {
+        Route::get('/all-color', 'index')->name('all_color'); // List all colors
+        Route::get('/add-color', 'add')->name('add_color'); // Show add color form
+        Route::post('/store-color', 'store')->name('store_color'); // Store a new color
+        Route::get('/edit-color/{color}', 'edit')->name('edit_color'); // Show edit color form
+        Route::patch('/update-color/{color}', 'update')->name('update_color'); // Update a color
+        Route::get('/delete-color/{color}', 'delete')->name('delete_color'); // Delete a color
+    });
+    
+    
+    // size route start
+    Route::controller(SizeController::class)->group(function () {
+        Route::get('/all-size', 'index')->name('all_size'); // List all sizes
+        Route::get('/add-size', 'add')->name('add_size'); // Show add size form
+        Route::post('/store-size', 'store')->name('store_size'); // Store a new size
+        Route::get('/edit-size/{size}', 'edit')->name('edit_size'); // Show edit size form
+        Route::patch('/update-size/{size}', 'update')->name('update_size'); // Update a size
+        Route::get('/delete-size/{size}', 'delete')->name('delete_size'); // Delete a size
+    });
+    
 
 
 

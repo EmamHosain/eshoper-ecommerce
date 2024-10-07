@@ -81,23 +81,26 @@
                     </ul>
                 </li>
 
+                {{-- color start --}}
                 <li class="nav-item">
                     <a href="javascript:void(0)" class="nav-link"> <i class="nav-icon bi bi-box-seam-fill"></i>
                         <p>
-                            Technology
+                            Product Color
                             <i class="nav-arrow bi bi-chevron-right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
-                                <p>All Technology</p>
+                            <a href="{{ route('admin.all_color') }}" class="nav-link"> <i
+                                    class="nav-icon bi bi-circle"></i>
+                                <p>All Color</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="#" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
-                                <p>Add Technology</p>
+                            <a href="{{ route('admin.add_color') }}" class="nav-link"> <i
+                                    class="nav-icon bi bi-circle"></i>
+                                <p>Add Color</p>
                             </a>
                         </li>
 

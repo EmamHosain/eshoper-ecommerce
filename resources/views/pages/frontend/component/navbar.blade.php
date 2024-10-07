@@ -21,10 +21,9 @@
             <a href="contact.html" class="nav-item nav-link">Contact</a>
         </div>
         <div class="navbar-nav ml-auto py-0">
-            @auth
+
+            @if (Auth::guard('web')->user())
             <a href="{{ route('user_dashboard') }}" class="nav-item nav-link">Dashboard</a>
-
-
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
             </form>
@@ -32,19 +31,14 @@
                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 Logout
             </a>
-            @endauth
-
-            @auth('admin')
+            @elseif (Auth::guard('admin')->user())
             <a href="{{ route('admin.admin_dasboard') }}" class="nav-item nav-link">Dashboard</a>
             <a href="{{ route('admin.logout') }}" class="nav-item nav-link">Logout</a>
-            @endauth
-
-
-
-            @guest
+            @else
             <a href="{{ route('login') }}" class="nav-item nav-link">Login</a>
             <a href="{{ route('register_page') }}" class="nav-item nav-link">Register</a>
-            @endguest
+            @endif
+
         </div>
     </div>
 </nav>
