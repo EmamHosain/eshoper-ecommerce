@@ -11,7 +11,8 @@ class Brand extends Model
     protected $fillable = [
         'brand_name',
         'slug',
-        'brand_logo', // Nullable, can hold the logo path or URL
+        'brand_logo',
+        'status',
     ];
 
     /**

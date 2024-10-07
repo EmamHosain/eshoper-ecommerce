@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\Auth\AdminAuthController;
 
@@ -24,4 +25,23 @@ Route::middleware('adminAuth')->group(function () {
         Route::get('/dashboard', 'adminDashboard')->name('admin_dasboard');
     });
     // admin backend route end here
+});
+
+
+Route::middleware('adminAuth')->group(function () {
+
+
+    // brand route start 
+    Route::controller(BrandController::class)->group(function () {
+        Route::get('/all-brand', 'index')->name('all_brand');
+        Route::get('/add-brand', 'add')->name('add_brand');
+        Route::post('/store-brand', 'store')->name('store_brand');
+        Route::get('/edit-brand/{brand}', 'edit')->name('edit_brand');
+        Route::patch('/update-brand/{brand}', 'update')->name('update_brand');
+        Route::get('/delete-brand/{brand}', 'delete')->name('delete_brand');
+    });
+
+
+    
+
 });

@@ -22,6 +22,8 @@ class Product extends Model
         'status',      // Status (active/inactive)
         'trandy',      // Indicates if the product is trendy
         'arrived',     // Indicates if the product has recently arrived
+        'quantity',
+        'code'
     ];
 
     /**
