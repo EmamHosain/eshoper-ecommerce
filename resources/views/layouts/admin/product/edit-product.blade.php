@@ -31,7 +31,7 @@ Edit Product
                         <div class="card-header">
                             <div class="card-title">Edit Product</div>
                         </div>
-                        <form action="{{ route('admin.update_product',$product->id) }}" method="POST"
+                        <form action="{{ route('admin.update_product', $product->id) }}" method="POST"
                             enctype="multipart/form-data">
                             @method('patch')
                             @csrf
@@ -46,7 +46,7 @@ Edit Product
                                         <input type="text"
                                             class="form-control @error('product_name') is-invalid @enderror"
                                             id="product_name" name="product_name"
-                                            value="{{ old('product_name',$product->product_name) }}"
+                                            value="{{ old('product_name', $product->product_name) }}"
                                             placeholder="Enter product name">
                                         @error('product_name')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -64,9 +64,7 @@ Edit Product
                                             <option selected disabled value="">Select category</option>
                                             @foreach ($categories as $category)
                                             <option value="{{ $category->id }}" {{ old('category', $product->
-                                                category->id)==$category->id ?
-                                                'selected' : ''
-                                                }}>
+                                                category->id) == $category->id ? 'selected' : '' }}>
                                                 {{ $category->category_name }}</option>
                                             @endforeach
                                         </select>
@@ -82,10 +80,8 @@ Edit Product
                                             id="brand_id">
                                             <option selected disabled value="">Select brand</option>
                                             @foreach ($brands as $brand)
-                                            <option value="{{ $brand->id }}" {{ old('brand',$product->brand ?
-                                                $product->brand->id : '')==$brand->id ? 'selected'
-                                                :
-                                                '' }}>
+                                            <option value="{{ $brand->id }}" {{ old('brand', $product->brand ?
+                                                $product->brand->id : '') == $brand->id ? 'selected' : '' }}>
                                                 {{ $brand->brand_name }}</option>
                                             @endforeach
                                         </select>
@@ -105,7 +101,7 @@ Edit Product
                                                 class="text-danger h4">*</span></label>
                                         <input type="number" min="1"
                                             class="form-control @error('price') is-invalid @enderror" id="price"
-                                            name="price" value="{{ old('price',$product->price) }}"
+                                            name="price" value="{{ old('price', $product->price) }}"
                                             placeholder="Enter price">
                                         @error('price')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -118,7 +114,7 @@ Edit Product
                                         <input type="number" min="1"
                                             class="form-control @error('discount_price') is-invalid @enderror"
                                             id="discount_price" name="discount_price"
-                                            value="{{ old('discount_price',$product->is_discount ? $product->discount_price : '') }}"
+                                            value="{{ old('discount_price', $product->is_discount ? $product->discount_price : '') }}"
                                             placeholder="Enter discount price (optional)">
                                         @error('discount_price')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -130,7 +126,7 @@ Edit Product
                                         <label for="quantity" class="form-label">Quantity</label>
                                         <input type="number" min="1"
                                             class="form-control @error('quantity') is-invalid @enderror" id="quantity"
-                                            name="quantity" value="{{ old('quantity',$product->quantity) }}"
+                                            name="quantity" value="{{ old('quantity', $product->quantity) }}"
                                             placeholder="Enter quantity (optional)">
                                         @error('quantity')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -146,7 +142,7 @@ Edit Product
                                             class="text-danger h4">*</span></label>
                                     <textarea class="form-control @error('short_description') is-invalid @enderror"
                                         name="short_description" id="short_description" aria-label="With textarea">{{
-                                        old('short_description',$product->short_description) }}</textarea>
+                                        old('short_description', $product->short_description) }}</textarea>
                                 </div>
 
 
@@ -155,7 +151,7 @@ Edit Product
                                     <label for="description" class="form-label">Product Description</label>
                                     <textarea class="form-control @error('description') is-invalid @enderror"
                                         name="description" id="product_description" aria-label="With textarea">{{
-                                        old('description',$product->description ?? '') }}</textarea>
+                                        old('description', $product->description ?? '') }}</textarea>
                                 </div>
 
 
@@ -166,7 +162,7 @@ Edit Product
                                     <label for="description" class="form-label">Product Information</label>
                                     <textarea class="form-control @error('description') is-invalid @enderror"
                                         name="information" id="product_information" aria-label="With textarea">{{
-                                        old('description',$product->information ?? '') }}</textarea>
+                                        old('description', $product->information ?? '') }}</textarea>
                                 </div>
 
 
@@ -183,11 +179,12 @@ Edit Product
                                             <option value="" {{ old('status')===null ? 'selected' : '' }} disabled>
                                                 Select status
                                             </option>
-                                            <option value="1" {{ old('status',$product->status)==1 ? 'selected' : ''
-                                                }}>Active</option>
-                                            <option value="0" {{ old('status',$product->status)==0 && old('status')
-                                                !==null ? 'selected'
-                                                : '' }}>Inactive</option>
+                                            <option value="1" {{ old('status', $product->status) == 1 ? 'selected' : ''
+                                                }}>Active
+                                            </option>
+                                            <option value="0" {{ old('status', $product->status) == 0 && old('status')
+                                                !== null ? 'selected' : '' }}>
+                                                Inactive</option>
                                         </select>
                                         @error('status')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -204,14 +201,13 @@ Edit Product
                                             id="popularity">
                                             <option selected disabled value="">Select popularity</option>
 
-                                            <option value="arrived" {{ old('popularity',$product->popularity)=='arrived'
-                                                ?
-                                                'selected' : ''
-                                                }}>New
+                                            <option value="arrived" {{ old('popularity', $product->popularity) ==
+                                                'arrived' ? 'selected' : '' }}>
+                                                New
                                                 Arrived
                                             </option>
-                                            <option value="trandy" {{ old('popularity',$product->popularity)=='trandy' ?
-                                                'selected' : '' }}>
+                                            <option value="trandy" {{ old('popularity', $product->popularity) ==
+                                                'trandy' ? 'selected' : '' }}>
                                                 Trandy</option>
                                         </select>
                                         @error('popularity')
@@ -231,10 +227,8 @@ Edit Product
                                                 <input class="form-check-input @error('color') is-invalid @enderror"
                                                     type="checkbox" name="color[]" value="{{ $color->id }}"
                                                     id="{{ $color->color_name . '-' . $color->id }}" {{
-                                                    in_array($color->id,
-                                                old('color',$product->colors->pluck('id')->toArray()))
-                                                ? 'checked'
-                                                : '' }}>
+                                                    in_array($color->id, old('color',
+                                                $product->colors->pluck('id')->toArray())) ? 'checked' : '' }}>
                                                 <label class="form-check-label text-capitalize"
                                                     for="{{ $color->color_name . '-' . $color->id }}">
                                                     {{ $color->color_name }}
@@ -257,8 +251,8 @@ Edit Product
                                                 <input class="form-check-input @error('size_name') is-invalid @enderror"
                                                     type="checkbox" name="size_name[]" value="{{ $size->id }}"
                                                     id="{{ $size->size_name . '-' . $size->id }}" {{ in_array($size->id,
-                                                old('size_name',$product->sizes->pluck('id')->toArray())) ? 'checked'
-                                                : '' }}>
+                                                old('size_name', $product->sizes->pluck('id')->toArray())) ? 'checked' :
+                                                '' }}>
                                                 <label class="form-check-label text-uppercase"
                                                     for="{{ $size->size_name . '-' . $size->id }}">
                                                     {{ $size->size_name }}
@@ -294,7 +288,7 @@ Edit Product
 
 
                                 {{-- existing images --}}
-                                @if(isset($product->productImages) && count($product->productImages) > 0)
+                                @if (isset($product->productImages) && count($product->productImages) > 0)
                                 <label class="form-label">Existing Photos</label>
                                 <div class="row mb-3">
                                     @foreach ($product->productImages as $item)
@@ -327,65 +321,74 @@ Edit Product
 
 <script>
     let selectedFiles = []; // Array to keep track of selected files
-    document.getElementById('photos').addEventListener('change', function (event) {
-        let previewContainer = document.getElementById('preview');
-        const files = event.target.files;
+        document.getElementById('photos').addEventListener('change', function(event) {
+            let previewContainer = document.getElementById('preview');
+            const files = event.target.files;
 
-        // Clear previous preview and file array
-        previewContainer.innerHTML = '';
-        selectedFiles = [];
+            // Clear previous preview and file array
+            previewContainer.innerHTML = '';
+            selectedFiles = [];
 
-        // Handle each selected file
-        Array.from(files).forEach((file, index) => {
-            if (file.type.startsWith('image/')) {
-                selectedFiles.push(file); // Add the file to the array
+            // Handle each selected file
+            Array.from(files).forEach((file, index) => {
+                if (file.type.startsWith('image/')) {
+                    selectedFiles.push(file); // Add the file to the array
 
-                const reader = new FileReader();
-                
-                reader.onload = function (e) {
-                    // Create an image container with a delete button
-                    const imageContainer = document.createElement('div');
-                    imageContainer.classList.add('col-md-3', 'position-relative', 'd-inline-block');
+                    const reader = new FileReader();
 
-                    // Create an image element
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.classList.add('img-thumbnail');
-                    img.style.maxWidth = '150px';
-                    img.style.margin = '5px';
+                    reader.onload = function(e) {
+                        // Create an image container with a delete button
+                        const imageContainer = document.createElement('div');
+                        imageContainer.classList.add('col-md-3', 'position-relative', 'd-inline-block');
 
-                    // Create a delete button
-                    const deleteBtn = document.createElement('button');
-                    deleteBtn.innerHTML = '×';
-                    deleteBtn.classList.add('btn', 'btn-danger', 'position-absolute', 'top-0', 'right-0');
-                    deleteBtn.style.fontSize = '20px';
-                    deleteBtn.style.padding = '0 10px';
-                    deleteBtn.style.cursor = 'pointer';
+                        // Create an image element
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.classList.add('img-thumbnail');
+                        img.style.maxWidth = '150px';
+                        img.style.margin = '5px';
 
-                    // Attach event listener to delete the image
-                    deleteBtn.addEventListener('click', function() {
-                        imageContainer.remove(); // Remove the image preview
-                        selectedFiles.splice(index, 1); // Remove the file from the selectedFiles array
-                    });
+                        // Create a delete button
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.innerHTML = '×';
+                        deleteBtn.classList.add('btn', 'btn-danger', 'position-absolute', 'top-0',
+                            'right-0');
+                        deleteBtn.style.fontSize = '20px';
+                        deleteBtn.style.padding = '0 10px';
+                        deleteBtn.style.cursor = 'pointer';
 
-                    // Append the image and delete button to the container
-                    imageContainer.appendChild(img);
-                    imageContainer.appendChild(deleteBtn);
-                    previewContainer.appendChild(imageContainer);
-                };
+                        // Attach event listener to delete the image
+                        deleteBtn.addEventListener('click', function() {
+                            imageContainer.remove(); // Remove the image preview
+                            selectedFiles.splice(index,
+                            1); // Remove the file from the selectedFiles array
+                        });
 
-                reader.readAsDataURL(file); // Read the file
-            }
+                        // Append the image and delete button to the container
+                        imageContainer.appendChild(img);
+                        imageContainer.appendChild(deleteBtn);
+                        previewContainer.appendChild(imageContainer);
+                    };
+
+                    reader.readAsDataURL(file); // Read the file
+                }
+            });
         });
-    });
 
 
-    // delete product
-    function deleteImage(imageId, productId) {
-            // Delete image AJAX request
-            //    console.log(imageId,projectId)
+        // toastr message
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+
+            showConfirmButton: false,
+            timer: 3000
+        })
+
+        // delete product
+        function deleteImage(imageId, productId) {
             $.ajax({
-                url: "{{ route('admin.delete_image') }}", // URL to the route handling image deletion
+                url: "{{ route('admin.delete_image') }}", 
                 type: 'POST', // HTTP method
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // CSRF token for security
@@ -395,14 +398,18 @@ Edit Product
                     product_id: productId,
                 },
                 success: function(response) {
-                    // Handle success (e.g., remove the image from the DOM)
-                    // alert('Image deleted successfully!');
-                    console.log('res', response);
                     $('#image-' + imageId).remove(); // Remove the image div from the UI
+                    Toast.fire({
+                        icon: 'success',
+                        title: response.success,
+                    })
                 },
                 error: function(xhr) {
                     // Handle error
-                    alert('Error deleting the image.');
+                    Toast.fire({
+                        icon: 'error',
+                        title: response.error,
+                    })
                 }
             });
         }

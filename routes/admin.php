@@ -87,7 +87,6 @@ Route::middleware('adminAuth')->group(function () {
         Route::get('/edit-product/{product}', 'edit')->name('edit_product'); // Show edit product form
         Route::patch('/update-product/{product}', 'update')->name('update_product'); // Update a product
         Route::get('/delete-product/{id}', 'delete')->name('delete_product'); // Delete a product
-
         // product image delete
         Route::post('/delete-image', 'deleteImage')->name('delete_image');
     });

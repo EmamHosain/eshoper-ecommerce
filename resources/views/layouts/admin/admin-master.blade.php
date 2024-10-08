@@ -48,6 +48,10 @@
     <script type="text/javascript" src="{{ asset('assets/sweet-alert/custom.sweetalert.js') }}"></script>
 
 
+    {{-- another swt fire message for response --}}
+    <script type="text/javascript" src="{{ asset('assets/sweetalert2@10/sweetalert2@10.js') }}"></script>
+
+
     {{-- custom js --}}
     <script type="text/javascript" src="{{ asset('assets/js/script.js') }}"></script>
 
@@ -78,7 +82,6 @@
 
 
     </div>
-
 
 
 

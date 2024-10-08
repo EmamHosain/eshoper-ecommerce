@@ -106,12 +106,6 @@ class ProductController extends Controller
         return view('layouts.admin.product.all-product');
     }
 
-
-
-
-
-
-
     public function add()
     {
         $categories = Category::where('status', 1)->latest()->get();
@@ -275,7 +269,7 @@ class ProductController extends Controller
 
         $product->product_name = $validated['product_name'];
         $product->category_id = $validated['category'];
-        $product->brand_id = $validated['brand'];
+        $product->brand_id = $validated['brand'] ?? null;
         $product->price = $validated['price'];
         $product->description = $validated['description'];
         $product->description = $validated['description'];
