@@ -204,12 +204,13 @@ Edit Product
                                             id="popularity">
                                             <option selected disabled value="">Select popularity</option>
 
-                                            <option value="arrived" {{ old('popularity',$product->arrived)=='1' ?
+                                            <option value="arrived" {{ old('popularity',$product->popularity)=='arrived'
+                                                ?
                                                 'selected' : ''
                                                 }}>New
                                                 Arrived
                                             </option>
-                                            <option value="trandy" {{ old('popularity',$product->trandy)=='0' ?
+                                            <option value="trandy" {{ old('popularity',$product->popularity)=='trandy' ?
                                                 'selected' : '' }}>
                                                 Trandy</option>
                                         </select>

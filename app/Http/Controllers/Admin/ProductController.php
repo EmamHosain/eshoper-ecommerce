@@ -132,7 +132,7 @@ class ProductController extends Controller
         $validated = $request->validate([
             'product_name' => 'required|string|max:255|unique:products,product_name',
             'category' => 'required|exists:categories,id',
-            'brand' => 'exists:brands,id',
+            'brand' => 'nullable|exists:brands,id',
             'price' => 'numeric|required|min:1',
             'discount_price' => 'numeric|nullable|min:1',
             'description' => 'nullable',
@@ -157,7 +157,6 @@ class ProductController extends Controller
         $product->category_id = $validated['category'];
         $product->brand_id = $validated['brand'] ?? null;
         $product->price = $validated['price'];
-        $product->description = $validated['description'] ?? null;
         $product->description = $validated['description'] ?? null;
 
         $product->short_description = $validated['short_description'];
@@ -215,7 +214,7 @@ class ProductController extends Controller
 
         // Flash message and redirect
         FlashMessage::flash('success', 'Product created successfully.');
-        return redirect()->back();
+        return redirect()->route('admin.all_product');
     }
 
 
@@ -249,20 +248,95 @@ class ProductController extends Controller
 
     }
 
-    public function update(Request $request, Size $size)
+    public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
-            'size' => ['required', 'string', 'max:255', Rule::unique(Size::class)->ignore($size->id)],
+            'product_name' => ['required', 'string', 'max:255', Rule::unique(Product::class)->ignore($product->id)],
+            'category' => 'required|exists:categories,id',
+            'brand' => 'nullable|exists:brands,id',
+            'price' => 'numeric|required|min:1',
+            'discount_price' => 'numeric|nullable|min:1',
+            'description' => 'nullable',
+            'information' => 'nullable',
+            'quantity' => 'nullable|numeric',
+            'status' => 'nullable|numeric|between:0,1',
+            'popularity' => 'required|in:arrived,trandy',
+            'image' => 'nullable|array', // updated to handle multiple images
+            'image.*' => 'image|mimes:jpg,jpeg,png,svg|max:1024', // each file validation
+            'color' => 'nullable|array',
+            'size_name' => 'nullable|array',
+            'short_description' => 'required',
         ]);
 
-        $oldSize = $size->replicate();
-        $size->update($validated);
 
-        if ($oldSize->isDirty()) {
-            FlashMessage::flash('success', 'Size updated successfully.');
+
+
+
+
+        $product->product_name = $validated['product_name'];
+        $product->category_id = $validated['category'];
+        $product->brand_id = $validated['brand'];
+        $product->price = $validated['price'];
+        $product->description = $validated['description'];
+        $product->description = $validated['description'];
+
+        $product->short_description = $validated['short_description'];
+        $product->information = $validated['information'];
+
+        $product->quantity = $validated['quantity'] ?? 1;
+        $product->status = $validated['status'] ?? 1;
+        $product->slug = Str::slug($validated['product_name']);
+        $product->updated_at = Carbon::now();
+        $product->created_at = Carbon::now();
+
+
+
+        if (!empty($validated['discount_price'])) {
+            $product->is_discount = 1;
+            $product->discount_price = $validated['discount_price'];
+        } else {
+            $product->discount_price = null;
+            $product->is_discount = 0;
         }
 
-        return redirect()->route('admin.all_size');
+        // Handle popularity (trandy/arrived)
+        $product->popularity = $validated['popularity'];
+
+        // Save the product first before attaching relations and images
+        $product->save();
+
+        // Attaching color and size (assuming many-to-many relationships)
+        if (isset($validated['color']) && count($validated['color']) > 0) {
+            $product->colors()->sync($validated['color']);
+        }
+
+        if (isset($validated['size_name']) && count($validated['size_name']) > 0) {
+            $product->sizes()->sync($validated['size_name']);
+        }
+
+        // Handle image uploads
+        if ($request->hasFile('image')) {
+            foreach ($request->file('image') as $image) {
+                $image_name = time() . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $image_path = 'upload/product/' . $image_name;
+
+                // Resize and save image
+                $manager = new ImageManager(new Driver());
+
+                $img = $manager->read($image)->resize(500, 500);
+                $img->save(public_path($image_path));
+
+                // Store image path in the database
+                ProductImage::create([
+                    'product_image' => $image_path,
+                    'product_id' => $product->id,
+                ]);
+            }
+        }
+
+        // Flash message and redirect
+        FlashMessage::flash('success', 'Product updated successfully.');
+        return redirect()->route('admin.all_product');
     }
 
 
@@ -301,10 +375,24 @@ class ProductController extends Controller
 
 
 
-    public function delete(Size $size)
+    public function delete($id)
     {
-        $size->delete();
-        FlashMessage::flash('success', 'Size deleted successfully.');
+
+        $product = Product::with('productImages')->find($id);
+
+        if (isset($product->productImages) && count($product->productImages) > 0) {
+
+            foreach ($product->productImages as $item) {
+                if ($item->product_image && file_exists(public_path($item->product_image))) {
+                    unlink(public_path($item->product_image));
+                }
+            }
+        }
+        $product->delete();
+        FlashMessage::flash('success', 'Product deleted successfully.');
         return redirect()->back();
     }
+
+
+
 }
