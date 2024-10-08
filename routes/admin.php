@@ -2,6 +2,7 @@
 use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ColorController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\Auth\AdminAuthController;
@@ -65,8 +66,8 @@ Route::middleware('adminAuth')->group(function () {
         Route::patch('/update-color/{color}', 'update')->name('update_color'); // Update a color
         Route::get('/delete-color/{color}', 'delete')->name('delete_color'); // Delete a color
     });
-    
-    
+
+
     // size route start
     Route::controller(SizeController::class)->group(function () {
         Route::get('/all-size', 'index')->name('all_size'); // List all sizes
@@ -76,7 +77,21 @@ Route::middleware('adminAuth')->group(function () {
         Route::patch('/update-size/{size}', 'update')->name('update_size'); // Update a size
         Route::get('/delete-size/{size}', 'delete')->name('delete_size'); // Delete a size
     });
-    
+
+
+    // product rouet start here
+    Route::controller(ProductController::class)->group(function () {
+        Route::get('/all-product', 'index')->name('all_product'); // List all products
+        Route::get('/add-product', 'add')->name('add_product'); // Show add product form
+        Route::post('/store-product', 'store')->name('store_product'); // Store a new product
+        Route::get('/edit-product/{product}', 'edit')->name('edit_product'); // Show edit product form
+        Route::patch('/update-product/{product}', 'update')->name('update_product'); // Update a product
+        Route::get('/delete-product/{product}', 'delete')->name('delete_product'); // Delete a product
+
+        // product image delete
+        Route::post('/delete-image', 'deleteImage')->name('delete_image');
+    });
+
 
 
 

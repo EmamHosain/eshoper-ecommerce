@@ -9,7 +9,7 @@ class Size extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'size', // The size name (must be unique)
+        'size_name', // The size name (must be unique)
     ];
 
     /**

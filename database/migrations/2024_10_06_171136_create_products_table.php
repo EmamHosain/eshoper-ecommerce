@@ -21,22 +21,27 @@ return new class extends Migration {
             $table->string('product_name')->unique();
             $table->string('slug');
 
-            // Adding available column to track stock availability
-            $table->tinyInteger('available')->default(1);
 
             // Additional columns
             $table->decimal('price', 10, 2);
             $table->decimal('discount_price', 10, 2)->nullable();
             $table->tinyInteger('is_discount')->default(0);
 
-            $table->integer('stock')->default(0); // Stock quantity
-            $table->text('description')->nullable(); // Product description
+
+            $table->text('description')->nullable();
+            $table->text('information')->nullable();
+            $table->text('short_description');
+
+
             $table->string('code')->nullable();
-            $table->integer('quantity')->nullable();
-            
-            $table->integer('status')->default(1);
-            $table->tinyInteger('trandy')->default(0);
-            $table->tinyInteger('arrived')->default(0);
+            $table->integer('quantity')->default(1);
+
+            $table->tinyInteger('status')->default(1);
+
+            $table->enum('popularity', ['trandy', 'arrived']);
+
+            // $table->tinyInteger('trandy')->default(0);
+            // $table->tinyInteger('arrived')->default(0);
 
 
             $table->timestamps();

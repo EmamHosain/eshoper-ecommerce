@@ -17,13 +17,13 @@ class Product extends Model
         'price',       // Product price
         'discount_price', // Discounted price (nullable)
         'is_discount', // Indicates if there's a discount
-        'stock',       // Stock quantity
         'description', // Product description
         'status',      // Status (active/inactive)
-        'trandy',      // Indicates if the product is trendy
-        'arrived',     // Indicates if the product has recently arrived
+        'popularity',
         'quantity',
-        'code'
+        'code',
+        'information',
+        'short_description',
     ];
 
     /**
@@ -31,7 +31,7 @@ class Product extends Model
      */
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
     /**
@@ -56,5 +56,9 @@ class Product extends Model
     public function colors()
     {
         return $this->belongsToMany(Color::class, 'color_product'); // Define the pivot table
+    }
+    public function productImages()
+    {
+        return $this->hasMany(ProductImage::class);
     }
 }

@@ -8,9 +8,12 @@ use App\Helper\FlashMessage;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
-use Intervention\Image\ImageManager;
+
 use Yajra\DataTables\Facades\DataTables;
+
+// image intervention
 use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 
 class CategoryController extends Controller
 {

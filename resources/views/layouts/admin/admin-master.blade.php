@@ -29,17 +29,28 @@
     <script src="{{ asset('assets/adminLte/js/adminlte.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/bootstrap.bundle.js') }}"></script>
 
+
+
+    {{-- summernote text editor --}}
+    <link rel="stylesheet" href="{{ asset('assets/summernote-0.9.0-dist/summernote-bs5.css') }}">
+    <script type="text/javascript" src="{{ asset('assets/summernote-0.9.0-dist/summernote-bs5.js') }}"></script>
+
+    <!-- Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
     {{-- datatable --}}
     <link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}">
     <script type="text/javascript" src="{{ asset('assets/js/datatables.min.js') }}"></script>
 
     {{-- sweet alert --}}
     <link rel="stylesheet" href="{{ asset('assets/sweet-alert/sweetalert2.min.css') }}">
-    {{--
-    <link rel="stylesheet" href="{{ asset() }}"> --}}
-
     <script type="text/javascript" src="{{ asset('assets/sweet-alert/sweetalert2.all.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/sweet-alert/custom.sweetalert.js') }}"></script>
+
+
+    {{-- custom js --}}
+    <script type="text/javascript" src="{{ asset('assets/js/script.js') }}"></script>
+
 </head>
 <!--end::Head-->
 <!--begin::Body-->
