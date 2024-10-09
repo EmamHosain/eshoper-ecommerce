@@ -135,7 +135,7 @@ class ProductController extends Controller
             'status' => 'nullable|numeric|between:0,1',
             'popularity' => 'required|in:arrived,trandy',
             'image' => 'nullable|array', // updated to handle multiple images
-            'image.*' => 'image|mimes:jpg,jpeg,png,svg|max:1024', // each file validation
+            'image.*' => 'image|mimes:jpg,jpeg,png,svg|max:1024|dimensions:min_width=500,min_height=500', // height and width validation
             'color' => 'nullable|array',
             'size_name' => 'nullable|array',
             'short_description' => 'required',
@@ -256,7 +256,7 @@ class ProductController extends Controller
             'status' => 'nullable|numeric|between:0,1',
             'popularity' => 'required|in:arrived,trandy',
             'image' => 'nullable|array', // updated to handle multiple images
-            'image.*' => 'image|mimes:jpg,jpeg,png,svg|max:1024', // each file validation
+            'image.*' => 'image|mimes:jpg,jpeg,png,svg|max:1024|dimensions:min_width=500,min_height=500',
             'color' => 'nullable|array',
             'size_name' => 'nullable|array',
             'short_description' => 'required',

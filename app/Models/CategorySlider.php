@@ -11,6 +11,11 @@ class CategorySlider extends Model
     protected $fillable = [
         'category_id',
         'slider_image', // This holds the path or URL to the slider image
+        'status',
+        'heading_one',
+        'heading_two',
+        'button_text',
+        'button_link',
     ];
 
     /**

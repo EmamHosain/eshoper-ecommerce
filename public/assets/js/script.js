@@ -18,6 +18,9 @@ $(document).ready(function () {
     });
 
     $('#text_editor').summernote({
-        height: 200,
+        height: 100,
+    });
+    $('#another_text_editor').summernote({
+        height: 100,
     });
 });

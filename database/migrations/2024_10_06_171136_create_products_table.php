@@ -40,10 +40,6 @@ return new class extends Migration {
 
             $table->enum('popularity', ['trandy', 'arrived']);
 
-            // $table->tinyInteger('trandy')->default(0);
-            // $table->tinyInteger('arrived')->default(0);
-
-
             $table->timestamps();
         });
     }

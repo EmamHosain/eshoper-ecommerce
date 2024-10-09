@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CategorySliderController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\Auth\AdminAuthController;
 
@@ -55,6 +56,22 @@ Route::middleware('adminAuth')->group(function () {
         Route::patch('/update-category/{category}', 'update')->name('update_category'); // Update a category
         Route::get('/delete-category/{category}', 'delete')->name('delete_category'); // Delete a category
     });
+
+    // category slider route start
+    Route::controller(CategorySliderController::class)->group(function () {
+        Route::get('/all-category-slider', 'index')->name('all_category_slider'); // List all category sliders
+        Route::get('/add-category-slider', 'add')->name('add_category_slider'); // Show add category slider form
+        Route::post('/store-category-slider', 'store')->name('store_category_slider'); // Store a new category slider
+        Route::get('/edit-category-slider/{id}', 'edit')->name('edit_category_slider'); // Show edit category slider form
+        Route::patch('/update-category-slider/{categorySlider}', 'update')->name('update_category_slider'); // Update a category slider
+        Route::get('/delete-category-slider/{categorySlider}', 'delete')->name('delete_category_slider'); // Delete a category slider
+    });
+
+
+
+
+
+
 
 
     // color route start

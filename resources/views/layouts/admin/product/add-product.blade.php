@@ -266,17 +266,18 @@ Add Product
                                 <div id="preview" class="row"></div>
                                 {{-- Image --}}
                                 <div class="mb-4">
-                                    <label for="image" class="form-label">Product Image</label>
+                                    <label for="image" class="form-label">Product Image</label> <br>
+                                    <span style="font-size: 12px">Image must be or grater than (500 x 500)</span>
                                     <input type="file" class="form-control @error('image') is-invalid @enderror"
                                         id="photos" name="image[]" multiple>
 
                                     @error('image')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    <div style="font-size: 13px" class="text-danger">{{ $message }}</div>
                                     @enderror
-
-                                    @foreach ($errors->get('image.*') as $error)
-                                    <div class="invalid-feedback">{{ $error }}</div>
-                                    @endforeach
+                                    @error('image.*')
+                                    <div style="font-size: 13px" class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                   
                                 </div>
 
                             </div>

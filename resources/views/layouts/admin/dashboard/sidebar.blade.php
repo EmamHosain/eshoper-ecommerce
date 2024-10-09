@@ -81,6 +81,33 @@
                     </ul>
                 </li>
 
+
+                 {{-- category slider--}}
+                 <li class="nav-item">
+                    <a href="javascript:void(0)" class="nav-link"> <i class="nav-icon bi bi-box-seam-fill"></i>
+                        <p>
+                            Category Slider
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.all_category_slider') }}" class="nav-link"> <i
+                                    class="nav-icon bi bi-circle"></i>
+                                <p>All Category Slider</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('admin.add_category_slider') }}" class="nav-link"> <i
+                                    class="nav-icon bi bi-circle"></i>
+                                <p>Add Category Slider</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
                 {{-- color start --}}
                 <li class="nav-item">
                     <a href="javascript:void(0)" class="nav-link"> <i class="nav-icon bi bi-box-seam-fill"></i>

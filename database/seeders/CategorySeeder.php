@@ -40,7 +40,7 @@ class CategorySeeder extends Seeder
                 'category_name' => $category,
                 'slug' => Str::slug($category), // Generate a unique slug
                 'status' => $faker->numberBetween(0, 1),
-                'category_logo' => null // Set to null or provide a default logo path if applicable
+                'category_logo' => $faker->imageUrl(500,400,'products')
             ]);
         }
     }

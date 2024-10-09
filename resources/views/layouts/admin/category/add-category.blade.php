@@ -50,7 +50,7 @@ Add Category
                                     @enderror
                                 </div>
 
-                               
+
 
                                 <img src="{{ asset('assets/empty-image-300x240.jpg') }}" id="categoryLogoPreview"
                                     alt="Avatar" class="d-block me-4 img-thumbnail mb-2"
@@ -58,8 +58,7 @@ Add Category
 
                                 <label for="category_logo" class="form-label">Category Logo</label>
                                 <div class="input-group mb-3">
-                                    <input type="file"
-                                        class="form-control @error('category_logo') is-invalid @enderror"
+                                    <input type="file" class="form-control @error('category_logo') is-invalid @enderror"
                                         id="category_logo" name="category_logo">
                                     <label class="input-group-text" for="category_image">Upload</label>
                                     @error('category_logo')
@@ -90,6 +89,8 @@ Add Category
                 </div>
             </div>
         </div>
+
+
 </main>
 
 <script>

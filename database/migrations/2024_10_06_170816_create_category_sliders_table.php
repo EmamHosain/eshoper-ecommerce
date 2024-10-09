@@ -13,6 +13,11 @@ return new class extends Migration {
         Schema::create('category_sliders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->tinyInteger('status')->default(1);
+            $table->text('heading_one')->nullable();
+            $table->text('heading_two')->nullable();
+            $table->string('button_text')->nullable();
+            $table->string('button_link')->nullable();
             $table->string('slider_image');
             $table->timestamps();
         });

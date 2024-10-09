@@ -33,8 +33,8 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var navbarVertical = document.getElementById('navbar-vertical');
-        var toggleBtn = document.getElementById('toggle-btn');
-        var toggleIcon = document.getElementById('toggle-icon');
+        // var toggleBtn = document.getElementById('toggle-btn');
+        // var toggleIcon = document.getElementById('toggle-icon');
 
         // Pass the is_open value from Blade to JavaScript
         var isOpen = @json($is_open ?? false); // Blade variable to JavaScript
@@ -42,23 +42,23 @@
         // Check if navbar should be open initially based on is_open
         if (isOpen) {
             navbarVertical.classList.add('show'); // Keep it open by default
-            toggleIcon.classList.remove('fa-angle-down');
-            toggleIcon.classList.add('fa-angle-up');
+            // toggleIcon.classList.remove('fa-angle-down');
+            // toggleIcon.classList.add('fa-angle-up');
         }
 
         // Add event listener for the button click
-        toggleBtn.addEventListener('click', function(e) {
-            e.preventDefault();
+        // toggleBtn.addEventListener('click', function(e) {
+        //     e.preventDefault();
 
-            if (navbarVertical.classList.contains('show')) {
-                // Collapse the menu
-                toggleIcon.classList.remove('fa-angle-up');
-                toggleIcon.classList.add('fa-angle-down');
-            } else {
-                // Expand the menu
-                toggleIcon.classList.remove('fa-angle-down');
-                toggleIcon.classList.add('fa-angle-up');
-            }
-        });
+        //     if (navbarVertical.classList.contains('show')) {
+        //         // Collapse the menu
+        //         toggleIcon.classList.remove('fa-angle-up');
+        //         toggleIcon.classList.add('fa-angle-down');
+        //     } else {
+        //         // Expand the menu
+        //         toggleIcon.classList.remove('fa-angle-down');
+        //         toggleIcon.classList.add('fa-angle-up');
+        //     }
+        // });
     });
 </script>
