@@ -32,7 +32,16 @@ All Product
             <!--begin::Row-->
             <div class="row g-4">
                 <!--begin::Col-->
-                <div class="container-fluid mt-4">
+                <div class="container-fluid mt-4 overflow-auto">
+                    <div class="form-group col-12 col-md-2">
+                        <label for="status-filter">Filter by Status:</label>
+                        <select class="form-control" id="status-filter">
+                            <option value="">All status</option>
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
+                        </select>
+                    </div>
+
                     <table id="datatable" class="table table-bordered dt-responsive w-100" style="width:100%">
                         <thead>
                             <tr>
@@ -71,7 +80,12 @@ All Product
         var table = $('#datatable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('admin.all_product') }}", // Change this route to fetch all products
+            ajax:{
+                url : "{{ route('admin.all_product') }}",
+                data : function(d){
+                    d.status = $('#status-filter').val();
+                }
+            } ,
             columns: [
                 { data: 'code', name: 'code'}, 
                 { data: 'product_name', name: 'product_name' },
@@ -89,6 +103,10 @@ All Product
                 { data: 'action', name: 'action', orderable: false, searchable: false } // Column for actions (edit, delete)
             ]
         });
+
+        $('#status-filter').change(function(){
+            table.draw();
+        })
     });
 </script>
 @endsection

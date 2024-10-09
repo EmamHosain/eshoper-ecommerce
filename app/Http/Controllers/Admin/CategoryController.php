@@ -20,8 +20,15 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            // Ensure you are selecting the correct fields
-            $data = Category::orderByDesc('id')->get();
+            $status = $request->input('status'); // Get the status parameter from the request
+
+            $data = Category::query();
+
+            if ($status !== null) {
+                $data->where('status', $status);
+            }
+
+            $data = $data->orderByDesc('id')->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -42,7 +49,7 @@ class CategoryController extends Controller
                     $editUrl = route('admin.edit_category', $row->id);
                     $deleteUrl = route('admin.delete_category', $row->id);
                     return '<a href="' . $editUrl . '" class="btn btn-success">Edit</a>
-                            <a href="' . $deleteUrl . '" class="btn btn-danger" id="delete">Delete</a>';
+                        <a href="' . $deleteUrl . '" class="btn btn-danger" id="delete">Delete</a>';
                 })
                 ->rawColumns(['category_logo', 'status', 'action'])
                 ->make(true);
@@ -50,6 +57,7 @@ class CategoryController extends Controller
 
         return view('layouts.admin.category.all-category');
     }
+
 
     public function add()
     {

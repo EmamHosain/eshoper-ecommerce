@@ -32,7 +32,15 @@ All Category Sliders
             <!--begin::Row-->
             <div class="row g-4">
                 <!--begin::Col-->
-                <div class="container">
+                <div class="container overflow-auto">
+                    <div class="form-group col-12 col-md-2">
+                        <label for="status-filter">Filter by Status:</label>
+                        <select class="form-control" id="status-filter">
+                            <option value="">All status</option>
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
+                        </select>
+                    </div>
                     <table id="datatable" class="table table-bordered dt-responsive w-100" style="width:100%">
                         <thead>
                             <tr>
@@ -67,7 +75,12 @@ All Category Sliders
         var table = $('#datatable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('admin.all_category_slider') }}", // Fetch data via AJAX from the controller
+            ajax: {
+                url : "{{ route('admin.all_category_slider') }}",
+                data : function(d){
+                    d.status = $('#status-filter').val();
+                }
+            },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false }, // Serial number (Si) column
                 { data: 'category', name: 'category' },
@@ -80,6 +93,10 @@ All Category Sliders
                 { data: 'action', name: 'action', orderable: false, searchable: false } 
             ]
         });
+
+        $('#status-filter').change(function(){
+            table.draw();
+        })
     });
 </script>
 

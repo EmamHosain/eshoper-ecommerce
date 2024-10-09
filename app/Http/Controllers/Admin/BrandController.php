@@ -23,8 +23,13 @@ class BrandController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            // Ensure you are selecting the correct fields
-            $data = Brand::select(['id', 'brand_name', 'slug', 'brand_logo', 'status'])->get();
+            $status = $request->input('status');
+            $data = Brand::query();
+
+            if ($status !== null) {
+                $data->where('status', $status);
+            }
+            $data = $data->orderByDesc('id')->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -115,7 +120,7 @@ class BrandController extends Controller
         ]);
 
         $oldBrand = $brand->replicate();
-        
+
         // Handle brand logo update
         if ($request->hasFile('brand_logo')) {
             // Delete old brand logo if exists

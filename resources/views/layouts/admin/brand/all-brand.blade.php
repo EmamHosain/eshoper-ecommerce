@@ -36,7 +36,15 @@ All Brand
 
                 <!--end::Col-->
                 <!--begin::Col-->
-                <div class="container">
+                <div class="container overflow-auto">
+                    <div class="form-group col-12 col-md-2">
+                        <label for="status-filter">Filter by Status:</label>
+                        <select class="form-control" id="status-filter">
+                            <option value="">All status</option>
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
+                        </select>
+                    </div>
                     <table id="datatable" class="table table-bordered dt-responsive w-100" style="width:100%">
                         <thead>
                             <tr>
@@ -67,7 +75,13 @@ All Brand
         var table = $('#datatable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('admin.all_brand') }}",
+            ajax: {
+                url: "{{ route('admin.all_brand') }}",
+                data: function(d){
+                    d.status = $('#status-filter').val();
+                }
+               
+            },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false }, // Serial number (Si) column
                 { data: 'brand_name', name: 'brand_name' },
@@ -76,6 +90,11 @@ All Brand
                 { data: 'status', name: 'status' }, 
                 { data: 'action', name: 'action', orderable: false, searchable: false } 
             ]
+        });
+
+         // Handle status filter change event
+         $('#status-filter').change(function() {
+            table.draw();
         });
     });
 </script>

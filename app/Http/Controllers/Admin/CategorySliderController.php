@@ -17,8 +17,13 @@ class CategorySliderController extends Controller
     {
         if ($request->ajax()) {
             // Ensure you are selecting the correct fields
-            $data = CategorySlider::with('category')->orderByDesc('id')->get();
+            $status = $request->input('status');
 
+            $data = CategorySlider::query();
+            if ($status !== null) {
+                $data->where('status', $status);
+            }
+            $data = $data->with('category')->orderByDesc('id')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
 

@@ -30,8 +30,14 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            // Ensure you are selecting the correct fields
-            $data = Product::with([
+            $status = $request->input('status');
+            $data = Product::query();
+            if ($status !== null) {
+                $data->where('status', $status);
+            }
+
+
+            $data = $data->with([
                 'category',
                 'brand',
                 'colors',
