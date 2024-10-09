@@ -20,15 +20,15 @@ class ProductImageSeeder extends Seeder
         $faker = Faker::create();
 
         // Get all products
-        $products = Product::all();
+        $products = Product::get();
 
         // Loop through each product and seed product images
         foreach ($products as $product) {
             // Create between 1 to 3 images for each product
-            for ($i = 0; $i < rand(1, 3); $i++) {
+            for ($i = 0; $i < rand(1, 7); $i++) {
                 $productImage = new ProductImage();
                 $productImage->product_id = $product->id;
-                $productImage->product_image = $faker->imageUrl(640, 480, 'products',);
+                $productImage->product_image = $faker->imageUrl(640, 480, 'products',true);
                 $productImage->save();
             }
         }

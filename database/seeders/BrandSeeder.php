@@ -43,7 +43,7 @@ class BrandSeeder extends Seeder
                 'brand_name' => $brand,
                 'slug'=> $brand,
                 'status' => $faker->numberBetween(0, 1),
-                'brand_logo' => null
+                'brand_logo' => $faker->imageUrl(150,150,'products',true),
             ]);
         }
 

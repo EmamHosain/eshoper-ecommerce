@@ -3,6 +3,7 @@
 use App\Http\Controllers\User\Auth\PasswordResetController;
 use App\Http\Controllers\User\Auth\UserAuthController;
 use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\User\UserProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'home'])->name('index');
@@ -39,6 +40,25 @@ Route::controller(PasswordResetController::class)->group(function () {
     // Handle the actual password reset
     Route::post('/password/reset', 'reset')->name('password.update');
 });
+
+
+Route::controller(UserProductController::class)->group(function () {
+    Route::get('/product-details/{id}/{slug}','productDetails')->name('product_details');
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Route::get('/product-details', function () {
     return view('pages.frontend.product-details');
