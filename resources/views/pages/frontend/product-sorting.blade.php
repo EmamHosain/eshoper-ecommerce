@@ -36,10 +36,9 @@ Products
             <div class="border-bottom mb-4 pb-4">
                 <h5 class="font-weight-semi-bold mb-4">Filter by price</h5>
                 <form>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input filter-checkbox" checked id="price-all">
-                        <label class="custom-control-label" for="price-all">All Price</label>
-                        <span class="badge border font-weight-normal">{{ $all_product_count }}</span>
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <label class="">All Price Product</label>
+                        <span class="badge border font-weight-normal">{{ $all_product_price_count }}</span>
                     </div>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                         <input type="checkbox" class="custom-control-input filter-checkbox" id="price-1">
@@ -79,17 +78,15 @@ Products
             <div class="border-bottom mb-4 pb-4">
                 <h5 class="font-weight-semi-bold mb-4">Filter by Color</h5>
                 <form id="filter-form">
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" checked id="color-all" data-type="color"
-                            data-id="">
-                        <label class="custom-control-label" for="color-all">All Color</label>
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <label class="">All Color Product</label>
                         <span class="badge border font-weight-normal">{{ $total_product_count_with_color }}</span>
                     </div>
 
                     @foreach ($product_count_with_color as $index => $item)
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input data-type="color" type="checkbox" class="custom-control-input filter-checkbox"
-                            data-id="{{ $item->id }}" id="{{ $item->color_name . '-' . $item->id }}">
+                        <input type="checkbox" class="custom-control-input filter_checkbox" value="{{ $item->id }}"
+                            data-type="colors" id="{{ $item->color_name . '-' . $item->id }}">
                         <label class="custom-control-label text-capitalize"
                             for="{{ $item->color_name . '-' . $item->id }}">{{ $item->color_name }}</label>
                         <span class="badge border font-weight-normal">{{ $item->product_count }}</span>
@@ -104,14 +101,14 @@ Products
             <div class="mb-5">
                 <h5 class="font-weight-semi-bold mb-4">Filter by size</h5>
                 <form>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input filter-checkbox" checked id="size-all">
-                        <label class="custom-control-label" for="size-all">All Size</label>
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+
+                        <label class="">All Size Product</label>
                         <span class="badge border font-weight-normal">{{ $total_product_count_with_size }}</span>
                     </div>
                     @foreach ($sizes_with_product_count as $index => $item)
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input filter-checkbox"
+                        <input type="checkbox" class="custom-control-input filter_checkbox" data-type="sizes" value="{{ $item->id }}"
                             id="{{ $item->size_name . '-' . $item->id }}">
                         <label class="custom-control-label text-uppercase"
                             for="{{ $item->size_name . '-' . $item->id }}">{{ $item->size_name }}</label>
@@ -158,7 +155,7 @@ Products
                 </div>
 
 
-                <div id="product-list" class="row hidden">
+                <div id="product-list" class="row">
                     @include('pages.frontend.product-list')
                 </div>
 
@@ -173,56 +170,68 @@ Products
 
 <script>
     $(document).ready(function() {
-            $('.filter-checkbox').on('change', function() {
-                var filters = {
-                    colors: []
-                };
+            var filter = {
+
+            };
 
 
-                // Collect checked checkboxes
-                $('.filter-checkbox:checked').each(function() {
-                    var type = $(this).data('type');
-                    var id = $(this).data('id');
+            $('.filter_checkbox').change(function() {
+                var colorId = $(this).val();
+                var type = $(this).data('type');
 
-                    // Only collect colors
-                    if (type === 'color' && id) {
-                        filters.colors.push(id);
+                if(!filter[type]){
+                    filter[type] = []
+                }
+
+                if ($(this).is(':checked')) {
+                    filter[type].push(colorId)
+                   // colors.push(colorId); // Add the color ID to the array
+                } else {
+                    // Remove the color ID if unchecked
+                    var index =filter[type].indexOf(colorId);
+                    if (index !== -1) {
+                        filter[type].splice(index, 1);
+                    }
+                }
+
+                // Make AJAX request
+                $.ajax({
+                    url: "{{ route('filter_product') }}", // Your filter route
+                    method: 'GET',
+                    data: filter,
+                    success: function(response) {
+                        $('#product-list').html(response.view);
+                    },
+                    error: function(xhr) {
+                        console.error(xhr); // Log any errors for debugging
+                        alert(
+                            'An error occurred while fetching the products. Please try again.'
+                        );
                     }
                 });
-                console.log(filters);
 
-                function fetchFilteredProducts() {
-                    $.ajax({
-                        url: "{{ route('filter_product') }}?page=" + 1,
-                        method: 'GET',
-                        //data: filters, // Pass the filters and page number
-                        success: function(response) {
-                            $('#product-list').removeClass('hidden');
-                            $('#product-list').html(response); // Update product list
-                            //$('#pagination-links').html(response.pagination); // Update pagination links
-                        },
-                        error: function(xhr) {
-                            console.error(xhr); // Log errors
-                            alert(
-                                'An error occurred while fetching the products. Please try again.'
-                            );
-                        }
-                    });
-
-
-                }
-                fetchFilteredProducts();
+                
             });
 
 
+
+
+
+
+
+
+
+
+
+            // start here
             function fetchFilteredProducts(page) {
                 $.ajax({
-                    url: "{{ route('filter_product') }}?page="+page,
+                    url: "{{ route('filter_product') }}?page=" + page,
                     method: 'GET',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    
+
                     success: function(response) {
                         $('#product-list').removeClass('hidden');
                         $('#product-list').html(response.view); // Update product list

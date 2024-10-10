@@ -34,7 +34,7 @@ class UserProductController extends Controller
     public function searchByProduct()
     {
         // $all_product = Product::with('productImages')->where('status', 1)->latest()->paginate(12);
-        $all_product_count = Product::count();
+        // $all_product_count = Product::count();
 
         // Count products where price or discount_price is between 0 and 100
         $product_0_to_100 = Product::where('status', 1)
@@ -142,6 +142,9 @@ class UserProductController extends Controller
             ->count();
 
 
+        $all_product_price_count = ($product_0_to_100 + $product_100_to_200 + $product_200_to_300 + $product_300_to_400 + $product_400_to_500 + $product_greater_than_500);
+
+
 
 
 
@@ -200,7 +203,7 @@ class UserProductController extends Controller
 
 
         return view('pages.frontend.product-sorting', [
-            'all_product_count' => $all_product_count,
+            'all_product_price_count' => $all_product_price_count,
             'product_0_to_100' => $product_0_to_100,
             'product_100_to_200' => $product_100_to_200,
             'product_200_to_300' => $product_200_to_300,
@@ -232,40 +235,31 @@ class UserProductController extends Controller
     {
         // Retrieve input values
         $sizes = $request->input('sizes', []);
-        $colors = $request->query('colors', []);
+        $colors = $request->input('colors', []);
         $category = $request->input('category');
 
-
-
         if ($request->ajax()) {
-
             $products = Product::with(['sizes', 'colors', 'category'])
                 ->when(!empty($colors), function ($query) use ($colors) {
                     $query->whereHas('colors', function ($query) use ($colors) {
-                        $query->whereIn('id', $colors);
+                        $query->whereIn('colors.id', $colors);  // Specify the table name 'colors.id'
                     });
                 })
+
                 ->when(!empty($sizes), function ($query) use ($sizes) {
                     $query->whereHas('sizes', function ($query) use ($sizes) {
-                        $query->whereIn('id', $sizes);
+                        $query->whereIn('sizes.id', $sizes);  // Specify the table name 'colors.id'
                     });
                 })
-                ->when(
-                    !empty($category),
-                    function ($query) use ($category) {
-                        $query->where('category_id', $category);
-                    }
-
-
-
-                )->paginate(12);
+                ->paginate(12)->withQueryString();
 
             return response()->json([
                 'view' => view('pages.frontend.product-list', compact('products'))->render(),
             ]);
+            // return response()->json($products);
         }
-
     }
+
 
 
 
