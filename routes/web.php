@@ -44,6 +44,11 @@ Route::controller(PasswordResetController::class)->group(function () {
 
 Route::controller(UserProductController::class)->group(function () {
     Route::get('/product-details/{id}/{slug}','productDetails')->name('product_details');
+    
+    Route::get('/products','searchByProduct')->name('search_by_product');
+
+    Route::get('/filter-products-by','filterProducts')->name('filter_product');
+
 
 });
 
@@ -73,9 +78,6 @@ Route::get('/contact', function () {
 
 Route::get('/checkout', function () {
     return view('pages.frontend.checkout');
-});
-Route::get('/products', function () {
-    return view('pages.frontend.product-sorting');
 });
 
 Route::get('/user-dashboard', function () {

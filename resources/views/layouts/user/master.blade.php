@@ -7,6 +7,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
 
@@ -23,12 +24,19 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+
+
+    {{-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> --}}
+    <script type="text/javascript" src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"> </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    {{-- <script type="text/javascript" src="{{ asset('assets/js/bootstrap.bundle.js') }}"> </script> bootstrap version
+    problem --}}
 </head>
 <body>
 
 
-   @yield('header')
-    
+    @yield('header')
+
 
 
 
@@ -45,8 +53,8 @@
 
     <!-- JavaScript Libraries -->
     {{-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> --}}
-    <script type="text/javascript" src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"> </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    {{-- <script type="text/javascript" src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"> </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script> --}}
     {{-- <script type="text/javascript" src="{{ asset('assets/js/bootstrap.bundle.js') }}"> </script> bootstrap version
     problem --}}
 
