@@ -8,8 +8,8 @@
     </button>
     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
         <div class="navbar-nav mr-auto py-0">
-            <a href="index.html" class="nav-item nav-link active">Home</a>
-            <a href="shop.html" class="nav-item nav-link">Shop</a>
+            <a href="{{ route('index') }}" class="nav-item nav-link active">Home</a>
+            <a href="{{ route('search_by_product') }}" class="nav-item nav-link">Products</a>
             <a href="detail.html" class="nav-item nav-link">Shop Detail</a>
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
@@ -24,7 +24,7 @@
 
             @if (Auth::guard('web')->user())
             <a href="{{ route('user_dashboard') }}" class="nav-item nav-link">Dashboard</a>
-           
+
             <a href="{{ route('logout') }}" class="nav-item nav-link">
                 Logout
             </a>

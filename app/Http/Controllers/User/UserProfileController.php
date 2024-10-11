@@ -9,11 +9,11 @@ class UserProfileController extends Controller
 {
     public function userProfilePage()
     {
-        return view('layouts.user.pages.user-profile');
+        return view('layouts.user.backend.pages.user-profile');
     }
 
     public function changePasswordPage()
     {
-        return view('layouts.user.pages.change-password');
+        return view('layouts.user.backend.pages.change-password');
     }
 }

@@ -1,4 +1,4 @@
-@extends('layouts.user.master')
+@extends('layouts.user.backend.user-master')
 @section('title')
 Profile
 @endsection

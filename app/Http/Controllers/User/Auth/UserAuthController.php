@@ -70,7 +70,7 @@ class UserAuthController extends Controller
 
     public function userDashboard()
     {
-        return view('layouts.user.pages.user-dashboard');
+        return view('layouts.user.backend.pages.user-dashboard');
     }
 
 }
