@@ -13,6 +13,14 @@ Products
 
 
 @section('content')
+<style>
+    .custom-btn-reset {
+        /* border: none;*/
+        outline: none;
+        border-color: white;
+    }
+</style>
+
 <!-- Page Header Start -->
 <div class="container-fluid bg-secondary mb-5">
     <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
@@ -25,6 +33,8 @@ Products
     </div>
 </div>
 <!-- Page Header End -->
+<div id="product-container"></div>
+
 
 
 <!-- Shop Start -->
@@ -41,32 +51,38 @@ Products
                         <span class="badge border font-weight-normal">{{ $all_product_price_count }}</span>
                     </div>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input filter-checkbox" id="price-1">
+                        <input type="checkbox" data-type="prices" class="custom-control-input filter_checkbox"
+                            id="price-1" value="0_to_100">
                         <label class="custom-control-label" for="price-1">$0 - $100</label>
                         <span class="badge border font-weight-normal">{{ $product_0_to_100 }}</span>
                     </div>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input filter-checkbox" id="price-2">
+                        <input type="checkbox" data-type="prices" class="custom-control-input filter_checkbox"
+                            id="price-2" value="100_to_200">
                         <label class="custom-control-label" for="price-2">$100 - $200</label>
                         <span class="badge border font-weight-normal">{{ $product_100_to_200 }}</span>
                     </div>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input filter-checkbox" id="price-3">
+                        <input type="checkbox" data-type="prices" class="custom-control-input filter_checkbox"
+                            id="price-3" value="200_to_300">
                         <label class="custom-control-label" for="price-3">$200 - $300</label>
                         <span class="badge border font-weight-normal">{{ $product_200_to_300 }}</span>
                     </div>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input filter-checkbox" id="price-4">
+                        <input type="checkbox" data-type="prices" class="custom-control-input filter_checkbox"
+                            id="price-4" value="300_to_400">
                         <label class="custom-control-label" for="price-4">$300 - $400</label>
                         <span class="badge border font-weight-normal">{{ $product_300_to_400 }}</span>
                     </div>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input filter-checkbox" id="price-5">
+                        <input type="checkbox" data-type="prices" class="custom-control-input filter_checkbox"
+                            id="price-5" value="400_to_500">
                         <label class="custom-control-label" for="price-5">$400 - $500</label>
                         <span class="badge border font-weight-normal">{{ $product_400_to_500 }}</span>
                     </div>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                        <input type="checkbox" class="custom-control-input filter-checkbox" id="price-6">
+                        <input type="checkbox" data-type="prices" class="custom-control-input filter_checkbox"
+                            id="price-6" value="500_to_500000">
                         <label class="custom-control-label" for="price-6">$500+</label>
                         <span class="badge border font-weight-normal">{{ $product_greater_than_500 }}</span>
                     </div>
@@ -108,8 +124,8 @@ Products
                     </div>
                     @foreach ($sizes_with_product_count as $index => $item)
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input filter_checkbox" data-type="sizes" value="{{ $item->id }}"
-                            id="{{ $item->size_name . '-' . $item->id }}">
+                        <input type="checkbox" class="custom-control-input filter_checkbox" data-type="sizes"
+                            value="{{ $item->id }}" id="{{ $item->size_name . '-' . $item->id }}">
                         <label class="custom-control-label text-uppercase"
                             for="{{ $item->size_name . '-' . $item->id }}">{{ $item->size_name }}</label>
                         <span class="badge border font-weight-normal">{{ $item->product_count }}</span>
@@ -129,16 +145,22 @@ Products
                 <div class="row">
                     <div class="col-12 pb-1">
                         <div class="d-flex align-items-center justify-content-between mb-4">
-                            <form action="">
+
+                            <form id="searchForm">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search by name">
-                                    <div class="input-group-append">
+                                    <input type="text" class="form-control" placeholder="Search by name"
+                                        id="search_filter" name="search_query">
+                                    <div class="input-group-append cursor-pointer">
                                         <span class="input-group-text bg-transparent text-primary">
                                             <i class="fa fa-search"></i>
                                         </span>
                                     </div>
+
                                 </div>
                             </form>
+
+
+
                             <div class="dropdown ml-4">
                                 <button class="btn border dropdown-toggle" type="button" id="triggerId"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -155,9 +177,11 @@ Products
                 </div>
 
 
+
                 <div id="product-list" class="row">
                     @include('pages.frontend.product-list')
                 </div>
+
 
             </div>
 
@@ -173,22 +197,20 @@ Products
             var filter = {
 
             };
-
-
             $('.filter_checkbox').change(function() {
                 var colorId = $(this).val();
                 var type = $(this).data('type');
 
-                if(!filter[type]){
+                if (!filter[type]) {
                     filter[type] = []
                 }
 
                 if ($(this).is(':checked')) {
                     filter[type].push(colorId)
-                   // colors.push(colorId); // Add the color ID to the array
+                    // colors.push(colorId); // Add the color ID to the array
                 } else {
                     // Remove the color ID if unchecked
-                    var index =filter[type].indexOf(colorId);
+                    var index = filter[type].indexOf(colorId);
                     if (index !== -1) {
                         filter[type].splice(index, 1);
                     }
@@ -201,6 +223,10 @@ Products
                     data: filter,
                     success: function(response) {
                         $('#product-list').html(response.view);
+
+                        $('html, body').animate({
+                            scrollTop: $('#product-container').offset().top
+                        }, 1000); // Adjust duration as needed
                     },
                     error: function(xhr) {
                         console.error(xhr); // Log any errors for debugging
@@ -210,17 +236,8 @@ Products
                     }
                 });
 
-                
+
             });
-
-
-
-
-
-
-
-
-
 
 
             // start here
@@ -233,8 +250,12 @@ Products
                     },
 
                     success: function(response) {
-                        $('#product-list').removeClass('hidden');
-                        $('#product-list').html(response.view); // Update product list
+                        $('#product-list').html(response.view);
+                        $('html, body').animate({
+                            scrollTop: $(
+                                    '#product-container')
+                                .offset().top
+                        },1000); // Adjust duration as needed
                     },
                     error: function(xhr) {
                         console.error(xhr); // Log errors
@@ -247,12 +268,6 @@ Products
             }
             fetchFilteredProducts(1);
 
-
-
-
-
-
-
             $(document).on('click', '.pagination a', function(event) {
                 event.preventDefault();
 
@@ -260,6 +275,76 @@ Products
                 var page = $(this).attr('href').split('page=')[1];
                 fetchFilteredProducts(page);
             });
+
+
+            // search filter
+
+
+
+            $(document).ready(function() {
+                let debounceTimer;
+
+                $('#search_filter').on('input', function(e) {
+                    // Prevent the form from submitting the traditional way
+                    e.preventDefault();
+
+                    // Clear the previous timer to prevent multiple requests
+                    clearTimeout(debounceTimer);
+
+                    // Get the value from the input field
+                    var searchQuery = $(this).val();
+
+                    // Check if there's a valid search query
+
+                    // Set a debounce timer to limit the number of requests
+                    debounceTimer = setTimeout(function() {
+                        // Make the AJAX request
+                        $.ajax({
+                            url: "{{ route('filter_product') }}", // Your filter route
+                            method: 'GET',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]')
+                                    .attr('content')
+                            },
+                            data: {
+                                search: searchQuery
+                            }, // Send the search query
+                            success: function(response) {
+                                // Update the product list with the response
+                                $('#product-list').html(response.view);
+
+                                // Scroll to the product container
+                                $('html, body').animate({
+                                    scrollTop: $(
+                                            '#product-container')
+                                        .offset().top
+                                }, 1000); // Adjust duration as needed
+                            },
+                            error: function(xhr, status, error) {
+                                // Handle errors
+                                console.error('Error fetching products:',
+                                    xhr.responseText);
+                            }
+                        });
+                    }, 500); // Delay for 300ms (adjust as needed)
+
+                });
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

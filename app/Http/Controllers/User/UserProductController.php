@@ -39,6 +39,7 @@ class UserProductController extends Controller
         // Count products where price or discount_price is between 0 and 100
         $product_0_to_100 = Product::where('status', 1)
             ->where(function ($query) {
+
                 $query->where(function ($q) {
                     // Products without discount (use regular price)
                     $q->where('is_discount', 0)
@@ -237,28 +238,82 @@ class UserProductController extends Controller
         $sizes = $request->input('sizes', []);
         $colors = $request->input('colors', []);
         $category = $request->input('category');
+        $prices = $request->input('prices', []);
+        $search = $request->input('search');
 
+        // Initialize an array to hold multiple price ranges
+        $prices_array = [];
+        if (!empty($prices)) {
+            foreach ($prices as $item) {
+                $array = explode("_to_", $item);
+                array_push($prices_array, $array);
+            }
+        }
+
+        // Initialize the products query
+        $products = Product::with(['sizes', 'colors', 'category']);
+
+        // Check if it's an AJAX request and there are filter parameters
         if ($request->ajax()) {
-            $products = Product::with(['sizes', 'colors', 'category'])
-                ->when(!empty($colors), function ($query) use ($colors) {
-                    $query->whereHas('colors', function ($query) use ($colors) {
-                        $query->whereIn('colors.id', $colors);  // Specify the table name 'colors.id'
-                    });
-                })
+            // If there are any filtering values
+            if (!empty($colors) || !empty($sizes) || !empty($prices) || !empty($search)) {
 
-                ->when(!empty($sizes), function ($query) use ($sizes) {
-                    $query->whereHas('sizes', function ($query) use ($sizes) {
-                        $query->whereIn('sizes.id', $sizes);  // Specify the table name 'colors.id'
+                $products->when(!empty($colors), function ($query) use ($colors) {
+                    $query->whereHas('colors', function ($query) use ($colors) {
+                        $query->whereIn('colors.id', $colors);
                     });
                 })
-                ->paginate(12)->withQueryString();
+                    ->when(!empty($sizes), function ($query) use ($sizes) {
+                        $query->whereHas('sizes', function ($query) use ($sizes) {
+                            $query->whereIn('sizes.id', $sizes);
+                        });
+                    })
+
+                    ->when(!empty($search), function ($query) use ($search) {
+                        $query->where('product_name', 'LIKE', "%$search%");
+                    })
+
+
+
+
+
+                    // Apply price filtering
+                    ->when(isset($prices_array) && count($prices_array) > 0, function ($query) use ($prices_array) {
+                        $query->where(function ($query) use ($prices_array) {
+                            // Loop through each price range
+                            foreach ($prices_array as $price_range) {
+                                $minPrice = $price_range[0];
+                                $maxPrice = $price_range[1];
+
+                                // Apply conditions for regular price and discount price
+                                $query->orWhere(function ($query) use ($minPrice, $maxPrice) {
+                                    $query->where('is_discount', 0)
+                                        ->whereBetween('price', [$minPrice, $maxPrice])
+                                        ->orWhere(function ($query) use ($minPrice, $maxPrice) {
+                                            $query->where('is_discount', 1)
+                                                ->whereBetween('discount_price', [$minPrice, $maxPrice]);
+                                        });
+                                });
+                            }
+                        });
+                    });
+
+                // Get products without pagination (all results)
+                $products = $products->where('status', 1)->get();
+
+            } else {
+                // If no filters are applied, return paginated products
+                $products = $products->where('status', 1)->paginate(12)->withQueryString();
+            }
 
             return response()->json([
                 'view' => view('pages.frontend.product-list', compact('products'))->render(),
             ]);
-            // return response()->json($products);
         }
+
+
     }
+
 
 
 
