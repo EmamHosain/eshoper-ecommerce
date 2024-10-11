@@ -23,7 +23,7 @@ Route::controller(UserAuthController::class)->middleware('guest')->group(functio
 // user auth route start
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [UserAuthController::class, 'logout'])->name('logout');
-    Route::get('/dashboard', [UserAuthController::class, 'userDashboard'])->name('user_dashboard');
+    // Route::get('/dashboard', [UserAuthController::class, 'userDashboard'])->name('user_dashboard');
 });
 // user auth route end
 
