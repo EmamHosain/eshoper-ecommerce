@@ -24,9 +24,17 @@ Products
 <!-- Page Header Start -->
 <div class="container-fluid bg-secondary mb-5">
     <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+
+        @if (Request::query('category'))
+        @php
+        $category_name = App\Models\Category::where('slug',Request::query('category'))->first()->category_name;
+        @endphp
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Search By Category : {{ $category_name }}</h1>
+        @else
         <h1 class="font-weight-semi-bold text-uppercase mb-3">Our Shop</h1>
+        @endif
         <div class="d-inline-flex">
-            <p class="m-0"><a href="">Home</a></p>
+            <p class="m-0"><a href="{{ route('index') }}">Home</a></p>
             <p class="m-0 px-2">-</p>
             <p class="m-0">Shop</p>
         </div>
@@ -194,6 +202,8 @@ Products
 
 <script>
     $(document).ready(function() {
+            const params = new URLSearchParams(window.location.search);
+            const category = params.get('category');
             var filter = {
 
             };
@@ -201,6 +211,12 @@ Products
                 var colorId = $(this).val();
                 var type = $(this).data('type');
 
+                if(category !== null){
+                    if(!filter[type]){
+                        filter['category'] = [];
+                    }
+                    filter['category'].push(category)
+                }
                 if (!filter[type]) {
                     filter[type] = []
                 }
@@ -242,11 +258,18 @@ Products
 
             // start here
             function fetchFilteredProducts(page) {
+                // search by category 
+
+
+
                 $.ajax({
                     url: "{{ route('filter_product') }}?page=" + page,
                     method: 'GET',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        category: category ?? ''
                     },
 
                     success: function(response) {
@@ -255,7 +278,7 @@ Products
                             scrollTop: $(
                                     '#product-container')
                                 .offset().top
-                        },1000); // Adjust duration as needed
+                        }, 1000); // Adjust duration as needed
                     },
                     error: function(xhr) {
                         console.error(xhr); // Log errors
@@ -330,6 +353,15 @@ Products
 
                 });
             });
+
+
+
+
+
+
+
+
+
 
 
 

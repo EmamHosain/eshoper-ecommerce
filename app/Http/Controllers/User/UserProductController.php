@@ -237,7 +237,7 @@ class UserProductController extends Controller
         // Retrieve input values
         $sizes = $request->input('sizes', []);
         $colors = $request->input('colors', []);
-        $category = $request->input('category');
+        $category_slug = $request->input('category');
         $prices = $request->input('prices', []);
         $search = $request->input('search');
 
@@ -272,6 +272,11 @@ class UserProductController extends Controller
                     ->when(!empty($search), function ($query) use ($search) {
                         $query->where('product_name', 'LIKE', "%$search%");
                     })
+                    ->when(!empty($category_slug), function ($query) use ($category_slug) {
+                        $query->whereHas('category', function ($query) use ($category_slug) {
+                            $query->whereIn('categories.slug', $category_slug);
+                        });
+                    })
 
 
 
@@ -303,7 +308,15 @@ class UserProductController extends Controller
 
             } else {
                 // If no filters are applied, return paginated products
-                $products = $products->where('status', 1)->paginate(12)->withQueryString();
+                $products = $products->
+                    when(!empty($category_slug), function ($query) use ($category_slug) {
+                        $query->whereHas('category', function ($query) use ($category_slug) {
+                            $query->where('categories.slug', $category_slug); // table name set here 
+                        });
+                    })
+
+
+                    ->where('status', 1)->paginate(12)->withQueryString();
             }
 
             return response()->json([
