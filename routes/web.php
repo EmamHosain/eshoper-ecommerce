@@ -4,6 +4,7 @@ use App\Http\Controllers\User\Auth\PasswordResetController;
 use App\Http\Controllers\User\Auth\UserAuthController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\UserProductController;
+use App\Http\Controllers\User\UserProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'home'])->name('index');
@@ -22,8 +23,12 @@ Route::controller(UserAuthController::class)->middleware('guest')->group(functio
 
 // user auth route start
 Route::middleware('auth')->group(function () {
-    Route::post('/logout', [UserAuthController::class, 'logout'])->name('logout');
+    Route::get('/logout', [UserAuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [UserAuthController::class, 'userDashboard'])->name('user_dashboard');
+    Route::get('/user-profile', [UserProfileController::class, 'userProfilePage'])->name('user_profile_page');
+    Route::get('/change-password', [UserProfileController::class, 'changePasswordPage'])->name('change_password_page');
+
+
 });
 // user auth route end
 
@@ -44,12 +49,8 @@ Route::controller(PasswordResetController::class)->group(function () {
 
 Route::controller(UserProductController::class)->group(function () {
     Route::get('/product-details/{id}/{slug}','productDetails')->name('product_details');
-    
     Route::get('/products','searchByProduct')->name('search_by_product');
-
     Route::get('/filter-products-by','filterProducts')->name('filter_product');
-
-
 });
 
 
