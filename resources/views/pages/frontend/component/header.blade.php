@@ -22,7 +22,7 @@
 
             @php
             $sliders = App\Models\CategorySlider::with('category')->whereHas('category', function ($query) {
-            $query->where('status', 1);
+            $query->where('categories.status',1);
             })
             ->where('status',1)
             ->get();
@@ -39,9 +39,13 @@
                             alt="Image">
                         <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                             <div class="p-3" style="max-width: 700px;">
-                                <h4 class="text-light text-uppercase font-weight-medium mb-3">{{ $item->heading_one ?? 'heading one' }}</h4>
-                                <h3 class="display-4 text-white font-weight-semi-bold mb-4">{{ $item->heading_two ?? 'heading two' }}</h3>
-                                <a href="" class="btn btn-light py-2 px-3">{{ $item->button_text ?? 'shop now' }}</a>
+                                <h4 class="text-light text-uppercase font-weight-medium mb-3">{{ $item->heading_one ??
+                                    'heading one' }}</h4>
+                                <h3 class="display-4 text-white font-weight-semi-bold mb-4">{{ $item->heading_two ??
+                                    'heading two' }}</h3>
+                                <a href="{{ route('search_by_product',['category'=>$item->category->slug]) }}"
+                                    class="btn btn-light py-2 px-3">{{ $item->button_text ?? 'shop
+                                    now' }}</a>
                             </div>
                         </div>
                     </div>

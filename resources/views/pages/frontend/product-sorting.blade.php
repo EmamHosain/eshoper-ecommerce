@@ -100,7 +100,7 @@ Products
 
             <!-- Color Start -->
             <div class="border-bottom mb-4 pb-4">
-                <h5 class="font-weight-semi-bold mb-4">Filter by Color</h5>
+                <h5 class="font-weight-semi-bold mb-4">Filter by color</h5>
                 <form id="filter-form">
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <label class="">All Color Product</label>
@@ -143,6 +143,35 @@ Products
                 </form>
             </div>
             <!-- Size End -->
+
+
+
+            <!-- brand Start -->
+            <div class="mb-5">
+                <h5 class="font-weight-semi-bold mb-4">Filter by brand</h5>
+                <form>
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+
+                        <label class="">All Brand Product</label>
+                        <span class="badge border font-weight-normal">{{ $all_brand_product_count }}</span>
+                    </div>
+                    @foreach ($all_brand as $index => $item)
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <input type="checkbox" class="custom-control-input filter_checkbox" data-type="brands"
+                            value="{{ $item->id }}" id="{{ $item->brand_name . '-' . $item->id }}">
+                        <label class="custom-control-label text-uppercase"
+                            for="{{ $item->brand_name . '-' . $item->id }}">{{ $item->brand_name }}</label>
+                        <span class="badge border font-weight-normal">{{ $item->product_count }}</span>
+                    </div>
+                    @endforeach
+
+                </form>
+            </div>
+            <!-- Size End -->
+
+
+
+
         </div>
         <!-- Shop Sidebar End -->
 
@@ -208,7 +237,7 @@ Products
 
             };
             $('.filter_checkbox').change(function() {
-                var colorId = $(this).val();
+                var id = $(this).val();
                 var type = $(this).data('type');
 
                 if(category !== null){
@@ -222,11 +251,10 @@ Products
                 }
 
                 if ($(this).is(':checked')) {
-                    filter[type].push(colorId)
-                    // colors.push(colorId); // Add the color ID to the array
+                    filter[type].push(id)
                 } else {
                     // Remove the color ID if unchecked
-                    var index = filter[type].indexOf(colorId);
+                    var index = filter[type].indexOf(id);
                     if (index !== -1) {
                         filter[type].splice(index, 1);
                     }

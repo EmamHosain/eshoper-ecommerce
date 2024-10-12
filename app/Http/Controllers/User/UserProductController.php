@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Models\Size;
+use App\Models\Brand;
 use App\Models\Color;
 use App\Models\Product;
 use App\Models\Category;
@@ -145,6 +146,16 @@ class UserProductController extends Controller
 
         $all_product_price_count = ($product_0_to_100 + $product_100_to_200 + $product_200_to_300 + $product_300_to_400 + $product_400_to_500 + $product_greater_than_500);
 
+        $all_brand = Brand::withCount([
+            'products as product_count' =>
+                function ($query) {
+                    $query->where('status', 1);
+                }
+        ])->where('status', 1)->latest()->get();
+
+        $all_brand_products_count = Product::where('status', 1)->whereHas('brand', function ($query) {
+            $query->where('brands.status', 1);
+        })->count();
 
 
 
@@ -216,8 +227,9 @@ class UserProductController extends Controller
             'total_product_count_with_color' => $total_product_count_with_color,
             'total_product_count_with_size' => $total_product_count_with_size,
 
-            // all products
-            // 'all_product' => $all_product,
+            // all brand
+            'all_brand' => $all_brand,
+            'all_brand_product_count' => $all_brand_products_count,
 
             // products count as color wise
             'product_count_with_color' => $colors_with_product_count,
@@ -237,6 +249,8 @@ class UserProductController extends Controller
         // Retrieve input values
         $sizes = $request->input('sizes', []);
         $colors = $request->input('colors', []);
+        $brands = $request->input('brands', []);
+
         $category_slug = $request->input('category');
         $prices = $request->input('prices', []);
         $search = $request->input('search');
@@ -251,12 +265,12 @@ class UserProductController extends Controller
         }
 
         // Initialize the products query
-        $products = Product::with(['sizes', 'colors', 'category']);
+        $products = Product::with(['sizes', 'colors', 'category', 'brand']);
 
         // Check if it's an AJAX request and there are filter parameters
         if ($request->ajax()) {
             // If there are any filtering values
-            if (!empty($colors) || !empty($sizes) || !empty($prices) || !empty($search)) {
+            if (!empty($colors) || !empty($sizes) || !empty($prices) || !empty($search) || !empty($brands)) {
 
                 $products->when(!empty($colors), function ($query) use ($colors) {
                     $query->whereHas('colors', function ($query) use ($colors) {
@@ -269,9 +283,16 @@ class UserProductController extends Controller
                         });
                     })
 
+                    ->when(!empty($brands), function ($query) use ($brands) {
+                        $query->whereHas('brand', function ($query) use ($brands) {
+                            $query->whereIn('brands.id', $brands);
+                        });
+                    })
+
                     ->when(!empty($search), function ($query) use ($search) {
                         $query->where('product_name', 'LIKE', "%$search%");
                     })
+
                     ->when(!empty($category_slug), function ($query) use ($category_slug) {
                         $query->whereHas('category', function ($query) use ($category_slug) {
                             $query->whereIn('categories.slug', $category_slug);
