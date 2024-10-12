@@ -41,7 +41,7 @@ class WishlistController extends Controller
         return response()->json([
             'alert-type' => 'success',
             'message' => 'Product added to wishlist successfully.',
-            // 'wishlist' => $wishlist
+            'wishlist_count' => count($wishlist)
         ]);
     }
 

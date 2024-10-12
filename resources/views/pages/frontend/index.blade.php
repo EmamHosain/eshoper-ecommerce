@@ -107,55 +107,9 @@ Home
         <h2 class="section-title px-5"><span class="px-2">Trandy Products</span></h2>
     </div>
     <div class="row px-xl-5 pb-3">
-
-        @foreach ($trandy_products as $product)
-        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
-            <div class="card product-item border-0 mb-4">
-                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                    <a href="{{ route('product_details', ['id' => $product->id, 'slug' => $product->slug]) }}">
-                        <img class="img-fluid w-100"
-                            src="{{ $product->productImages->first() ? asset($product->productImages->first()->product_image) : asset('assets/eshoper/img/product-2.jpg') }}"
-                            alt="">
-                    </a>
-
-                </div>
-
-
-
-
-
-                <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                    <a href="{{ route('product_details', ['id' => $product->id, 'slug' => $product->slug]) }}">
-                        <h6 class="text-truncate mb-3 text-capitalize">{{ Str::limit($product->product_name, 30) }}
-                        </h6>
-                    </a>
-
-
-                    <div class="d-flex justify-content-center">
-                        <h6>${{ $product->is_discount ? $product->discount_price : $product->price }}</h6>
-                        @if ($product->is_discount)
-                        <h6 class="text-muted ml-2"><del>${{ $product->price }}</del></h6>
-                        @endif
-                    </div>
-                </div>
-
-
-                <div class="card-footer d-flex justify-content-between bg-light border">
-                    <a href="javascript:void(0)" data-id="{{ $product->id }}"
-                        class="btn btn-sm text-dark p-0 add_to_wishlist">
-                        <i class="fas fa-heart text-primary mr-1"></i>Add To
-                        Wishlist
-                    </a>
-
-
-                    <a href="" class="btn btn-sm text-dark p-0"><i
-                            class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                </div>
-            </div>
-        </div>
-        @endforeach
-
-
+        @include('pages.frontend.single-product',[
+            'products'=> $trandy_products
+        ])
     </div>
 </div>
 <!-- trandy Products End -->
@@ -190,39 +144,9 @@ Home
         <h2 class="section-title px-5"><span class="px-2">Just Arrived</span></h2>
     </div>
     <div class="row px-xl-5 pb-3">
-
-
-        @foreach ($new_arrived_products as $product)
-        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
-            <div class="card product-item border-0 mb-4">
-                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                    <img class="img-fluid w-100"
-                        src="{{ $product->productImages->first() ? asset($product->productImages->first()->product_image) : asset('assets/eshoper/img/product-2.jpg') }}"
-                        alt="">
-                </div>
-                <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                    <h6 class="text-truncate mb-3">{{ $product->product_name }}</h6>
-                    <div class="d-flex justify-content-center">
-                        <h6>${{ $product->is_discount ? $product->discount_price : $product->price }}</h6>
-
-                        @if ($product->is_discount)
-                        <h6 class="text-muted ml-2"><del>${{ $product->price }}</del></h6>
-                        @endif
-                    </div>
-                </div>
-                <div class="card-footer d-flex justify-content-between bg-light border">
-                    <a href="{{ route('product_details', ['id' => $product->id, 'slug' => $product->slug]) }}"
-                        class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
-                        Detail</a>
-                    <a href="" class="btn btn-sm text-dark p-0"><i
-                            class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                </div>
-            </div>
-        </div>
-        @endforeach
-
-
-
+        @include('pages.frontend.single-product',[
+            'products'=> $new_arrived_products
+        ])
     </div>
 </div>
 <!-- new arrived Products End -->
@@ -250,8 +174,6 @@ Home
 
 <script>
     $(document).ready(function() {
-
-
             $('.add_to_wishlist').on('click', function() {
                 var productId = $(this).data('id');
                 $.ajax({
@@ -265,6 +187,7 @@ Home
                     },
                     success: function(response) {
                         console.log(response)
+                        $('#wishlist_count').text(response.wishlist_count)
                     },
                     error: function(xhr) {
                         console.error(xhr);
@@ -274,10 +197,6 @@ Home
                     }
                 });
             })
-
-
-
-
         })
 </script>
 @endsection

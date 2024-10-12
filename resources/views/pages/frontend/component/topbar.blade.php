@@ -50,9 +50,12 @@
             </form>
         </div>
         <div class="col-lg-3 col-6 text-right">
+            @php
+            $wishlist_item_count = count(Session::get('wishlist',[]));
+            @endphp
             <a href="{{ route('wishlist_page') }}" class="btn border">
                 <i class="fas fa-heart text-primary"></i>
-                <span class="badge">0</span>
+                <span id="wishlist_count" class="badge">{{ $wishlist_item_count ?? '0' }}</span>
             </a>
             <a href="" class="btn border">
                 <i class="fas fa-shopping-cart text-primary"></i>
