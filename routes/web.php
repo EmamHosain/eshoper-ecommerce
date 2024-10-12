@@ -5,6 +5,7 @@ use App\Http\Controllers\User\Auth\UserAuthController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\UserProductController;
 use App\Http\Controllers\User\UserProfileController;
+use App\Http\Controllers\User\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'home'])->name('index');
@@ -27,7 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [UserAuthController::class, 'userDashboard'])->name('user_dashboard');
     Route::get('/user-profile', [UserProfileController::class, 'userProfilePage'])->name('user_profile_page');
     Route::patch('/update-profile/{id}', [UserProfileController::class, 'updateProfile'])->name('user_update_profile');
-    Route::patch('/update-profile-image/{id}',[UserProfileController::class,'updateProfileImage'])->name('update_user_profile_image');
+    Route::patch('/update-profile-image/{id}', [UserProfileController::class, 'updateProfileImage'])->name('update_user_profile_image');
     Route::get('/change-password', [UserProfileController::class, 'changePasswordPage'])->name('change_password_page');
     Route::patch('/change-password', [UserProfileController::class, 'changePasswordSubmit'])->name('change_password_submit');
 
@@ -52,11 +53,18 @@ Route::controller(PasswordResetController::class)->group(function () {
 
 
 Route::controller(UserProductController::class)->group(function () {
-    Route::get('/product-details/{id}/{slug}','productDetails')->name('product_details');
-    Route::get('/products','searchByProduct')->name('search_by_product');
-    Route::get('/filter-products-by','filterProducts')->name('filter_product');
+    Route::get('/product-details/{id}/{slug}', 'productDetails')->name('product_details');
+    Route::get('/products', 'searchByProduct')->name('search_by_product');
+    Route::get('/filter-products-by', 'filterProducts')->name('filter_product');
 });
 
+
+// wishlist route start 
+Route::controller(WishlistController::class)->group(function () {
+    Route::get('/wishlist', 'wishlistPage')->name('wishlist_page');
+    Route::post('/add-to-wishlist', 'productAddToWishlist')->name('product_add_to_wishlist');
+    Route::post('/product-delete-to-wishlist','productDeleteToWishlist')->name('delete_product_to_wihslist');
+});
 
 
 
@@ -77,6 +85,8 @@ Route::get('/product-details', function () {
 Route::get('/add-to-cart', function () {
     return view('pages.frontend.add-to-cart');
 });
+
+
 Route::get('/contact', function () {
     return view('pages.frontend.contact');
 });

@@ -52,13 +52,13 @@ Home
         <div class="col-lg-4 col-md-6 pb-1">
             <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
                 <p class="text-right">{{ $category->products_count }} Products</p>
-                <a href="{{ route('search_by_product',['category'=>$category->slug]) }}"
+                <a href="{{ route('search_by_product', ['category' => $category->slug]) }}"
                     class="cat-img position-relative overflow-hidden mb-3">
                     <img class="img-fluid"
                         src="{{ $category->category_logo ? asset($category->category_logo) : asset('assets/eshoper/img/cat-1.jpg') }}"
                         alt="">
                 </a>
-                <a href="{{ route('search_by_product',['category'=>$category->slug]) }}">
+                <a href="{{ route('search_by_product', ['category' => $category->slug]) }}">
                     <h5 class="font-weight-semi-bold m-0">{{ $category->category_name }}</h5>
                 </a>
             </div>
@@ -112,12 +112,25 @@ Home
         <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
             <div class="card product-item border-0 mb-4">
                 <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                    <img class="img-fluid w-100"
-                        src="{{ $product->productImages->first() ? asset($product->productImages->first()->product_image) : asset('assets/eshoper/img/product-2.jpg') }}"
-                        alt="">
+                    <a href="{{ route('product_details', ['id' => $product->id, 'slug' => $product->slug]) }}">
+                        <img class="img-fluid w-100"
+                            src="{{ $product->productImages->first() ? asset($product->productImages->first()->product_image) : asset('assets/eshoper/img/product-2.jpg') }}"
+                            alt="">
+                    </a>
+
                 </div>
+
+
+
+
+
                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                    <h6 class="text-truncate mb-3">{{ Str::limit($product->product_name, 30) }}</h6>
+                    <a href="{{ route('product_details', ['id' => $product->id, 'slug' => $product->slug]) }}">
+                        <h6 class="text-truncate mb-3 text-capitalize">{{ Str::limit($product->product_name, 30) }}
+                        </h6>
+                    </a>
+
+
                     <div class="d-flex justify-content-center">
                         <h6>${{ $product->is_discount ? $product->discount_price : $product->price }}</h6>
                         @if ($product->is_discount)
@@ -125,10 +138,16 @@ Home
                         @endif
                     </div>
                 </div>
+
+
                 <div class="card-footer d-flex justify-content-between bg-light border">
-                    <a href="{{ route('product_details',['id'=>$product->id,'slug'=>$product->slug]) }}"
-                        class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
-                        Detail</a>
+                    <a href="javascript:void(0)" data-id="{{ $product->id }}"
+                        class="btn btn-sm text-dark p-0 add_to_wishlist">
+                        <i class="fas fa-heart text-primary mr-1"></i>Add To
+                        Wishlist
+                    </a>
+
+
                     <a href="" class="btn btn-sm text-dark p-0"><i
                             class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
                 </div>
@@ -192,7 +211,7 @@ Home
                     </div>
                 </div>
                 <div class="card-footer d-flex justify-content-between bg-light border">
-                    <a href="{{ route('product_details',['id'=>$product->id,'slug'=>$product->slug]) }}"
+                    <a href="{{ route('product_details', ['id' => $product->id, 'slug' => $product->slug]) }}"
                         class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
                         Detail</a>
                     <a href="" class="btn btn-sm text-dark p-0"><i
@@ -228,4 +247,37 @@ Home
 
 
 {{-- footer here --}}
+
+<script>
+    $(document).ready(function() {
+
+
+            $('.add_to_wishlist').on('click', function() {
+                var productId = $(this).data('id');
+                $.ajax({
+                    url: "{{ route('product_add_to_wishlist') }}", 
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        product_id: productId
+                    },
+                    success: function(response) {
+                        console.log(response)
+                    },
+                    error: function(xhr) {
+                        console.error(xhr);
+                        alert(
+                            'An error occurred while fetching the products. Please try again.'
+                        );
+                    }
+                });
+            })
+
+
+
+
+        })
+</script>
 @endsection
