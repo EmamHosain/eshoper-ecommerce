@@ -26,7 +26,7 @@
                 <a href="{{ route('search_by_product', ['category' => $category->slug]) }}"
                     class="nav-item nav-link d-flex justify-content-between">{{ $category->category_name }}
 
-                    <span>({{ $category->products_count }})</span>
+                    <span>{{ $category->products_count }}</span>
                 </a>
             @endforeach
 

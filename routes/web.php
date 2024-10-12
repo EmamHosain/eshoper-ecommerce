@@ -26,7 +26,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/logout', [UserAuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [UserAuthController::class, 'userDashboard'])->name('user_dashboard');
     Route::get('/user-profile', [UserProfileController::class, 'userProfilePage'])->name('user_profile_page');
+    Route::patch('/update-profile/{id}', [UserProfileController::class, 'updateProfile'])->name('user_update_profile');
+    Route::patch('/update-profile-image/{id}',[UserProfileController::class,'updateProfileImage'])->name('update_user_profile_image');
     Route::get('/change-password', [UserProfileController::class, 'changePasswordPage'])->name('change_password_page');
+    Route::patch('/change-password', [UserProfileController::class, 'changePasswordSubmit'])->name('change_password_submit');
+
 
 
 });
