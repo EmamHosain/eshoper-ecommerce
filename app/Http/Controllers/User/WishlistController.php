@@ -39,8 +39,7 @@ class WishlistController extends Controller
         session()->put('wishlist', $wishlist);
 
         return response()->json([
-            'alert-type' => 'success',
-            'message' => 'Product added to wishlist successfully.',
+            'success' => 'Product added to wishlist successfully.',
             'wishlist_count' => count($wishlist)
         ]);
     }
@@ -55,7 +54,7 @@ class WishlistController extends Controller
         // Retrieve the wishlist array from the session
         $wishlist = session()->get('wishlist', []);
 
-      
+
         // Check if the product exists in the wishlist
         if (($key = array_search($productId, $wishlist)) !== false) {
             // Remove the product from the wishlist
@@ -68,15 +67,12 @@ class WishlistController extends Controller
             session()->put('wishlist', $wishlist);
 
             return response()->json([
-                'alert-type' => 'success',
-                'message' => 'Product removed from wishlist successfully.',
-                'wishlist' => $wishlist
+                'success' => 'Product removed from wishlist successfully.',
             ]);
         }
 
         return response()->json([
-            'alert-type' => 'error',
-            'message' => 'Product not found in wishlist.'
+            'error' => 'Product not found in wishlist.'
         ]);
     }
 

@@ -39,8 +39,9 @@
             </a>
 
 
-            <a href="" class="btn btn-sm text-dark p-0"><i
-                    class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+            <a href="javascript:void(0)" class="btn btn-sm text-dark p-0 add_to_cart" data-id="{{ $product->id }}">
+                <i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart
+            </a>
         </div>
     </div>
 </div>

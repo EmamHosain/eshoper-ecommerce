@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\User\Auth\PasswordResetController;
 use App\Http\Controllers\User\Auth\UserAuthController;
+use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\UserProductController;
 use App\Http\Controllers\User\UserProfileController;
@@ -63,10 +64,21 @@ Route::controller(UserProductController::class)->group(function () {
 Route::controller(WishlistController::class)->group(function () {
     Route::get('/wishlist', 'wishlistPage')->name('wishlist_page');
     Route::post('/add-to-wishlist', 'productAddToWishlist')->name('product_add_to_wishlist');
-    Route::post('/product-delete-to-wishlist','productDeleteToWishlist')->name('delete_product_to_wihslist');
+    Route::post('/product-delete-to-wishlist', 'productDeleteToWishlist')->name('delete_product_to_wihslist');
 });
 
 
+
+// product add to cart route start
+Route::controller(CartController::class)->group(function () {
+    Route::get('/cart', 'addToCartPage')->name('add_to_cart_page');
+    Route::post('/add-to-cart', 'productAddToCart')->name('add_to_cart_product');
+
+    // quantity increment
+    Route::post('/update-cart-quantity', 'updateCartQuantity')->name('update_cart_quantity');
+    Route::delete('/delete-cart-item', 'deleteCartItem')->name('delete_cart_item');
+
+});
 
 
 
@@ -80,10 +92,6 @@ Route::controller(WishlistController::class)->group(function () {
 
 Route::get('/product-details', function () {
     return view('pages.frontend.product-details');
-});
-
-Route::get('/add-to-cart', function () {
-    return view('pages.frontend.add-to-cart');
 });
 
 

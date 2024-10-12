@@ -42,15 +42,15 @@ Wishlist
                     <tr>
                         <td class="align-left">
                             {{ $product->id }}
-                            <img src="{{ $product->productImages->first() ? asset($product->productImages->first()->product_image) :  asset('assets/eshoper/img/product-1.jpg') }}"
+                            <img src="{{ $product->productImages->first() ? asset($product->productImages->first()->product_image) : asset('assets/eshoper/img/product-1.jpg') }}"
                                 alt="" style="width: 50px;">
                             <span class=" text-capitalize">{{ $product->product_name }}</span>
                         </td>
 
 
 
-                        <td class="align-middle">${{ $product->is_discount ? $product->discount_price : $product->price
-                            }}</td>
+                        <td class="align-middle">
+                            ${{ $product->is_discount ? $product->discount_price : $product->price }}</td>
 
                         <td class="align-middle">
                             <button class="btn btn-sm btn-primary remove_item_from_wishlist"
@@ -59,7 +59,7 @@ Wishlist
                             </button>
 
 
-                            <button class="btn btn-sm btn-primary">
+                            <button class="btn btn-sm btn-primary add_to_cart" data-id="{{ $product->id }}">
                                 <i class="fas fa-shopping-cart"></i>
                             </button>
 
@@ -88,10 +88,75 @@ Wishlist
     $(document).ready(function() {
 
 
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 2000
+            })
+
+
+            function removeItemToWishlist(product_id, isToastr = false) {
+                $.ajax({
+                    url: "{{ route('delete_product_to_wihslist') }}",
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        product_id: product_id
+                    },
+                    success: function(response) {
+                        localStorage.removeItem('product_id');
+                        // $('#wishlist_count').text(response.wishlist_count);
+                        if (isToastr) {
+                            if ($.isEmptyObject(response.error)) {
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: response.success,
+                                }).then((value) => {
+                                    window.location.reload();
+                                })
+
+                            } else {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: response.error,
+                                })
+                            }
+                        }
+
+
+
+                    },
+                    error: function(xhr) {
+                        console.error(xhr);
+                        alert(
+                            'An error occurred while fetching the products. Please try again.'
+                        );
+                    }
+                });
+            }
+
+
+
+            // product remove to wishlist
             $('.remove_item_from_wishlist').on('click', function() {
                 var productId = $(this).data('id');
+                removeItemToWishlist(productId, true);
+
+            })
+
+
+
+
+            // add to cart
+            $('.add_to_cart').on('click', function() {
+                var productId = $(this).data('id');
+                localStorage.setItem('product_id', productId);
+                // console.log('product is', productId);
                 $.ajax({
-                    url: "{{ route('delete_product_to_wihslist') }}", 
+                    url: "{{ route('add_to_cart_product') }}",
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -100,8 +165,39 @@ Wishlist
                         product_id: productId
                     },
                     success: function(response) {
-                        window.location.reload();
-                        console.log(response)
+                        // console.log(response)
+                        var product_id = localStorage.getItem('product_id');
+                        removeItemToWishlist(product_id, false)
+                        console.log('product is ', product_id)
+
+
+
+
+                        // $('#cart_count').text(response.cart_count)
+                        if ($.isEmptyObject(response.error)) {
+                            Toast.fire({
+                                icon: 'success',
+                                title: response.success,
+                            }).then(() => {
+                                window.location.reload();
+                            })
+
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: response.error,
+                            })
+                        }
+
+
+
+
+
+
+
+
+
+
                     },
                     error: function(xhr) {
                         console.error(xhr);
@@ -111,6 +207,12 @@ Wishlist
                     }
                 });
             })
+
+
+
+
+
+
 
 
 

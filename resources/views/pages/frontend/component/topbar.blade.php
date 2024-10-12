@@ -52,14 +52,16 @@
         <div class="col-lg-3 col-6 text-right">
             @php
             $wishlist_item_count = count(Session::get('wishlist',[]));
+            $cart_item_count = count(Session::get('cart',[]));
+
             @endphp
             <a href="{{ route('wishlist_page') }}" class="btn border">
                 <i class="fas fa-heart text-primary"></i>
                 <span id="wishlist_count" class="badge">{{ $wishlist_item_count ?? '0' }}</span>
             </a>
-            <a href="" class="btn border">
+            <a href="{{ route('add_to_cart_page') }}" class="btn border">
                 <i class="fas fa-shopping-cart text-primary"></i>
-                <span class="badge">0</span>
+                <span id="cart_count" class="badge">{{ $cart_item_count ?? '0' }}</span>
             </a>
         </div>
     </div>

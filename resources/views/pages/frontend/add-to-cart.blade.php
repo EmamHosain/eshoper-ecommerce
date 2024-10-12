@@ -32,135 +32,78 @@ Add To Cart
                     <tr>
                         <th>Products</th>
                         <th>Price</th>
+                        <th>Color</th>
+                        <th>Size</th>
+
                         <th>Quantity</th>
                         <th>Total</th>
                         <th>Remove</th>
                     </tr>
                 </thead>
                 <tbody class="align-middle">
+
+                    @php
+                    $carts = session()->get('cart', []);
+
+                    @endphp
+                    @if (count($carts) > 0)
+                    @foreach ($carts as $item)
+                    @php
+                    $total_price = $item['price'] * $item['quantity'];
+                    @endphp
                     <tr>
-                        <td class="align-middle"><img src="img/product-1.jpg" alt="" style="width: 50px;"> Colorful
-                            Stylish Shirt</td>
-                        <td class="align-middle">$150</td>
+                        <td class="align-middle">
+                            <img src="{{ !empty($item['image']) ? asset($item['image']) : asset('assets/empty-image-300x240.jpg') }}"
+                                alt="" style="width: 50px;">
+                            <span class=" text-capitalize">{{ $item['name'] }}</span>
+                        </td>
+                        <td class="align-middle">${{ $item['price'] }}</td>
+                        <td class="align-middle">{{ $item['color'] }}</td>
+                        <td class="align-middle">{{ $item['size'] }}</td>
                         <td class="align-middle">
                             <div class="input-group quantity mx-auto" style="width: 100px;">
+                                {{-- minus button --}}
                                 <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-primary btn-minus">
+                                    <button data-id="{{ $item['id'] }}"
+                                        class="btn btn-sm btn-primary btn-minus update_cart_quantity">
                                         <i class="fa fa-minus"></i>
                                     </button>
                                 </div>
-                                <input type="text" class="form-control form-control-sm bg-secondary text-center"
-                                    value="1">
+                                <input type="text" id="cart_quantity-{{ $item['id'] }}" readonly
+                                    class="form-control form-control-sm bg-secondary text-center"
+                                    value="{{ $item['quantity'] }}">
+
+                                {{-- plus button --}}
                                 <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-primary btn-plus">
+                                    <button data-id="{{ $item['id'] }}"
+                                        class="btn btn-sm btn-primary btn-plus update_cart_quantity">
                                         <i class="fa fa-plus"></i>
                                     </button>
                                 </div>
                             </div>
                         </td>
-                        <td class="align-middle">$150</td>
-                        <td class="align-middle"><button class="btn btn-sm btn-primary"><i
-                                    class="fa fa-times"></i></button></td>
-                    </tr>
-                    <tr>
-                        <td class="align-middle"><img src="img/product-2.jpg" alt="" style="width: 50px;"> Colorful
-                            Stylish Shirt</td>
-                        <td class="align-middle">$150</td>
+                        <td class="align-middle">${{ $total_price }}</td>
                         <td class="align-middle">
-                            <div class="input-group quantity mx-auto" style="width: 100px;">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-primary btn-minus">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                </div>
-                                <input type="text" class="form-control form-control-sm bg-secondary text-center"
-                                    value="1">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-primary btn-plus">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
+                            <button class="btn btn-sm btn-primary remove_cart_item" data-id="{{ $item['id'] }}"><i
+                                    class="fa fa-times"></i></button>
                         </td>
-                        <td class="align-middle">$150</td>
-                        <td class="align-middle"><button class="btn btn-sm btn-primary"><i
-                                    class="fa fa-times"></i></button></td>
                     </tr>
+                    @endforeach
+                    @else
                     <tr>
-                        <td class="align-middle"><img src="img/product-3.jpg" alt="" style="width: 50px;"> Colorful
-                            Stylish Shirt</td>
-                        <td class="align-middle">$150</td>
-                        <td class="align-middle">
-                            <div class="input-group quantity mx-auto" style="width: 100px;">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-primary btn-minus">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                </div>
-                                <input type="text" class="form-control form-control-sm bg-secondary text-center"
-                                    value="1">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-primary btn-plus">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
+                        <td class="" colspan="7">
+                            <h5>No Product Available</h5>
+                            <a href="{{ route('index') }}">Back To Shopping</a>
                         </td>
-                        <td class="align-middle">$150</td>
-                        <td class="align-middle"><button class="btn btn-sm btn-primary"><i
-                                    class="fa fa-times"></i></button></td>
                     </tr>
-                    <tr>
-                        <td class="align-middle"><img src="img/product-4.jpg" alt="" style="width: 50px;"> Colorful
-                            Stylish Shirt</td>
-                        <td class="align-middle">$150</td>
-                        <td class="align-middle">
-                            <div class="input-group quantity mx-auto" style="width: 100px;">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-primary btn-minus">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                </div>
-                                <input type="text" class="form-control form-control-sm bg-secondary text-center"
-                                    value="1">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-primary btn-plus">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="align-middle">$150</td>
-                        <td class="align-middle"><button class="btn btn-sm btn-primary"><i
-                                    class="fa fa-times"></i></button></td>
-                    </tr>
-                    <tr>
-                        <td class="align-middle"><img src="img/product-5.jpg" alt="" style="width: 50px;"> Colorful
-                            Stylish Shirt</td>
-                        <td class="align-middle">$150</td>
-                        <td class="align-middle">
-                            <div class="input-group quantity mx-auto" style="width: 100px;">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-primary btn-minus">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                </div>
-                                <input type="text" class="form-control form-control-sm bg-secondary text-center"
-                                    value="1">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-primary btn-plus">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="align-middle">$150</td>
-                        <td class="align-middle"><button class="btn btn-sm btn-primary"><i
-                                    class="fa fa-times"></i></button></td>
-                    </tr>
+
+
+                    @endif
                 </tbody>
             </table>
         </div>
+
+
         <div class="col-lg-4">
             <form class="mb-5" action="">
                 <div class="input-group">
@@ -193,8 +136,150 @@ Add To Cart
                 </div>
             </div>
         </div>
+
+
     </div>
 </div>
 <!-- Cart End -->
 
+<script>
+    $(document).ready(function() {
+
+            // toastr message
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 2000
+            })
+
+            // update quantity
+            $('.update_cart_quantity').on('click', function(event) {
+                event.preventDefault();
+                var productId = $(this).data('id');
+                var quantity = $('#cart_quantity' + '-' + productId).val();
+                if (quantity <= 0) {
+                    window.location.reload();
+                    return;
+                }
+
+
+                $.ajax({
+                    url: "{{ route('update_cart_quantity') }}",
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        product_id: productId,
+                        quantity: quantity
+                    },
+                    success: function(response) {
+                        console.log(response)
+
+                        // Start Message 
+                        if ($.isEmptyObject(response.error)) {
+                            Toast.fire({
+                                icon: 'success',
+                                title: response.success,
+                            }).then(() => {
+                                window.location.reload();
+                            })
+
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: response.error,
+                            })
+                        }
+                        // End Message
+                    },
+                    error: function(xhr) {
+                        console.error(xhr);
+                        alert(
+                            'An error occurred while fetching the products. Please try again.'
+                        );
+                    }
+                });
+            })
+
+
+
+
+            // remove cart
+            $('.remove_cart_item').on('click', function(event) {
+                event.preventDefault();
+                var productId = $(this).data('id');
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Delete This Data?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        $.ajax({
+                            url: "{{ route('delete_cart_item') }}",
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: {
+                                product_id: productId,
+                            },
+                            success: function(response) {
+                                console.log(response)
+
+                                // Start Message 
+                                Swal.fire(
+                                    'Deleted!',
+                                    'Data has been deleted successfully.',
+                                    'success'
+                                ).then(() => {
+                                    window.location.reload();
+                                })
+                                
+                            },
+                            error: function(xhr) {
+                                console.error(xhr);
+                                alert(
+                                    'An error occurred while fetching the products. Please try again.'
+                                );
+                            }
+                        });
+
+                    }
+                })
+
+
+
+
+
+
+            })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        })
+</script>
 @endsection

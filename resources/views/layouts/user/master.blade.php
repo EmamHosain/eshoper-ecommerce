@@ -26,11 +26,23 @@
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
 
 
+
     {{-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> --}}
     <script type="text/javascript" src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"> </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     {{-- <script type="text/javascript" src="{{ asset('assets/js/bootstrap.bundle.js') }}"> </script> bootstrap version
     problem --}}
+
+
+    {{-- sweet alert --}}
+    <link rel="stylesheet" href="{{ asset('assets/sweet-alert/sweetalert2.min.css') }}">
+    <script type="text/javascript" src="{{ asset('assets/sweet-alert/sweetalert2.all.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/sweet-alert/custom.sweetalert.js') }}"></script>
+
+
+    {{-- another confirm dialouge for response --}}
+    <script type="text/javascript" src="{{ asset('assets/sweetalert2@10/sweetalert2@10.js') }}"></script>
+
 </head>
 <body>
 

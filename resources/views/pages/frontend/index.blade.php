@@ -107,8 +107,8 @@ Home
         <h2 class="section-title px-5"><span class="px-2">Trandy Products</span></h2>
     </div>
     <div class="row px-xl-5 pb-3">
-        @include('pages.frontend.single-product',[
-            'products'=> $trandy_products
+        @include('pages.frontend.single-product', [
+        'products' => $trandy_products,
         ])
     </div>
 </div>
@@ -144,8 +144,8 @@ Home
         <h2 class="section-title px-5"><span class="px-2">Just Arrived</span></h2>
     </div>
     <div class="row px-xl-5 pb-3">
-        @include('pages.frontend.single-product',[
-            'products'=> $new_arrived_products
+        @include('pages.frontend.single-product', [
+        'products' => $new_arrived_products,
         ])
     </div>
 </div>
@@ -174,10 +174,22 @@ Home
 
 <script>
     $(document).ready(function() {
+
+            // toastr message
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            })
+
+
+
+            // add to wishlist
             $('.add_to_wishlist').on('click', function() {
                 var productId = $(this).data('id');
                 $.ajax({
-                    url: "{{ route('product_add_to_wishlist') }}", 
+                    url: "{{ route('product_add_to_wishlist') }}",
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -186,8 +198,21 @@ Home
                         product_id: productId
                     },
                     success: function(response) {
-                        console.log(response)
                         $('#wishlist_count').text(response.wishlist_count)
+                        // Start Message 
+                        if ($.isEmptyObject(response.error)) {
+                            Toast.fire({
+                                icon: 'success',
+                                title: response.success,
+                            })
+
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: response.error,
+                            })
+                        }
+                        // End Message
                     },
                     error: function(xhr) {
                         console.error(xhr);
@@ -197,6 +222,48 @@ Home
                     }
                 });
             })
+
+
+
+            // add to cart
+            $('.add_to_cart').on('click', function() {
+                var productId = $(this).data('id');
+                $.ajax({
+                    url: "{{ route('add_to_cart_product') }}",
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        product_id: productId
+                    },
+                    success: function(response) {
+                        console.log(response)
+                        $('#cart_count').text(response.cart_count)
+                        if ($.isEmptyObject(response.error)) {
+                            Toast.fire({
+                                icon: 'success',
+                                title: response.success,
+                            })
+
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: response.error,
+                            })
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error(xhr);
+                        alert(
+                            'An error occurred while fetching the products. Please try again.'
+                        );
+                    }
+                });
+            })
+
+
+
         })
 </script>
 @endsection
