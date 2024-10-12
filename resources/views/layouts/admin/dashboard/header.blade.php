@@ -141,7 +141,7 @@
 
                     <!--begin::Menu Footer-->
                     <li class="user-footer">
-                        <a href="#" class="btn btn-success">Profile</a>
+                        <a href="{{ route('admin.profile_page') }}" class="btn btn-success">Profile</a>
                         <a href="{{ route('admin.logout') }}" class="btn btn-danger float-end">Sign out</a>
                     </li>
                     <!--end::Menu Footer-->

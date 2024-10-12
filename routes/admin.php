@@ -4,9 +4,10 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\CategorySliderController;
+use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\Auth\AdminAuthController;
+use App\Http\Controllers\Admin\CategorySliderController;
 
 
 // admin auth route start here
@@ -34,6 +35,19 @@ Route::middleware('adminAuth')->group(function () {
 
 
 Route::middleware('adminAuth')->group(function () {
+
+    // admin profile route start here
+    Route::controller(AdminProfileController::class)->group(function () {
+        Route::get('/profile', 'getProfilePage')->name('profile_page');
+        Route::patch('/profile-update', 'profileUpdateSubmit')->name('profile_update_submit');
+        Route::get('/change-password', 'changePasswordPage')->name('change_password_page');
+        Route::patch('/change-password', 'changePasswordSubmit')->name('change_password_submit');
+
+       
+    });
+
+
+
 
 
     // brand route start 
