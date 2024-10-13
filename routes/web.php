@@ -3,6 +3,7 @@
 use App\Http\Controllers\User\Auth\PasswordResetController;
 use App\Http\Controllers\User\Auth\UserAuthController;
 use App\Http\Controllers\User\CartController;
+use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\UserProductController;
 use App\Http\Controllers\User\UserProfileController;
@@ -73,13 +74,17 @@ Route::controller(WishlistController::class)->group(function () {
 Route::controller(CartController::class)->group(function () {
     Route::get('/cart', 'addToCartPage')->name('add_to_cart_page');
     Route::post('/add-to-cart', 'productAddToCart')->name('add_to_cart_product');
-
     // quantity increment
     Route::post('/update-cart-quantity', 'updateCartQuantity')->name('update_cart_quantity');
     Route::delete('/delete-cart-item', 'deleteCartItem')->name('delete_cart_item');
-
 });
 
+
+// checkout route start here
+Route::controller(CheckoutController::class)->group(function () {
+    Route::get('/checkout', 'checkoutPage')->name('checkout_page');
+    Route::post('/checkout-submit', 'checkoutSubmit')->name('checkout_submit');
+});
 
 
 
@@ -94,15 +99,13 @@ Route::get('/product-details', function () {
     return view('pages.frontend.product-details');
 });
 
-
 Route::get('/contact', function () {
     return view('pages.frontend.contact');
 });
-
-Route::get('/checkout', function () {
-    return view('pages.frontend.checkout');
-});
-
 Route::get('/user-dashboard', function () {
     return view('layouts.user.backend.dashboard.user-dashboard');
 });
+
+Route::get('/thanks',function(){
+    return view('pages.frontend.thanks');
+})->name('thanks_page');

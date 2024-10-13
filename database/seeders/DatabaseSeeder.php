@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             'last_name' => 'User',
             'email' => 'user@gmail.com',
             'password' => 'password',
-            'photo'=> $faker->imageUrl(200,200,'users',true),
+            'photo' => $faker->imageUrl(200, 200, 'users', true),
         ]);
 
 
@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
             ProductSizeSeeder::class,
             ProductSeeder::class,
             ProductImageSeeder::class,
-            CategorySliderSeeder::class
+            CategorySliderSeeder::class,
         ]);
     }
 }

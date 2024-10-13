@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ColorController;
@@ -43,7 +44,7 @@ Route::middleware('adminAuth')->group(function () {
         Route::get('/change-password', 'changePasswordPage')->name('change_password_page');
         Route::patch('/change-password', 'changePasswordSubmit')->name('change_password_submit');
 
-       
+
     });
 
 
@@ -121,6 +122,22 @@ Route::middleware('adminAuth')->group(function () {
         // product image delete
         Route::post('/delete-image', 'deleteImage')->name('delete_image');
     });
+
+
+
+    // coupon rouet start here
+    Route::controller(CouponController::class)->group(function () {
+        Route::get('/all-coupon', 'index')->name('all_coupon'); 
+        Route::get('/add-coupon', 'add')->name('add_coupon'); 
+        Route::post('/store-coupon', 'store')->name('store_coupon'); 
+        Route::get('/edit-coupon/{coupon}', 'edit')->name('edit_coupon');
+        Route::patch('/update-coupon/{coupon}', 'update')->name('update_coupon'); 
+        Route::get('/delete-coupon/{id}', 'delete')->name('delete_coupon'); 
+    });
+
+
+
+
 
 
 

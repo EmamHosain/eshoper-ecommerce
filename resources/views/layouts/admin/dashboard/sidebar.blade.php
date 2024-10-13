@@ -161,6 +161,7 @@
                 </li>
 
 
+                {{-- product --}}
                 <li class="nav-item">
                     <a href="javascript:void(0)" class="nav-link"> <i class="nav-icon bi bi-box-seam-fill"></i>
                         <p>
@@ -188,23 +189,24 @@
 
 
 
+                {{-- coupon --}}
                 <li class="nav-item">
                     <a href="javascript:void(0)" class="nav-link"> <i class="nav-icon bi bi-box-seam-fill"></i>
                         <p>
-                            Project
+                            Coupon
                             <i class="nav-arrow bi bi-chevron-right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
-                                <p>All Project</p>
+                            <a href="{{ route('admin.all_coupon') }}" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
+                                <p>All Coupon</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="#" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
-                                <p>Add Project</p>
+                            <a href="{{ route('admin.add_coupon') }}" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
+                                <p>Add Coupon</p>
                             </a>
                         </li>
 

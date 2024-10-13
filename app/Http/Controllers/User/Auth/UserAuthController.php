@@ -21,6 +21,11 @@ class UserAuthController extends Controller
         $loginRequest->authenticate();
         $loginRequest->session()->regenerate();
         FlashMessage::flash('success', 'Login successful.');
+
+
+        if (session()->has('url.intended')) {
+            return redirect()->to(session()->get('url.intended'));
+        }
         return redirect()->route('user_dashboard');
     }
 

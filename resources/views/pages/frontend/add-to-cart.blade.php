@@ -48,6 +48,7 @@ Add To Cart
                     @endphp
                     @if (count($carts) > 0)
                     @foreach ($carts as $item)
+
                     @php
                     $total_price = $item['price'] * $item['quantity'];
                     @endphp
@@ -132,7 +133,8 @@ Add To Cart
                         <h5 class="font-weight-bold">Total</h5>
                         <h5 class="font-weight-bold">$160</h5>
                     </div>
-                    <button class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
+                    <a href="{{ route('checkout_page') }}" class="btn btn-block btn-primary my-3 py-3">Proceed To
+                        Checkout</a>
                 </div>
             </div>
         </div>
@@ -152,6 +154,22 @@ Add To Cart
                 showConfirmButton: false,
                 timer: 2000
             })
+
+
+           
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             // update quantity
             $('.update_cart_quantity').on('click', function(event) {
