@@ -11,7 +11,7 @@ All Coupon
         <!--begin::Container-->
         <div class="container-fluid">
             <!--begin::Row-->
-            <div class="container d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-between align-items-center">
                 <div class="col-sm-6">
                     <h3 class="mb-0">All Coupon</h3>
                 </div>
@@ -28,7 +28,7 @@ All Coupon
     <!--begin::App Content-->
     <div class="app-content">
         <!--begin::Container-->
-        <div class="container">
+        <div class="container-fluid">
             <!--begin::Row-->
             <div class="row g-4">
                 <!--begin::Col-->
@@ -37,10 +37,18 @@ All Coupon
                         <thead>
                             <tr>
                                 <th>Si</th>
-                                <th>Coupon Name</th>
-                                <th>Coupon Description</th>
-                                <th>Validity Date</th>
-                                <th>Discount</th>
+                                <th>Code</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Max Uses</th>
+                                <th>Max Uses User</th>
+                                <th>Dis Type</th>
+                                <th>Dis Amount</th>
+                                <th>Subtotal Min Amount</th>
+
+                                <th>Start At</th>
+                                <th>End At</th>
+
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -61,22 +69,70 @@ All Coupon
 
 <script type="text/javascript">
     $(document).ready(function() {
-        var table = $('#datatable').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: "{{ route('admin.all_coupon') }}",
-            columns: [
-                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-                { data: 'coupon_name', name: 'coupon_name' },
-                { data: 'coupon_desc', name: 'coupon_desc' },
-                { data: 'validity_date_time', name: 'validity_date_time' },
-                { data: 'discount', name: 'discount' },
-                { data: 'status', name: 'status' },  
-                { data: 'action', name: 'action', orderable: false, searchable: false }
-            ]
+            var table = $('#datatable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('admin.all_coupon') }}",
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'code',
+                        name: 'code'
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'description',
+                        name: 'description'
+                    },
+
+                    {
+                        data: 'max_uses',
+                        name: 'max_uses'
+                    },
+                    {
+                        data: 'max_uses_user',
+                        name: 'max_uses_user'
+                    },
+
+                    {
+                        data: 'type',
+                        name: 'type'
+                    },
+                    {
+                        data: 'discount_amount',
+                        name: 'discount_amount'
+                    },
+                    {
+                        data: 'min_amount',
+                        name: 'min_amount'
+                    },
+                    {
+                        data: 'starts_at',
+                        name: 'starts_at'
+                    },
+                    {
+                        data: 'expires_at',
+                        name: 'expires_at'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    }
+                ]
+            });
         });
-    });
 </script>
-
-
 @endsection

@@ -52,6 +52,11 @@
     <script type="text/javascript" src="{{ asset('assets/sweetalert2@10/sweetalert2@10.js') }}"></script>
 
 
+    {{-- datetime picker --}}
+    <link rel="stylesheet" href="{{ asset('assets/datetimepicker/datetimepicker.css') }}">
+    <script src="{{ asset('assets/datetimepicker/datetimepicker.js') }}"></script>
+
+
     {{-- custom js --}}
     <script type="text/javascript" src="{{ asset('assets/js/script.js') }}"></script>
 

@@ -4,6 +4,7 @@ use App\Http\Controllers\User\Auth\PasswordResetController;
 use App\Http\Controllers\User\Auth\UserAuthController;
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\CheckoutController;
+use App\Http\Controllers\User\CouponController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\UserProductController;
 use App\Http\Controllers\User\UserProfileController;
@@ -82,8 +83,13 @@ Route::controller(CartController::class)->group(function () {
 Route::controller(CheckoutController::class)->group(function () {
     Route::get('/checkout', 'checkoutPage')->name('checkout_page');
     Route::post('/checkout-submit', 'checkoutSubmit')->name('checkout_submit');
-
     Route::post('/addtion-with-shipping-charge-total','additionWishShippingChargeToTototal')->name('addition_shipping_charge_to_total');
+});
+
+// coupon route start here
+Route::controller(CouponController::class)->group(function(){
+
+
 });
 
 
