@@ -34,8 +34,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/change-password', [UserProfileController::class, 'changePasswordPage'])->name('change_password_page');
     Route::patch('/change-password', [UserProfileController::class, 'changePasswordSubmit'])->name('change_password_submit');
 
-
-
 });
 // user auth route end
 
@@ -84,6 +82,8 @@ Route::controller(CartController::class)->group(function () {
 Route::controller(CheckoutController::class)->group(function () {
     Route::get('/checkout', 'checkoutPage')->name('checkout_page');
     Route::post('/checkout-submit', 'checkoutSubmit')->name('checkout_submit');
+
+    Route::post('/addtion-with-shipping-charge-total','additionWishShippingChargeToTototal')->name('addition_shipping_charge_to_total');
 });
 
 

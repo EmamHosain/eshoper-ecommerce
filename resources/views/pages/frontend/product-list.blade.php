@@ -31,7 +31,8 @@
                     </a>
 
 
-                    <a href="" class="btn btn-sm text-dark p-0"><i
+                    <a href="javascript:void(0)" data-id="{{ $product->id }}"
+                        class="btn btn-sm text-dark p-0 add_to_cart"><i
                             class="fas fa-shopping-cart text-primary mr-1"></i>Add To
                         Cart</a>
                 </div>
@@ -41,6 +42,16 @@
 
     <script>
         $(document).ready(function() {
+
+            // toastr message
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            })
+
+
             $('.add_to_wishlist').on('click', function() {
                 var productId = $(this).data('id');
                 $.ajax({
@@ -55,6 +66,18 @@
                     success: function(response) {
                         console.log(response)
                         $('#wishlist_count').text(response.wishlist_count)
+                        if ($.isEmptyObject(response.error)) {
+                            Toast.fire({
+                                icon: 'success',
+                                title: response.success,
+                            })
+
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: response.error,
+                            })
+                        }
 
                     },
                     error: function(xhr) {
@@ -65,6 +88,55 @@
                     }
                 });
             })
+
+
+
+
+
+
+
+
+
+            // add to cart
+            $('.add_to_cart').on('click', function() {
+                var productId = $(this).data('id');
+                $.ajax({
+                    url: "{{ route('add_to_cart_product') }}",
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        product_id: productId
+                    },
+                    success: function(response) {
+                        console.log(response)
+                        $('#cart_count').text(response.cart_count)
+                        if ($.isEmptyObject(response.error)) {
+                            Toast.fire({
+                                icon: 'success',
+                                title: response.success,
+                            })
+
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: response.error,
+                            })
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error(xhr);
+                        alert(
+                            'An error occurred while fetching the products. Please try again.'
+                        );
+                    }
+                });
+            })
+
+
+
+
 
         })
     </script>

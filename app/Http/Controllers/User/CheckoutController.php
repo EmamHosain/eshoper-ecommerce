@@ -47,6 +47,21 @@ class CheckoutController extends Controller
 
 
 
+    public function additionWishShippingChargeToTototal(Request $request)
+    {
+        $shipping_charge = $request->input('shipping_charge');
+        $cart = session()->get('cart', []);
+        $shipping_charge_with_total = (int) $shipping_charge;
+        if (isset($cart) && count($cart) > 0) {
+            foreach ($cart as $item) {
+                $shipping_charge_with_total += $item['price'] * $item['quantity'];
+            }
+        }
+        return response()->json([
+            'total_amount' => round($shipping_charge_with_total)
+        ]);
+    }
+
 
 
     public function checkoutSubmit(Request $request)
