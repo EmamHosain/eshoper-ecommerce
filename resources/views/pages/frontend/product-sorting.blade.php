@@ -27,7 +27,8 @@ Products
 
         @if (Request::query('category'))
         @php
-        $category_name = App\Models\Category::where('slug',Request::query('category'))->first()->category_name;
+        $category_name = App\Models\Category::where('slug', Request::query('category'))->first()
+        ->category_name;
         @endphp
         <h1 class="font-weight-semi-bold text-uppercase mb-3">Search By Category : {{ $category_name }}</h1>
         @else
@@ -204,9 +205,12 @@ Products
                                     Sort by
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
-                                    <a class="dropdown-item" href="#">Latest</a>
-                                    <a class="dropdown-item" href="#">Popularity</a>
-                                    <a class="dropdown-item" href="#">Best Rating</a>
+                                    <a class="dropdown-item popularity " data-type="popularity" data-id=""
+                                        href="javascript:void(0)">Latest</a>
+                                    <a class="dropdown-item popularity" data-type="popularity" data-id="trandy"
+                                        href="javascript:void(0)">Trandy</a>
+                                    <a class="dropdown-item popularity" data-type="popularity" data-id="arrived"
+                                        href="javascript:void(0)">Just Arrived</a>
                                 </div>
                             </div>
                         </div>
@@ -240,8 +244,8 @@ Products
                 var id = $(this).val();
                 var type = $(this).data('type');
 
-                if(category !== null){
-                    if(!filter[type]){
+                if (category !== null) {
+                    if (!filter[type]) {
                         filter['category'] = [];
                     }
                     filter['category'].push(category)
@@ -285,11 +289,8 @@ Products
 
 
             // start here
+            // search by category 
             function fetchFilteredProducts(page) {
-                // search by category 
-
-
-
                 $.ajax({
                     url: "{{ route('filter_product') }}?page=" + page,
                     method: 'GET',
@@ -329,9 +330,6 @@ Products
 
 
             // search filter
-
-
-
             $(document).ready(function() {
                 let debounceTimer;
 
@@ -382,37 +380,69 @@ Products
                 });
             });
 
+            // search by popularity
+            $('.popularity').on('click', function() {
+
+                var id = $(this).val();
+                var type = $(this).data('type');
+                var value = $(this).data('id')
+
+                if(filter['popularity']){
+                    delete filter['popularity'];
+                }
+                if (!filter['popularity']) {
+                    filter['popularity'] = [];
+                    filter['popularity'].push(value)
+                }
+
+                if (category !== null) {
+                    if (!filter['category']) {
+                        filter['category'] = [];
+                    }
+                    filter['category'].push(category)
+                }
+
+                if (!filter[type]) {
+                    filter[type] = []
+                }
+
+                if ($(this).is(':checked')) {
+                    filter[type].push(id)
+                } else {
+                    // Remove the color ID if unchecked
+                    var index = filter[type].indexOf(id);
+                    if (index !== -1) {
+                        filter[type].splice(index, 1);
+                    }
+                }
+
+                var value = $(this).data('popularity');
+                var page = 1;
+                $.ajax({
+                    url: "{{ route('filter_product') }}?page=" + page,
+                    method: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: filter,
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    success: function(response) {
+                        $('#product-list').html(response.view);
+                        $('html, body').animate({
+                            scrollTop: $(
+                                    '#product-container')
+                                .offset().top
+                        }, 1000); // Adjust duration as needed
+                    },
+                    error: function(xhr) {
+                        console.error(xhr); // Log errors
+                        alert(
+                            'An error occurred while fetching the products. Please try again.'
+                        );
+                    }
+                });
+            })
         });
 </script>
 @endsection

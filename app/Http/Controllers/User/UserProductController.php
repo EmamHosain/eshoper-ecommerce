@@ -255,6 +255,9 @@ class UserProductController extends Controller
         $prices = $request->input('prices', []);
         $search = $request->input('search');
 
+
+        $popularity = $request->input('popularity');
+
         // Initialize an array to hold multiple price ranges
         $prices_array = [];
         if (!empty($prices)) {
@@ -265,7 +268,7 @@ class UserProductController extends Controller
         }
 
         // Initialize the products query
-        $products = Product::with(['sizes', 'colors', 'category', 'brand']);
+        $products = Product::with(['sizes', 'colors', 'category', 'brand'])->latest();
 
         // Check if it's an AJAX request and there are filter parameters
         if ($request->ajax()) {
@@ -299,6 +302,9 @@ class UserProductController extends Controller
                         });
                     })
 
+                    ->when(!empty($popularity), function ($query) use ($popularity) {
+                        $query->where('popularity', $popularity);
+                    })
 
 
 
@@ -334,6 +340,9 @@ class UserProductController extends Controller
                         $query->whereHas('category', function ($query) use ($category_slug) {
                             $query->where('categories.slug', $category_slug); // table name set here 
                         });
+                    })
+                    ->when(!empty($popularity), function ($query) use ($popularity) {
+                        $query->where('popularity', $popularity);
                     })
 
 
