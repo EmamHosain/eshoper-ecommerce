@@ -9,6 +9,7 @@ use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\UserProductController;
 use App\Http\Controllers\User\UserProfileController;
 use App\Http\Controllers\User\WishlistController;
+use App\Http\Middleware\CheckoutMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'home'])->name('index');
@@ -80,15 +81,12 @@ Route::controller(CartController::class)->group(function () {
 
 
 // checkout route start here
-Route::controller(CheckoutController::class)->group(function () {
+Route::controller(CheckoutController::class)->middleware('checkout')->group(function () {
     Route::get('/checkout', 'checkoutPage')->name('checkout_page');
     Route::post('/checkout-submit', 'checkoutSubmit')->name('checkout_submit');
-
-    Route::get('/thanks/order_id','thenkasPage')->name('thanks_page');
-
-    Route::post('/addtion-with-shipping-charge-total','additionWishShippingChargeToTototal')->name('addition_shipping_charge_to_total');
-
-
+    Route::post('/addtion-with-shipping-charge-total', 'additionWishShippingChargeToTototal')->name('addition_shipping_charge_to_total');
     // apply coupon route
-    Route::post('/apply-coupon','applyCoupon')->name('apply_coupon');
+    Route::post('/apply-coupon', 'applyCoupon')->name('apply_coupon');
 });
+
+Route::get('/thanks/{order_code}', [CheckoutController::class, 'thenkasPage'])->name('thanks_page');

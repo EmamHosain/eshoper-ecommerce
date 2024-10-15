@@ -26,7 +26,7 @@ return new class extends Migration {
             ])->default('pending');
 
             $table->text('notes')->nullable();
-            $table->string('order_id');
+            $table->string('order_code');
 
             // Shipping Address fields (nullable if "Ship to different address" is not selected)
             $table->string('first_name')->nullable();

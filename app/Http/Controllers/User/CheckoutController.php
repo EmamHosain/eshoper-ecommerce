@@ -20,22 +20,6 @@ use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 class CheckoutController extends Controller
 {
-    public function __construct(Request $request)
-    {
-
-        $cart = session()->get('cart', []);
-        if (isset($cart) && count($cart) > 0) {
-            if (!Auth::check()) {
-                session()->put('url.intended', $request->url()); // Store the intended URL
-                redirect()->route('login')->send(); // Redirect to login
-            }
-        } else {
-            redirect()->back()->with('warning', 'Please Add To Cart First!')->send();
-        }
-
-    }
-
-
 
     public function checkoutPage()
     {
@@ -130,7 +114,7 @@ class CheckoutController extends Controller
 
     public function checkoutSubmit(Request $request)
     {
-        // Validate the incoming request
+        
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -141,102 +125,108 @@ class CheckoutController extends Controller
             'state' => 'required|string|max:100',
             'zip' => 'required|string|max:20',
             'shipping_area' => 'required|exists:shipping_manages,id',
-            'peyment_method_type' => 'required|in:cash_on_delivery,nagad,bkash',
+            'payment_method' => 'required|in:cash_on_delivery,nagad,bkash',
         ]);
 
-        // Check if validation fails
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()]);
+        try {
+            // Check if validation fails
+            if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors()], 422);
+            }
+
+            $payment_method_type = $request->input('payment_method');
+            if (empty($payment_method_type)) {
+                return response()->json(['error_message' => 'Please select payment method'], 400);
+            }
+
+            $user = Auth::user();
+            $order = new Order();
+
+            $cart = session()->get('cart', []);
+            if (empty($cart)) {
+                return response()->json(['error_message' => 'Your cart is empty!'], 400);
+            }
+
+            $grand_total = 0;
+            $sub_total = 0;
+
+            foreach ($cart as $item) {
+                $sub_total += $item['price'] * $item['quantity'];
+            }
+
+            $shipping = ShippingManage::find($request->input('shipping_area'));
+            $grand_total = (float) $sub_total + (float) $shipping->amount; // Add sub_total to grand_total
+
+            $order->grand_total = $grand_total;
+            $order->sub_total = $sub_total;
+            $order->coupon_code = $request->input('coupon_code');
+            $order->notes = $request->input('notes');
+            $order->user_id = $user->id;
+            $order->shipping_manage_id = $shipping->id;
+
+            // Shipping Address
+            $order->first_name = $request->input('first_name');
+            $order->last_name = $request->input('last_name');
+            $order->email = $request->input('email');
+            $order->mobile = $request->input('mobile');
+            $order->address = $request->input('address');
+            $order->city = $request->input('city');
+            $order->state = $request->input('state');
+            $order->zip = $request->input('zip');
+            $order->peyment_method_type = $request->input('payment_method');
+
+            $order_code = IdGenerator::generate(['table' => 'orders', 'field' => 'order_code', 'length' => 10, 'prefix' => 'INV-']);
+            $order->order_code = $order_code;
+
+            // Save the order to the database
+            $order->save();
+
+            // Save/update customer address
+            CustomerAddress::updateOrCreate(
+                ['user_id' => $user->id],
+                [
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                    'email' => $request->email,
+                    'mobile' => $request->mobile,
+                    'address' => $request->address,
+                    'city' => $request->city,
+                    'state' => $request->state,
+                    'zip' => $request->zip,
+                    'shipping_manage_id' => $shipping->id,
+                ]
+            );
+
+            // Store product to order item
+            foreach ($cart as $item) {
+                OrderItem::create([
+                    'product_id' => $item['id'],
+                    'order_id' => $order->id,
+                    'name' => Product::find($item['id'])->product_name,
+                    'qty' => $item['quantity'],
+                    'price' => $item['price'],
+                    'total' => $item['price'] * $item['quantity'],
+                ]);
+            }
+
+            // Remove all cart items
+            session()->forget('cart');
+            session()->forget('url.intended');
+            return response()->json(['success' => true, 'redirect_url' => route('thanks_page', $order->order_code)]);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'error' => $th->getMessage()
+            ], is_int($th->getCode()) && $th->getCode() > 0 && $th->getCode() < 600 ? $th->getCode() : 500);
         }
-
-        $peyment_method_type = $request->input('peyment_method_type');
-        if (empty($peyment_method_type)) {
-            return response()->json(['error_message' => 'Please select payment method']);
-        }
-
-        $user = Auth::user();
-        $order = new Order();
-
-        $cart = session()->get('cart', []);
-        $grand_total = 0;
-        $sub_total = 0;
-
-        foreach ($cart as $item) {
-            $sub_total += $item['price'] * $item['quantity'];
-        }
-
-        $shipping = ShippingManage::find($request->input('shipping_area'));
-
-        $grand_total += (int) $shipping->amount;
-
-
-        $grand_total += $sub_total; // Add sub_total to grand_total
-        $order->grand_total = $grand_total;
-        $order->sub_total = $sub_total;
-        $order->coupon_code = $request->input('coupon_code');
-        $order->notes = $request->input('notes');
-        $order->user_id = $user->id;
-        $order->shipping_manage_id = $shipping->id;
-
-        // Shipping Address
-        $order->first_name = $request->input('first_name');
-        $order->last_name = $request->input('last_name');
-        $order->email = $request->input('email');
-        $order->mobile = $request->input('mobile');
-        $order->address = $request->input('address');
-        $order->city = $request->input('city');
-        $order->state = $request->input('state');
-        $order->zip = $request->input('zip');
-        $order->peyment_method_type = $request->input('peyment_method_type');
-        $order_id = IdGenerator::generate(['table' => 'orders', 'field' => 'order_id', 'length' => 10, 'prefix' => 'ODID-']);
-        $order->order_id = $order_id;
-
-        // Save the order to the database
-        $order->save();
-
-        // Save/update customer address
-        CustomerAddress::updateOrCreate(
-            ['user_id' => $user->id],
-            [
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'email' => $request->email,
-                'mobile' => $request->mobile,
-                'address' => $request->address,
-                'city' => $request->city,
-                'state' => $request->state,
-                'zip' => $request->zip,
-                'shipping_manage_id' => $shipping->id,
-            ]
-        );
-
-        // Store product to order item
-        foreach ($cart as $item) {
-            OrderItem::create([
-                'product_id' => $item['id'],
-                'order_id' => $order->id,
-                'name' => Product::find($item['id'])->product_name,
-                'qty' => $item['quantity'],
-                'price' => $item['price'],
-                'total' => $item['price'] * $item['quantity'],
-            ]);
-        }
-
-        // remove the all cart item 
-        session()->forget('cart');
-
-        return response()->json([
-            'message' => 'Your order has been successfully placed!',
-            'order_id' => $order->order_id,
-        ], 201);
     }
 
 
-    public function thenkasPage($order_id)
+    public function thenkasPage($order_code)
     {
-        $order = Order::where('order_id', $order_id)->first();
+        // $order = Order::where('order_code', $order_code)->first();
         return view('pages.frontend.thanks', [
-            'order_id' => $order->order_id
+            'order_code' => $order_code
         ]);
     }
 

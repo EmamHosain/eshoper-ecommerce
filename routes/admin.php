@@ -166,11 +166,13 @@ Route::middleware('adminAuth')->group(function () {
     // order manage route start here
     Route::controller(OrderManageController::class)->group(function () {
         Route::get('/all-order', 'index')->name('all_order');
-        Route::get('/add-order', 'add')->name('add_order');
-        Route::post('/store-order', 'store')->name('store_order');
-        Route::get('/edit-order/{id}', 'edit')->name('edit_order');
-        Route::patch('/update-order/{id}', 'update')->name('update_order');
+        Route::get('/order-details/{id}', 'orderDetails')->name('order_details');
         Route::get('/delete-order/{id}', 'delete')->name('delete_order');
+        Route::get('/order-download/{id}', 'downloadInvoice')->name('download_invoice');
+
+        Route::get('/status-pending-to-completed/{id}', 'orderStatusChangePendingToCompleted')->name('order_status_change_pending_to_completed');
+        Route::get('/status-pending-to-cancelled/{id}', 'orderStatusChangePendingToCancelled')->name('order_status_change_pending_to_cancelled');
+
     });
 
 

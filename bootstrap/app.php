@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CheckoutMiddleware;
 use Illuminate\Foundation\Application;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\CheckPermission;
@@ -25,6 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'adminAuth' => AdminMiddleware::class,
             'adminGuest' => AdminGuestMiddleware::class,
             'permission' => CheckPermission::class,
+            'checkout'=> CheckoutMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
