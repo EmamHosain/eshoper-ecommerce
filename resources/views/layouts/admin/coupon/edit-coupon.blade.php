@@ -207,14 +207,14 @@ Edit Coupon
 <script>
     $(document).ready(function() {
         $('#starts_at').datetimepicker({
-                format: 'd-m-Y h:i A',
+                format: 'Y-m-d H:i:s',
                 formatTime: 'h:i A', // 12-hour format with AM/PM
                 step: 15,
                 ampm: true
             });
 
             $('#ends_at').datetimepicker({
-                format: 'd-m-Y h:i A',
+                format: 'Y-m-d H:i:s',
                 formatTime: 'h:i A', // 12-hour format with AM/PM
                 step: 15,
                 ampm: true

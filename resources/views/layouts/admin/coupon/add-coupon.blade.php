@@ -37,9 +37,9 @@ Add Coupon
                                 <div class=" row">
                                     <div class="mb-3 col-12 col-md-6">
                                         <label for="coupon_name" class="form-label">Coupon Name</label>
-                                        <input type="text"
+                                        <input type="text" 
                                             class="form-control @error('coupon_name') is-invalid @enderror"
-                                            id="coupon_name" name="coupon_name" value="{{ old('coupon_name') }}"
+                                            id="coupon_name" name="coupon_name" value="{{ old('coupon_name','coupon') }}"
                                             placeholder="Enter Coupon Name">
                                         @error('coupon_name')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -51,7 +51,7 @@ Add Coupon
                                         <label for="coupon_code" class="form-label">Coupon Code</label>
                                         <input type="text"
                                             class="form-control @error('coupon_code') is-invalid @enderror"
-                                            id="coupon_code" name="coupon_code" value="{{ old('coupon_code') }}"
+                                            id="coupon_code" name="coupon_code" value="{{ old('coupon_code','code') }}"
                                             placeholder="Enter Coupon Code">
                                         @error('coupon_code')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -64,7 +64,7 @@ Add Coupon
                                     <label for="coupon_desc" class="form-label">Coupon Description</label>
                                     <textarea class="form-control @error('coupon_desc') is-invalid @enderror"
                                         id="coupon_desc" name="coupon_desc" placeholder="Enter Coupon Description">{{
-                                        old('coupon_desc') }}</textarea>
+                                        old('coupon_desc','desc') }}</textarea>
                                     @error('coupon_desc')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -121,7 +121,7 @@ Add Coupon
                                         <input type="number" step="0.01"
                                             class="form-control @error('discount_amount') is-invalid @enderror"
                                             id="discount_amount" name="discount_amount"
-                                            value="{{ old('discount_amount') }}" placeholder="Enter Discount Amount">
+                                            value="{{ old('discount_amount',100) }}" placeholder="Enter Discount Amount">
                                         @error('discount_amount')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -135,7 +135,7 @@ Add Coupon
                                     <label for="min_amount" class="form-label">Minimum Amount</label>
                                     <input type="number" step="0.01"
                                         class="form-control @error('min_amount') is-invalid @enderror" id="min_amount"
-                                        name="min_amount" value="{{ old('min_amount') }}"
+                                        name="min_amount" value="{{ old('min_amount',100) }}"
                                         placeholder="Enter Minimum Amount">
                                     @error('min_amount')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -149,8 +149,8 @@ Add Coupon
                                             (day-month-year,
                                             time)</label>
                                         <input type="text" class="form-control @error('starts_at') is-invalid @enderror"
-                                            id="starts_at" name="starts_at" value="{{ old('starts_at') }}"
-                                            placeholder="Select Coupon Valid Starts At">
+                                            autocomplete="off" id="starts_at" name="starts_at"
+                                            value="{{ old('starts_at') }}" placeholder="Select Coupon Valid Starts At">
                                         @error('starts_at')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -161,7 +161,7 @@ Add Coupon
                                         <label for="ends_at" class="form-label">Coupon Valid Ends At (day-month-year,
                                             time)</label>
                                         <input type="text" class="form-control @error('ends_at') is-invalid @enderror"
-                                            id="ends_at" name="ends_at" value="{{ old('ends_at') }}"
+                                            autocomplete="off" id="ends_at" name="ends_at" value="{{ old('ends_at') }}"
                                             placeholder="Select Coupon Valid Ends At">
                                         @error('ends_at')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -209,14 +209,14 @@ Add Coupon
     $(document).ready(function() {
             $('#starts_at').datetimepicker({
                 format: 'Y-m-d H:i:s',
-                //formatTime: 'h:i A', // 12-hour format with AM/PM
+                formatTime: 'h:i A', // 12-hour format with AM/PM
                 // step: 15,
                 // ampm: true
             });
 
             $('#ends_at').datetimepicker({
                 format: 'Y-m-d H:i:s',
-                // formatTime: 'h:i A', // 12-hour format with AM/PM
+                 formatTime: 'h:i A', // 12-hour format with AM/PM
                 // step: 15,
                 // ampm: true
             });

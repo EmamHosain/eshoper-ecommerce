@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\User;
 
+use Carbon\Carbon;
 use App\Models\City;
 use App\Models\Order;
+use App\Models\Coupon;
 use App\Models\Country;
 use App\Models\Product;
 use App\Models\OrderItem;
@@ -46,6 +48,57 @@ class CheckoutController extends Controller
     }
 
 
+    // apply coupon 
+    public function applyCoupon(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'coupon_code' => 'required|string|exists:coupons,code'
+        ]);
+        $coupon_code = $request->input('coupon_code');
+        $coupon = Coupon::where('code', $coupon_code)->first();
+
+        if ($validator->fails() || empty($coupon)) {
+            return response()->json([
+                'error' => 'Invalid Coupon'
+            ]);
+        }
+
+        $current_date_time = Carbon::now();
+        if (!empty($coupon->starts_at)) {
+            $startDate = Carbon::createFromDate('Y-m-d h:i:s', $coupon->starts_at);
+
+            // if current date time is less than start date time
+            if ($current_date_time->lt($startDate)) {
+                return response()->json([
+                    'error' => 'Invalid Coupon'
+                ]);
+            }
+        }
+
+
+        if (!empty($coupon->expires_at)) {
+            $endDate = Carbon::createFromDate('Y-m-d h:i:s', $coupon->expires_at);
+
+            // if current date time is greater than end date time
+            if ($current_date_time->gt($endDate)) {
+                return response()->json([
+                    'error' => 'Invalid Coupon'
+                ]);
+            }
+        }
+
+
+        session()->put('coupon', $coupon);
+
+        return response()->json([
+            'success' => 'Coupon applied'
+        ]);
+
+
+
+
+    }
 
     public function additionWishShippingChargeToTototal(Request $request)
     {
@@ -61,6 +114,7 @@ class CheckoutController extends Controller
             'total_amount' => round($shipping_charge_with_total)
         ]);
     }
+    
 
 
 
@@ -172,6 +226,9 @@ class CheckoutController extends Controller
             'order_id' => $order->id,
         ], 201);
     }
+
+
+
 
 
 

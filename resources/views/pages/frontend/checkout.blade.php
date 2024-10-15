@@ -133,7 +133,7 @@
                 </div>
 
                 <div class="col-lg-4">
-                    <div class="card border-secondary mb-5">
+                    <div class="card border-secondary mb-3">
                         <div class="card-header bg-secondary border-0">
                             <h4 class="font-weight-semi-bold m-0">Order Total</h4>
                         </div>
@@ -181,7 +181,19 @@
 
 
                     </div>
-                    <div class="card border-secondary mb-5">
+                    <div class="card border-secondary mb-3">
+                        <form id="apply_coupon_form" class="mb-2" action="">
+                            <div class="input-group">
+                                <input type="text" name="coupon_code" class="form-control p-4"
+                                    placeholder="Coupon Code">
+                                <div class="input-group-append">
+                                    <button id="apply_coupon_button" class="btn btn-primary">Apply Coupon</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="card border-secondary mb-3">
                         <div class="card-header bg-secondary border-0">
                             <h4 class="font-weight-semi-bold m-0">Payment</h4>
                         </div>
@@ -224,6 +236,14 @@
 
     <script>
         $(document).ready(function() {
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 2000
+            })
+
 
 
             $('.shipping_type').on('change', function() {
@@ -276,13 +296,6 @@
 
                 }
             });
-
-
-
-
-
-
-
 
 
 
@@ -397,6 +410,52 @@
             $('#place_order').on('click', function() {
                 $('#checkout_form').submit();
             });
+
+
+
+            // apply coupon
+            $('#apply_coupon_form').on('submit', function(event) {
+                event.preventDefault();
+                $.ajax({
+                    url: "{{ route('apply_coupon') }}",
+                    type: "POST",
+                    data: $(this).serializeArray(),
+                    dataType: 'json',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                            'content')
+                    },
+                    success: function(response) {
+                        
+                        if ($.isEmptyObject(response.error)) {
+                            Toast.fire({
+                                icon: 'success',
+                                title: response.success,
+                            }).then(() => {
+                                window.location.reload();
+                            })
+
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: response.error,
+                            })
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle server errors
+                        console.log('AJAX Error:', status, error);
+                    }
+                });
+            })
+
+            $('#apply_coupon_button').on('click', function() {
+                $('#apply_coupon_form').submit();
+            })
+
+
+
+
 
         })
     </script>

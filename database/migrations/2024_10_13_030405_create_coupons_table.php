@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('coupons', function (Blueprint $table) {
             $table->id();
             // the discount coupon code
-            $table->string('code');
+            $table->string('code')->unique();
 
             // the human readable discount coupon code name
             $table->string('name')->nullable();
@@ -44,7 +44,7 @@ return new class extends Migration {
 
 
             // when the coupon begins
-            $table->timestamp('starts_at')->nullable();
+            $table->timestamp('starts_at')->nullable(); // optional
 
             // when the coupon ends
             $table->timestamp('expires_at')->nullable();

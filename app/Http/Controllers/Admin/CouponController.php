@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Helper\FlashMessage;
-use App\Http\Resources\CouponResource;
 use Carbon\Carbon;
 use App\Models\Coupon;
 use Illuminate\Support\Str;
+use App\Helper\FlashMessage;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CouponResource;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 
@@ -22,6 +23,14 @@ class CouponController extends Controller
             $data = CouponResource::collection($data);
             return DataTables::of($data)
                 ->addIndexColumn()
+
+                ->addColumn('discount_amount', function ($row) {
+                    if ($row->type === 'percent') {
+                        return $row->discount_amount . " %";
+                    } else {
+                        return $row->discount_amount;
+                    }
+                })
 
                 ->addColumn('description', function ($row) {
                     return Str::limit($row->coupon_desc, 20);
@@ -41,7 +50,7 @@ class CouponController extends Controller
                         return '<span class="badge text-bg-danger">Inactive</span>';
                     }
                 })
-                ->rawColumns(['action', 'status', 'description'])
+                ->rawColumns(['action', 'status', 'description', 'discount_amount'])
                 ->make(true);
         }
 
@@ -77,8 +86,8 @@ class CouponController extends Controller
             'type' => 'required|in:percent,fixed',
             'discount_amount' => 'required|numeric|min:0',
             'min_amount' => 'nullable|numeric|min:0',
-            'starts_at' => 'required|date_format:d-m-Y h:i A|after:' . now()->format('d-m-Y h:i A'),
-            'ends_at' => 'required|date_format:Y-m-d h:i A|after:starts_at',
+            'starts_at' => 'required',
+            'ends_at' => 'required|after:starts_at',
             'status' => 'required|boolean',
         ]);
 
@@ -94,8 +103,8 @@ class CouponController extends Controller
         $coupon->min_amount = $request->min_amount;
 
         // Convert the dates to the correct format
-        $coupon->starts_at = Carbon::createFromFormat('Y-m-d h:i A', $request->input('starts_at'))->format('Y-m-d H:i:s');
-        $coupon->expires_at = Carbon::createFromFormat('Y-m-d h:i A', $request->input('ends_at'))->format('Y-m-d H:i:s');
+        $coupon->starts_at = $request->input('starts_at');
+        $coupon->expires_at = $request->input('ends_at');
 
         $coupon->status = $request->status;
 
@@ -113,15 +122,15 @@ class CouponController extends Controller
         // Validate the incoming request
         $request->validate([
             'coupon_name' => 'required|string|max:255',
-            'coupon_code' => 'required|string|max:255',
+            'coupon_code' => ['required', 'string', 'max:255', Rule::unique(Coupon::class)->ignore($id)],
             'coupon_desc' => 'nullable|string',
             'max_uses' => 'nullable|integer',
             'max_uses_user' => 'nullable|integer',
             'type' => 'required|string|in:fixed,percent',
             'discount_amount' => 'required|numeric|min:0',
             'min_amount' => 'nullable|numeric|min:0',
-            'starts_at' => 'nullable|date_format:d-m-Y h:i A',
-            'ends_at' => 'nullable|date_format:d-m-Y h:i A',
+            'starts_at' => 'required',
+            'ends_at' => 'required|after:starts_at',
             'status' => 'required|boolean',
         ]);
 
@@ -138,8 +147,8 @@ class CouponController extends Controller
             'type' => $request->type,
             'discount_amount' => $request->discount_amount,
             'min_amount' => $request->min_amount,
-            'starts_at' => $request->starts_at ? Carbon::createFromFormat('d-m-Y h:i A', $request->starts_at)->setTimezone('Asia/Dhaka') : null,
-            'expires_at' => $request->ends_at ? Carbon::createFromFormat('d-m-Y h:i A', $request->ends_at)->setTimezone('Asia/Dhaka') : null,
+            'starts_at' => $request->starts_at ,
+            'expires_at' => $request->ends_at,
             'status' => $request->status,
         ]);
 
