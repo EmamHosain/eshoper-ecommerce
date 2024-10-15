@@ -1,14 +1,17 @@
 <?php
-use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ColorController;
+use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\OrderManageController;
 use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\Auth\AdminAuthController;
 use App\Http\Controllers\Admin\CategorySliderController;
+use App\Http\Controllers\Admin\CustomerManageController;
+use App\Http\Controllers\Admin\ShippingManageController;
 
 
 // admin auth route start here
@@ -127,13 +130,49 @@ Route::middleware('adminAuth')->group(function () {
 
     // coupon rouet start here
     Route::controller(CouponController::class)->group(function () {
-        Route::get('/all-coupon', 'index')->name('all_coupon'); 
-        Route::get('/add-coupon', 'add')->name('add_coupon'); 
-        Route::post('/store-coupon', 'store')->name('store_coupon'); 
+        Route::get('/all-coupon', 'index')->name('all_coupon');
+        Route::get('/add-coupon', 'add')->name('add_coupon');
+        Route::post('/store-coupon', 'store')->name('store_coupon');
         Route::get('/edit-coupon/{coupon}', 'edit')->name('edit_coupon');
-        Route::patch('/update-coupon/{coupon}', 'update')->name('update_coupon'); 
-        Route::get('/delete-coupon/{id}', 'delete')->name('delete_coupon'); 
+        Route::patch('/update-coupon/{coupon}', 'update')->name('update_coupon');
+        Route::get('/delete-coupon/{id}', 'delete')->name('delete_coupon');
     });
+
+
+    // shipping manage route start here
+    Route::controller(ShippingManageController::class)->group(function () {
+        Route::get('/all-shipping', 'index')->name('all_shipping');
+        Route::get('/add-shipping', 'add')->name('add_shipping');
+        Route::post('/store-shipping', 'store')->name('store_shipping');
+        Route::get('/edit-shipping/{id}', 'edit')->name('edit_shipping');
+        Route::patch('/update-shipping/{id}', 'update')->name('update_shipping');
+        Route::get('/delete-shipping/{id}', 'delete')->name('delete_shipping');
+    });
+
+
+    // custom manage route start here
+    Route::controller(CustomerManageController::class)->group(function () {
+        Route::get('/all-customer', 'index')->name('all_customer');
+        Route::get('/add-customer', 'add')->name('add_customer');
+        Route::post('/store-customer', 'store')->name('store_customer');
+        Route::get('/edit-customer/{id}', 'edit')->name('edit_customer');
+        Route::patch('/update-customer/{id}', 'update')->name('update_customer');
+        Route::get('/delete-customer/{id}', 'delete')->name('delete_customer');
+    });
+
+
+
+
+    // order manage route start here
+    Route::controller(OrderManageController::class)->group(function () {
+        Route::get('/all-order', 'index')->name('all_order');
+        Route::get('/add-order', 'add')->name('add_order');
+        Route::post('/store-order', 'store')->name('store_order');
+        Route::get('/edit-order/{id}', 'edit')->name('edit_order');
+        Route::patch('/update-order/{id}', 'update')->name('update_order');
+        Route::get('/delete-order/{id}', 'delete')->name('delete_order');
+    });
+
 
 
 

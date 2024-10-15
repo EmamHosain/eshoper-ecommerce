@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\ShippingManage;
 use Carbon\Carbon;
 use App\Models\City;
 use App\Models\Order;
@@ -42,8 +43,11 @@ class CheckoutController extends Controller
         $id = Auth::id();
         $customer = CustomerAddress::where('user_id', $id)->first();
 
+        $shipping = ShippingManage::where('status', 1)->latest()->get();
+
         return view('pages.frontend.checkout', [
-            'customer' => $customer
+            'customer' => $customer,
+            'shipping_area' => $shipping
         ]);
     }
 
@@ -102,19 +106,25 @@ class CheckoutController extends Controller
 
     public function additionWishShippingChargeToTototal(Request $request)
     {
-        $shipping_charge = $request->input('shipping_charge');
+        $shipping_area_id = $request->input('shipping_area');
+
+        $shipping = ShippingManage::find($shipping_area_id);
+
         $cart = session()->get('cart', []);
-        $shipping_charge_with_total = (int) $shipping_charge;
+        $shipping_charge_with_total = (int) $shipping->amount;
+
+
         if (isset($cart) && count($cart) > 0) {
             foreach ($cart as $item) {
                 $shipping_charge_with_total += $item['price'] * $item['quantity'];
             }
         }
         return response()->json([
-            'total_amount' => round($shipping_charge_with_total)
+            'total_amount' => round($shipping_charge_with_total),
+            'shipping_cost' => $shipping->amount
         ]);
     }
-    
+
 
 
 
@@ -130,7 +140,7 @@ class CheckoutController extends Controller
             'city' => 'required|string|max:100',
             'state' => 'required|string|max:100',
             'zip' => 'required|string|max:20',
-            'shipping_type' => 'required|in:inside_dhaka,outside_dhaka,cash_on_delivery',
+            'shipping_area' => 'required|exists:shipping_manages,id',
             'peyment_method_type' => 'required|in:cash_on_delivery,nagad,bkash',
         ]);
 
@@ -155,15 +165,10 @@ class CheckoutController extends Controller
             $sub_total += $item['price'] * $item['quantity'];
         }
 
-        if ($request->input('shipping_type') === 'inside_dhaka') {
-            $grand_total += 70;
-            $order->shipping_amount = 70;
-        } elseif ($request->input('shipping_type') === 'outside_dhaka') {
-            $grand_total += 150;
-            $order->shipping_amount = 150;
-        } elseif ($request->input('shipping_type') === 'cash_on_delivery') {
-            $order->shipping_amount = 0.00;
-        }
+        $shipping = ShippingManage::find($request->input('shipping_area'));
+
+        $grand_total += (int) $shipping->amount;
+
 
         $grand_total += $sub_total; // Add sub_total to grand_total
         $order->grand_total = $grand_total;
@@ -171,6 +176,7 @@ class CheckoutController extends Controller
         $order->coupon_code = $request->input('coupon_code');
         $order->notes = $request->input('notes');
         $order->user_id = $user->id;
+        $order->shipping_manage_id = $shipping->id;
 
         // Shipping Address
         $order->first_name = $request->input('first_name');
@@ -181,9 +187,7 @@ class CheckoutController extends Controller
         $order->city = $request->input('city');
         $order->state = $request->input('state');
         $order->zip = $request->input('zip');
-        $order->shipping_type = $request->input('shipping_type');
         $order->peyment_method_type = $request->input('peyment_method_type');
-
         $order_id = IdGenerator::generate(['table' => 'orders', 'field' => 'order_id', 'length' => 10, 'prefix' => 'ODID-']);
         $order->order_id = $order_id;
 
@@ -202,7 +206,7 @@ class CheckoutController extends Controller
                 'city' => $request->city,
                 'state' => $request->state,
                 'zip' => $request->zip,
-                'shipping_type' => $request->input('shipping_type'),
+                'shipping_manage_id' => $shipping->id,
             ]
         );
 
@@ -223,11 +227,18 @@ class CheckoutController extends Controller
 
         return response()->json([
             'message' => 'Your order has been successfully placed!',
-            'order_id' => $order->id,
+            'order_id' => $order->order_id,
         ], 201);
     }
 
 
+    public function thenkasPage($order_id)
+    {
+        $order = Order::where('order_id', $order_id)->first();
+        return view('pages.frontend.thanks', [
+            'order_id' => $order->order_id
+        ]);
+    }
 
 
 

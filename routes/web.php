@@ -83,35 +83,12 @@ Route::controller(CartController::class)->group(function () {
 Route::controller(CheckoutController::class)->group(function () {
     Route::get('/checkout', 'checkoutPage')->name('checkout_page');
     Route::post('/checkout-submit', 'checkoutSubmit')->name('checkout_submit');
+
+    Route::get('/thanks/order_id','thenkasPage')->name('thanks_page');
+
     Route::post('/addtion-with-shipping-charge-total','additionWishShippingChargeToTototal')->name('addition_shipping_charge_to_total');
 
 
     // apply coupon route
     Route::post('/apply-coupon','applyCoupon')->name('apply_coupon');
 });
-
-
-
-
-
-
-
-
-
-
-
-
-Route::get('/product-details', function () {
-    return view('pages.frontend.product-details');
-});
-
-Route::get('/contact', function () {
-    return view('pages.frontend.contact');
-});
-Route::get('/user-dashboard', function () {
-    return view('layouts.user.backend.dashboard.user-dashboard');
-});
-
-Route::get('/thanks',function(){
-    return view('pages.frontend.thanks');
-})->name('thanks_page');

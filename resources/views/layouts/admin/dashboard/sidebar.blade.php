@@ -82,8 +82,8 @@
                 </li>
 
 
-                 {{-- category slider--}}
-                 <li class="nav-item">
+                {{-- category slider--}}
+                <li class="nav-item">
                     <a href="javascript:void(0)" class="nav-link"> <i class="nav-icon bi bi-box-seam-fill"></i>
                         <p>
                             Category Slider
@@ -199,13 +199,15 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('admin.all_coupon') }}" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
+                            <a href="{{ route('admin.all_coupon') }}" class="nav-link"> <i
+                                    class="nav-icon bi bi-circle"></i>
                                 <p>All Coupon</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('admin.add_coupon') }}" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
+                            <a href="{{ route('admin.add_coupon') }}" class="nav-link"> <i
+                                    class="nav-icon bi bi-circle"></i>
                                 <p>Add Coupon</p>
                             </a>
                         </li>
@@ -214,30 +216,55 @@
                 </li>
 
 
+                {{-- shipping manage --}}
                 <li class="nav-item">
                     <a href="javascript:void(0)" class="nav-link"> <i class="nav-icon bi bi-box-seam-fill"></i>
                         <p>
-                            Feature
+                            Shipping Manage
                             <i class="nav-arrow bi bi-chevron-right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
-                                <p>All Feature</p>
+                            <a href="{{ route('admin.all_shipping') }}" class="nav-link"> <i
+                                    class="nav-icon bi bi-circle"></i>
+                                <p>All Shipping</p>
                             </a>
                         </li>
-
                         <li class="nav-item">
-                            <a href="#" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
-                                <p>Add Feature</p>
+                            <a href="{{ route('admin.add_shipping') }}" class="nav-link"> <i
+                                    class="nav-icon bi bi-circle"></i>
+                                <p>Add Shipping</p>
                             </a>
-
                         </li>
 
                     </ul>
                 </li>
 
+                {{-- customer manage --}}
+                <li class="nav-item">
+                    <a href="javascript:void(0)" class="nav-link"> <i class="nav-icon bi bi-box-seam-fill"></i>
+                        <p>
+                            Customer Manage
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.all_customer') }}" class="nav-link"> <i
+                                    class="nav-icon bi bi-circle"></i>
+                                <p>All Customer</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.add_customer') }}" class="nav-link"> <i
+                                    class="nav-icon bi bi-circle"></i>
+                                <p>Add Customer</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
 
                 <li class="nav-item"> <a href="#" class="nav-link"> <i class="nav-icon bi bi-clipboard-fill"></i>
                         <p>

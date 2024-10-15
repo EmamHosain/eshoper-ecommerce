@@ -22,8 +22,7 @@
                             We appreciate your business! Your order has been successfully placed.
                         </p>
                         <p class="card-text">
-                            {{-- <strong>Order ID:</strong> {{ $order_id }} --}}
-                            <strong>Order ID:</strong> 1234
+                            <strong>Order ID:</strong> {{ $order_id }}
                         </p>
                         <p class="card-text">
                             A confirmation email has been sent to your registered email address with all the details of

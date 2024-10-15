@@ -12,8 +12,9 @@ return new class extends Migration {
     {
         Schema::create('customer_addresses', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('shipping_manage_id')->nullable()->constrained('shipping_manages')->onDelete('set null');
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
-            $table->string('first_name')->nullable();
+            $table->string('first_name');
             $table->string('last_name');
             $table->string('email');
             $table->string('mobile');
@@ -21,7 +22,6 @@ return new class extends Migration {
             $table->string('city');
             $table->string('state');
             $table->string('zip');
-            $table->string('shipping_type')->default('inside_dhaka');
             $table->timestamps();
         });
     }
