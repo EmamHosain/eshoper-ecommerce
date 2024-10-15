@@ -88,6 +88,7 @@ Product Details
 
 
 
+            <input type="hidden" id="product_id" value="{{ $product->id }}">
 
             <p class="mb-4">{{ $product->short_description }}</p>
 
@@ -97,8 +98,8 @@ Product Details
                 <form>
                     @foreach ($product->sizes as $size)
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="{{ $size->size_name . '-' . $size->id }}"
-                            name="size">
+                        <input type="radio" class="custom-control-input size_input"
+                            id="{{ $size->size_name . '-' . $size->id }}" name="size" value="{{ $size->id }}">
                         <label class="custom-control-label text-uppercase"
                             for="{{ $size->size_name . '-' . $size->id }}">{{ $size->size_name }}</label>
                     </div>
@@ -114,8 +115,8 @@ Product Details
                 <form>
                     @foreach ($product->colors as $color)
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input"
-                            id="{{ $color->color_name . '-' . $color->id }}" name="color">
+                        <input type="radio" class="custom-control-input color_input"
+                            id="{{ $color->color_name . '-' . $color->id }}" name="color" value="{{ $color->id }}">
                         <label class="custom-control-label text-capitalize"
                             for="{{ $color->color_name . '-' . $color->id }}">{{ $color->color_name }}</label>
                     </div>
@@ -133,16 +134,19 @@ Product Details
                             <i class="fa fa-minus"></i>
                         </button>
                     </div>
-                    <input type="text" class="form-control bg-secondary text-center" value="1">
+                    <input type="text" class="form-control bg-secondary text-center quantity_input" min="1" value="1">
                     <div class="input-group-btn">
                         <button class="btn btn-primary btn-plus">
                             <i class="fa fa-plus"></i>
                         </button>
                     </div>
                 </div>
-                <button class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
+                <button class="btn btn-primary px-3 add_to_cart_btn"><i class="fa fa-shopping-cart mr-1"></i> Add To
+                    Cart</button>
 
             </div>
+
+            {{-- share icon --}}
             <div class="d-flex pt-2">
                 <p class="text-dark font-weight-medium mb-0 mr-2">Share on:</p>
                 <div class="d-inline-flex">
@@ -276,7 +280,7 @@ Product Details
                         </div>
                     </div>
                     <div class="card-footer d-flex justify-content-between bg-light border">
-                        <a href="{{ route('product_details',['id'=>$item->id,'slug'=>$item->slug]) }}"
+                        <a href="{{ route('product_details', ['id' => $item->id, 'slug' => $item->slug]) }}"
                             class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
                             Detail</a>
                         <a href="" class="btn btn-sm text-dark p-0"><i
@@ -294,4 +298,87 @@ Product Details
     </div>
 </div>
 <!-- Products End -->
+
+<script>
+    $(document).ready(function() {
+            // toastr message
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            })
+
+
+
+
+
+            $('.add_to_cart_btn').on('click', function() {
+                var items = {};
+
+                // Check color inputs (single value)
+                var color = $('.color_input:checked').val();
+                if (color) {
+                    items['color'] = color;
+                }
+
+                // Get product_id value
+                var product_id = $('#product_id').val();
+                if (product_id) {
+                    items['product_id'] = product_id;
+                }
+
+                // Check size inputs (single value)
+                var size = $('.size_input:checked').val();
+                if (size) {
+                    items['size'] = size;
+                }
+
+                // Check quantity input (single value)
+                var quantity = $('.quantity_input').val();
+                if (quantity > 0 && quantity !== '') {
+                    items['quantity'] = quantity;
+                }
+
+                // Check what is being passed before the AJAX call
+                console.log(items);
+
+                // Send data via AJAX
+                $.ajax({
+                    url: "{{ route('add_to_cart_product') }}",
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    dataType : 'json',
+                    data: items,
+                    success: function(response) {
+                        console.log(response);
+                        $('#cart_count').text(response.cart_count);
+
+                        if ($.isEmptyObject(response.error)) {
+                            Toast.fire({
+                                icon: 'success',
+                                title: response.success,
+                            });
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: response.error,
+                            });
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error(xhr);
+                        alert(
+                            'An error occurred while fetching the products. Please try again.');
+                    }
+                });
+            });
+
+
+
+
+        })
+</script>
 @endsection

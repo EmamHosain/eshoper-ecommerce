@@ -21,10 +21,7 @@ Route::controller(UserAuthController::class)->middleware('guest')->group(functio
     Route::post('/login', 'loginSubmit')->name('login_submit');
     Route::get('/register', 'registerPage')->name('register_page');
     Route::post('/register', 'registerSubmit')->name('register_submit');
-
 });
-
-
 
 // user auth route start
 Route::middleware('auth')->group(function () {
@@ -35,7 +32,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/update-profile-image/{id}', [UserProfileController::class, 'updateProfileImage'])->name('update_user_profile_image');
     Route::get('/change-password', [UserProfileController::class, 'changePasswordPage'])->name('change_password_page');
     Route::patch('/change-password', [UserProfileController::class, 'changePasswordSubmit'])->name('change_password_submit');
-
 });
 // user auth route end
 
@@ -74,6 +70,7 @@ Route::controller(WishlistController::class)->group(function () {
 Route::controller(CartController::class)->group(function () {
     Route::get('/cart', 'addToCartPage')->name('add_to_cart_page');
     Route::post('/add-to-cart', 'productAddToCart')->name('add_to_cart_product');
+    
     // quantity increment
     Route::post('/update-cart-quantity', 'updateCartQuantity')->name('update_cart_quantity');
     Route::delete('/delete-cart-item', 'deleteCartItem')->name('delete_cart_item');

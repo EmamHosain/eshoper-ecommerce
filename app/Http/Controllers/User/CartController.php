@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\Size;
+use App\Models\Color;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -32,11 +34,19 @@ class CartController extends Controller
                 'error' => 'Something went wrong'
             ]);
         }
+
         $product_id = $request->input('product_id');
         $color = $request->input('color');
         $size = $request->input('size');
+        $quantity = $request->input('quantity');
 
-
+    
+        if (!empty($color)) {
+            $color = Color::where('id', $color)->first()->color_name;
+        }
+        if (!empty($size)) {
+            $size = Size::where('id', $size)->first()->size_name;
+        }
 
         $product = Product::with('productImages')
             ->find($product_id);
@@ -54,9 +64,10 @@ class CartController extends Controller
                 'color' => $color ?? 'Empty',
                 'size' => $size ?? 'Empty',
                 'price' => $price,
-                'quantity' => 1,
+                'quantity' => $quantity ?? 1,
             ];
         }
+
 
 
         session()->put('cart', $cart_items);
