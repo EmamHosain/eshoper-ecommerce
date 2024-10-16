@@ -8,24 +8,25 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
-class GoogleAuthController extends Controller
+class FacebookLoginController extends Controller
 {
     public function redirect()
     {
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver('facebook')->redirect();
     }
+
 
     public function callback()
     {
         try {
-            $google_user = Socialite::driver('google')->user();
-            $user = User::where('google_id', $google_user->getId())->first();
+            $facebook_user = Socialite::driver('facebook')->user();
+            $user = User::where('facebook_id', $facebook_user->getId())->first();
 
             if (!$user) {
                 $new_user = User::create([
-                    'first_name' => $google_user->getName(),
-                    'email' => $google_user->getEmail(),
-                    'google_id' => $google_user->getId(),
+                    'first_name' => $facebook_user->getName(),
+                    'email' => $facebook_user->getEmail(),
+                    'facebook_id' => $facebook_user->getId(),
                 ]);
 
                 Auth::login($new_user);
@@ -38,6 +39,5 @@ class GoogleAuthController extends Controller
         } catch (\Throwable $th) {
             dd($th->getMessage());
         }
-
     }
 }

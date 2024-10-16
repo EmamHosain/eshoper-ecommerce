@@ -5,6 +5,7 @@ use App\Http\Controllers\User\Auth\UserAuthController;
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\User\CouponController;
+use App\Http\Controllers\User\FacebookLoginController;
 use App\Http\Controllers\User\GoogleAuthController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\UserOrderController;
@@ -45,10 +46,14 @@ Route::middleware('auth')->group(function () {
 
 
 
-// socialite route 
-Route::get('/auth/google',[GoogleAuthController::class,'redirect'])->name('googoe_auth_redirect');
-Route::get('/auth/google/call-back',[GoogleAuthController::class,'callback'])->name('googoe_auth_callback');
+// socialite google auth route 
+Route::get('/auth/google',[GoogleAuthController::class,'redirect'])->name('google_auth_redirect');
+Route::get('/auth/google/call-back',[GoogleAuthController::class,'callback'])->name('google_auth_callback');
 
+
+// socialite facebook auth route 
+Route::get('/auth/facebook',[FacebookLoginController::class,'redirect'])->name('facebook_auth_redirect');
+Route::get('auth/facebook/call-back',[FacebookLoginController::class,'callback'])->name('facebook_auth_callback');
 
 
 
