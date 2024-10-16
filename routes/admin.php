@@ -46,8 +46,6 @@ Route::middleware('adminAuth')->group(function () {
         Route::patch('/profile-update', 'profileUpdateSubmit')->name('profile_update_submit');
         Route::get('/change-password', 'changePasswordPage')->name('change_password_page');
         Route::patch('/change-password', 'changePasswordSubmit')->name('change_password_submit');
-
-
     });
 
 
@@ -172,13 +170,6 @@ Route::middleware('adminAuth')->group(function () {
         Route::get('/status-pending-to-completed/{id}', 'orderStatusChangePendingToCompleted')->name('order_status_change_pending_to_completed');
         Route::get('/status-pending-to-cancelled/{id}', 'orderStatusChangePendingToCancelled')->name('order_status_change_pending_to_cancelled');
     });
-
-
-
-
-
-
-
 
 
 });

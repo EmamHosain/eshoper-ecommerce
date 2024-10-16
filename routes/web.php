@@ -6,6 +6,7 @@ use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\User\CouponController;
 use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\User\UserOrderController;
 use App\Http\Controllers\User\UserProductController;
 use App\Http\Controllers\User\UserProfileController;
 use App\Http\Controllers\User\WishlistController;
@@ -32,6 +33,12 @@ Route::middleware('auth')->group(function () {
     Route::patch('/update-profile-image/{id}', [UserProfileController::class, 'updateProfileImage'])->name('update_user_profile_image');
     Route::get('/change-password', [UserProfileController::class, 'changePasswordPage'])->name('change_password_page');
     Route::patch('/change-password', [UserProfileController::class, 'changePasswordSubmit'])->name('change_password_submit');
+
+    Route::get('/all-order',[UserOrderController::class,'getAllOrder'])->name('get_all_order');
+    Route::get('/order-details/{id}',[UserOrderController::class,'orderDetails'])->name('user_order_details');
+    Route::get('/invoice-download/{id}',[UserOrderController::class,'invoiceDownload'])->name('invoice_download');
+
+
 });
 // user auth route end
 

@@ -122,7 +122,7 @@
                     @else
                     <img src="{{ asset($admin->photo) }}" class="user-image rounded-circle shadow" alt="User Image">
                     @endif
-                    <span class="d-none d-md-inline">{{ $admin->name }}</span>
+                    <span class="d-none d-md-inline">{{ !empty($admin->name) ? $admin->name : 'Admin' }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                     <!--begin::User Image-->
@@ -134,7 +134,7 @@
                         <img src="{{ asset($admin->photo) }}" class="rounded-circle shadow" alt="User Image">
                         @endif
                         <p>
-                            {{ $admin->name }} - Web Developer
+                            {{ !empty($admin->name) ? $admin->name : 'Admin' }} - Web Developer
                         </p>
                     </li>
                     <!--end::User Image-->
