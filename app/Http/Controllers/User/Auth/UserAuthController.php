@@ -12,8 +12,11 @@ use Illuminate\Support\Facades\Password;
 
 class UserAuthController extends Controller
 {
-    public function loginPage()
+    public function loginPage(Request $request)
     {
+        if ($request->previousURL) {
+            session()->put('previousURL', $request->previousURL);
+        }
         return view('pages.user.auth.login');
     }
     public function loginSubmit(LoginRequest $loginRequest)
@@ -25,6 +28,10 @@ class UserAuthController extends Controller
 
         if (session()->has('url.intended')) {
             return redirect()->to(session()->get('url.intended'));
+        }
+
+        if (session()->has('previousURL')) {
+            return redirect()->to(session()->get('previousURL'));
         }
         return redirect()->route('user_dashboard');
     }

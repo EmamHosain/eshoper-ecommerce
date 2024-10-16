@@ -14,7 +14,8 @@ class UserProductController extends Controller
 {
     public function productDetails($id, $slug)
     {
-        $product = Product::with(['productImages', 'sizes', 'colors'])->where('id', $id)->where('slug', $slug)->first();
+        $product = Product::with(['productImages', 'sizes', 'colors','reviews'])
+        ->where('id', $id)->where('slug', $slug)->first();
 
         // return response()->json($product);
 

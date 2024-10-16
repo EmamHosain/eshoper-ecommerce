@@ -8,6 +8,7 @@ use App\Http\Controllers\User\CouponController;
 use App\Http\Controllers\User\FacebookLoginController;
 use App\Http\Controllers\User\GoogleAuthController;
 use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\User\ReviewController;
 use App\Http\Controllers\User\UserOrderController;
 use App\Http\Controllers\User\UserProductController;
 use App\Http\Controllers\User\UserProfileController;
@@ -36,9 +37,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/change-password', [UserProfileController::class, 'changePasswordPage'])->name('change_password_page');
     Route::patch('/change-password', [UserProfileController::class, 'changePasswordSubmit'])->name('change_password_submit');
 
-    Route::get('/all-order',[UserOrderController::class,'getAllOrder'])->name('get_all_order');
-    Route::get('/order-details/{id}',[UserOrderController::class,'orderDetails'])->name('user_order_details');
-    Route::get('/invoice-download/{id}',[UserOrderController::class,'invoiceDownload'])->name('invoice_download');
+    Route::get('/all-order', [UserOrderController::class, 'getAllOrder'])->name('get_all_order');
+    Route::get('/order-details/{id}', [UserOrderController::class, 'orderDetails'])->name('user_order_details');
+    Route::get('/invoice-download/{id}', [UserOrderController::class, 'invoiceDownload'])->name('invoice_download');
 
 
 });
@@ -47,13 +48,13 @@ Route::middleware('auth')->group(function () {
 
 
 // socialite google auth route 
-Route::get('/auth/google',[GoogleAuthController::class,'redirect'])->name('google_auth_redirect');
-Route::get('/auth/google/call-back',[GoogleAuthController::class,'callback'])->name('google_auth_callback');
+Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->name('google_auth_redirect');
+Route::get('/auth/google/call-back', [GoogleAuthController::class, 'callback'])->name('google_auth_callback');
 
 
 // socialite facebook auth route 
-Route::get('/auth/facebook',[FacebookLoginController::class,'redirect'])->name('facebook_auth_redirect');
-Route::get('auth/facebook/call-back',[FacebookLoginController::class,'callback'])->name('facebook_auth_callback');
+Route::get('/auth/facebook', [FacebookLoginController::class, 'redirect'])->name('facebook_auth_redirect');
+Route::get('auth/facebook/call-back', [FacebookLoginController::class, 'callback'])->name('facebook_auth_callback');
 
 
 
@@ -89,7 +90,7 @@ Route::controller(WishlistController::class)->group(function () {
 Route::controller(CartController::class)->group(function () {
     Route::get('/cart', 'addToCartPage')->name('add_to_cart_page');
     Route::post('/add-to-cart', 'productAddToCart')->name('add_to_cart_product');
-    
+
     // quantity increment
     Route::post('/update-cart-quantity', 'updateCartQuantity')->name('update_cart_quantity');
     Route::delete('/delete-cart-item', 'deleteCartItem')->name('delete_cart_item');
@@ -106,3 +107,9 @@ Route::controller(CheckoutController::class)->middleware('checkout')->group(func
 });
 
 Route::get('/thanks/{order_code}', [CheckoutController::class, 'thenkasPage'])->name('thanks_page');
+
+
+
+// review route start here
+
+Route::post('/reiview-submit', [ReviewController::class, 'reviewSubmit'])->name('review_submit');

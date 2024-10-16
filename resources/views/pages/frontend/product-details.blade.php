@@ -72,7 +72,7 @@ Product Details
                     <small class="fas fa-star-half-alt"></small>
                     <small class="far fa-star"></small>
                 </div>
-                <small class="pt-1">(50 Reviews)</small>
+                <small class="pt-1">({{ $product->reviews->count() }} Reviews)</small>
             </div>
 
 
@@ -168,11 +168,16 @@ Product Details
     </div>
     <div class="row px-xl-5">
         <div class="col">
+
             <div class="nav nav-tabs justify-content-center border-secondary mb-4">
-                <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Description</a>
+                <a class="nav-item nav-link active tab-bar" data-toggle="tab" href="#tab-pane-1">Description</a>
                 <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">Information</a>
-                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Reviews (0)</a>
+                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Reviews ({{ $product->reviews->count()
+                    }})</a>
             </div>
+
+
+
             <div class="tab-content">
                 {{-- description --}}
                 <div class="tab-pane fade show active" id="tab-pane-1">
@@ -192,60 +197,96 @@ Product Details
                 <div class="tab-pane fade" id="tab-pane-3">
                     <div class="row">
                         <div class="col-md-6">
-                            <h4 class="mb-4">1 review for "Colorful Stylish Shirt"</h4>
+                            @if ( $product->reviews->isNotEmpty())
+                            <h4 class="mb-4">{{ $product->reviews->count() }} review for "{{ $product->product_name }}"
+                            </h4>
+                            @foreach ($product->reviews as $review)
                             <div class="media mb-4">
-                                <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
+                                <img src="{{ asset('assets/empty-image-300x240.jpg') }}" alt="Image"
+                                    class="img-fluid mr-3 mt-1" style="width: 45px;">
                                 <div class="media-body">
-                                    <h6>John Doe<small> - <i>01 Jan 2045</i></small></h6>
+                                    <h6>{{ $review->user->first_name . " " . $review->user->last_name }}<small> - <i>{{
+                                                \Carbon\Carbon::parse($review->created_at)->setTimezone('Asia/Dhaka')->format('d
+                                                F Y h:i a') }}
+                                            </i></small></h6>
                                     <div class="text-primary mb-2">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                        <i class="far fa-star"></i>
+
+
+
+                                        @for ($i = 0; $i < $review->rating; $i++)
+                                            <i class="fas fa-star"></i>
+                                            @endfor
                                     </div>
-                                    <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum
-                                        et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
+                                    <p>{{ $review->review }}</p>
                                 </div>
                             </div>
+                            @endforeach
+                            @else
+                            <p>No Review Yet!</p>
+                            @endif
                         </div>
+
+
                         <div class="col-md-6">
+
+
+                            @guest('web')
+                            <div>
+                                <form id="login-form" action="{{ route('login') }}" method="GET" style="display: none;">
+                                    <input type="hidden" name="previousURL" value="{{ url()->current() }}">
+                                </form>
+                                <p>You must be <a class="text-primary" href="{{ route('login') }}"
+                                        onclick="event.preventDefault(); document.getElementById('login-form').submit();">logged</a>
+                                    in to post a comment.</p>
+
+
+
+
+
+                            </div>
+                            @endguest
+                            @auth('web')
                             <h4 class="mb-4">Leave a review</h4>
                             <small>Your email address will not be published. Required fields are marked *</small>
-                            <div class="d-flex my-3">
-                                <p class="mb-0 mr-2">Your Rating * :</p>
-                                <div class="text-primary">
-                                    <i class="far fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                    <i class="far fa-star"></i>
+                            <div class="my-3">
+                                <div class="d-flex">
+                                    <p class="mb-0 mr-2">Your Rating * :</p>
+                                    <div class="text-primary">
+                                        <i data-value="1" class="far fa-star review"></i>
+                                        <i data-value="2" class="far fa-star review"></i>
+                                        <i data-value="3" class="far fa-star review"></i>
+                                        <i data-value="4" class="far fa-star review"></i>
+                                        <i data-value="5" class="far fa-star review"></i>
+                                    </div>
                                 </div>
+                                <p id="rating_error" class=" hidden text-danger" style="font-size: 13px"></p>
+
                             </div>
-                            <form>
+                            {{-- form here --}}
+                            <form id="review_submit_form">
+                                <input type="hidden" id="user_id" name="user_id" value="{{ Auth::id() }}">
+                                <input type="hidden" id="product_id" name="product_id" value="{{ $product->id }}">
                                 <div class="form-group">
-                                    <label for="message">Your Review *</label>
-                                    <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
+                                    <label for="review">Your Review *</label>
+                                    <textarea id="review" name="review" cols="30" rows="5" class="form-control"
+                                        placeholder="Enter review">
+                                    </textarea>
+                                    <p id="review_error" class=" text-danger hidden" style="font-size: 13px"></p>
                                 </div>
-                                <div class="form-group">
-                                    <label for="name">Your Name *</label>
-                                    <input type="text" class="form-control" id="name">
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Your Email *</label>
-                                    <input type="email" class="form-control" id="email">
-                                </div>
+
                                 <div class="form-group mb-0">
-                                    <input type="submit" value="Leave Your Review" class="btn btn-primary px-3">
+                                    <input type="submit" id="review_submit" value="Leave Your Review"
+                                        class="btn btn-primary px-3">
                                 </div>
                             </form>
+                            @endauth
                         </div>
                     </div>
                 </div>
 
-
-
             </div>
+
+
         </div>
     </div>
 </div>
@@ -301,6 +342,7 @@ Product Details
 
 <script>
     $(document).ready(function() {
+
             // toastr message
             const Toast = Swal.mixin({
                 toast: true,
@@ -308,10 +350,6 @@ Product Details
                 showConfirmButton: false,
                 timer: 3000
             })
-
-
-
-
 
             $('.add_to_cart_btn').on('click', function() {
                 var items = {};
@@ -350,7 +388,7 @@ Product Details
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    dataType : 'json',
+                    dataType: 'json',
                     data: items,
                     success: function(response) {
                         console.log(response);
@@ -371,10 +409,99 @@ Product Details
                     error: function(xhr) {
                         console.error(xhr);
                         alert(
-                            'An error occurred while fetching the products. Please try again.');
+                            'An error occurred while fetching the products. Please try again.'
+                        );
                     }
                 });
             });
+
+
+
+            // review 
+            var ratingCount = [];
+            $('.review').on('click', function() {
+                var value = $(this).data('value');
+
+                if ($(this).hasClass('fas')) {
+                    $(this).removeClass('fas');
+
+                    var index = ratingCount.indexOf(value);
+                    if (index !== -1) {
+                        ratingCount.splice(index, 1);
+                    }
+                } else {
+                    $(this).addClass('fas');
+                    ratingCount.push(value);
+                }
+            })
+
+            $('#review_submit_form').on('submit', function(event) {
+                event.preventDefault();
+                $.ajax({
+                    url: "{{ route('review_submit') }}", // Provide the correct URL here
+                    dataType: "json",
+                    type: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                            'content') // Retrieves the CSRF token from a meta tag
+                    },
+                    data: {
+                        product_id: $('#product_id').val(),
+                        user_id: $('#user_id').val(),
+                        review: $('#review').val(),
+                        rating: ratingCount.length
+                    },
+                    success: function(response) {
+
+                        console.log(response);
+                        if (response.errors) {
+                            var errors = response.errors;
+                            if (errors.review) {
+                                $('#review_error').removeClass('hidden')
+                                $('#review_error').addClass('show')
+                                $('#review').addClass('is-invalid')
+                                $('#review_error').text(errors.review)
+                            }
+                            if (errors.rating) {
+                                $('#rating_error').removeClass('hidden')
+                                $('#rating_error').addClass('show')
+                                $('#rating_error').text(errors.rating)
+                            }
+                        } else {
+                            $('#review_error').addClass('hidden')
+                            $('#rating_error').addClass('hidden')
+                            $('#review').removeClass('is-invalid')
+
+                            if ($.isEmptyObject(response.error)) {
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: response.success,
+                                }).then(() => {
+                                    window.location.reload();
+                                });
+                            } else {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: response.error,
+                                });
+                            }
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle any errors here
+                        console.error(xhr.responseText);
+                    }
+                });
+
+
+
+
+
+            })
+
+            
+
+
 
 
 
