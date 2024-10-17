@@ -13,16 +13,11 @@
             <a href="{{ route('search_by_product') }}"
                 class="nav-item nav-link {{ Route::currentRouteName() ===  'search_by_product' ? 'active' : ''}}">Products</a>
 
-
-            <a href="detail.html" class="nav-item nav-link">About Us</a>
-            <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
-                <div class="dropdown-menu rounded-0 m-0">
-                    <a href="cart.html" class="dropdown-item">Shopping Cart</a>
-                    <a href="checkout.html" class="dropdown-item">Checkout</a>
-                </div>
-            </div>
-            <a href="contact.html" class="nav-item nav-link">Contact Us</a>
+            <a href="{{ route('about_us') }}"
+                class="nav-item nav-link {{ Route::currentRouteName() === 'about_us' ? 'active' : '' }}">About Us</a>
+            <a href="{{ route('contact_us') }}"
+                class="nav-item nav-link {{ Route::currentRouteName() === 'contact_us' ? 'active' : '' }}">Contact
+                Us</a>
         </div>
         <div class="navbar-nav ml-auto py-0">
 

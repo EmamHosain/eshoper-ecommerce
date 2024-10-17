@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\Admin\AboutUsController;
 use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ColorController;
@@ -169,6 +170,16 @@ Route::middleware('adminAuth')->group(function () {
         Route::get('/order-download/{id}', 'downloadInvoice')->name('download_invoice');
         Route::get('/status-pending-to-completed/{id}', 'orderStatusChangePendingToCompleted')->name('order_status_change_pending_to_completed');
         Route::get('/status-pending-to-cancelled/{id}', 'orderStatusChangePendingToCancelled')->name('order_status_change_pending_to_cancelled');
+    });
+
+
+
+
+
+    // page setting route 
+    Route::controller(AboutUsController::class)->group(function () {
+        Route::get('/about-us','aboutUs')->name('about_us');
+        Route::patch('/about-us','AboutUpdateOrCreate')->name('about_us_update_or_create');
     });
 
 

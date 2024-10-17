@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\User\AboutUsController;
 use App\Http\Controllers\User\Auth\PasswordResetController;
 use App\Http\Controllers\User\Auth\UserAuthController;
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\CheckoutController;
+use App\Http\Controllers\User\ContactUsController;
 use App\Http\Controllers\User\CouponController;
 use App\Http\Controllers\User\FacebookLoginController;
 use App\Http\Controllers\User\GoogleAuthController;
@@ -113,3 +115,7 @@ Route::get('/thanks/{order_code}', [CheckoutController::class, 'thenkasPage'])->
 
 // review route start here
 Route::post('/reiview-submit', [ReviewController::class, 'reviewSubmit'])->name('review_submit');
+
+// about us page route
+Route::get('/about-us',[AboutUsController::class,'aboutUs'])->name('about_us');
+Route::get('/contact-us',[ContactUsController::class,'contactUs'])->name('contact_us');

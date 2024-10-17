@@ -272,7 +272,7 @@
                 <li class="nav-item">
                     <a href="javascript:void(0)" class="nav-link"> <i class="nav-icon bi bi-box-seam-fill"></i>
                         <p>
-                           Order Manage
+                            Order Manage
                             <i class="nav-arrow bi bi-chevron-right"></i>
                         </p>
                     </a>
@@ -297,8 +297,9 @@
 
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
-                                <p>Edit home page</p>
+                            <a href="{{ route('admin.about_us') }}" class="nav-link"> <i
+                                    class="nav-icon bi bi-circle"></i>
+                                <p>Edit about page</p>
                             </a>
                         </li>
 
