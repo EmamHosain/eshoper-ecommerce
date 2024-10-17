@@ -9,6 +9,7 @@ use App\Http\Controllers\User\FacebookLoginController;
 use App\Http\Controllers\User\GoogleAuthController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\ReviewController;
+use App\Http\Controllers\User\SocialMediaShareController;
 use App\Http\Controllers\User\UserOrderController;
 use App\Http\Controllers\User\UserProductController;
 use App\Http\Controllers\User\UserProfileController;
@@ -111,5 +112,4 @@ Route::get('/thanks/{order_code}', [CheckoutController::class, 'thenkasPage'])->
 
 
 // review route start here
-
 Route::post('/reiview-submit', [ReviewController::class, 'reviewSubmit'])->name('review_submit');

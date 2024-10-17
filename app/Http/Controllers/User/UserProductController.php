@@ -7,12 +7,13 @@ use App\Models\Brand;
 use App\Models\Color;
 use App\Models\Product;
 use App\Models\Category;
+use Jorenvh\Share\ShareFacade as Share;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class UserProductController extends Controller
 {
-    public function productDetails($id, $slug)
+    public function productDetails(Request $request, $id, $slug)
     {
         $product = Product::with([
             'productImages',
@@ -34,11 +35,25 @@ class UserProductController extends Controller
 
 
 
+        // share social media 
+        $product_url = $request->url();  // This gets the current product's URL
+        $product_title = $product->product_name; // Assuming 'name' is the product's title
+        // dd($product_url);
+        $links = Share::page($product_url, $product_title)
+            ->facebook()
+            ->twitter()
+            ->linkedin()
+            ->whatsapp()
+            ->getRawLinks();
+
+
+
 
 
         return view('pages.frontend.product-details', [
             'product' => $product,
             'relatedProducts' => $related_products_with_category,
+            'share_links' => $links
 
         ]);
 
