@@ -26,6 +26,12 @@ class WishlistController extends Controller
     {
         // Get the product ID from the request
         $productId = $request->input('product_id');
+        $product = Product::where('id',$productId)->first();
+        if(!$product){
+            return response()->json([
+                'error' => 'Product Not Found!',
+            ]);  
+        }
 
         // Retrieve the wishlist array from the session, or initialize an empty array if it doesn't exist
         $wishlist = session()->get('wishlist', []);

@@ -14,10 +14,17 @@ class UserProductController extends Controller
 {
     public function productDetails($id, $slug)
     {
-        $product = Product::with(['productImages', 'sizes', 'colors','reviews'])
-        ->where('id', $id)->where('slug', $slug)->first();
+        $product = Product::with([
+            'productImages',
+            'sizes',
+            'colors',
+            'reviews' => function ($query) {
+                $query->orderByDesc('id');
+            }
+        ])
+            ->where('id', $id)->where('slug', $slug)->first();
 
-        // return response()->json($product);
+
 
         $related_products_with_category = Product::with([
             'productImages'
@@ -25,9 +32,14 @@ class UserProductController extends Controller
             ->whereNot('id', $product->id)
             ->latest()->get();
 
+
+
+
+
         return view('pages.frontend.product-details', [
             'product' => $product,
-            'relatedProducts' => $related_products_with_category
+            'relatedProducts' => $related_products_with_category,
+
         ]);
 
     }

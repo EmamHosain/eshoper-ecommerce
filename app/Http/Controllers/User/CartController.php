@@ -29,6 +29,13 @@ class CartController extends Controller
             'size' => 'nullable|exists:sizes,id',
         ]);
 
+        $product = Product::where('id', $request->input('product_id'))->first();
+        if (!$product) {
+            return response()->json([
+                'error' => 'Product Not Found!',
+            ]);
+        }
+
         if ($validator->fails()) {
             return response()->json([
                 'error' => 'Something went wrong'
@@ -40,7 +47,7 @@ class CartController extends Controller
         $size = $request->input('size');
         $quantity = $request->input('quantity');
 
-    
+
         if (!empty($color)) {
             $color = Color::where('id', $color)->first()->color_name;
         }
