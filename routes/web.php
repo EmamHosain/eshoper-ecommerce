@@ -117,5 +117,13 @@ Route::get('/thanks/{order_code}', [CheckoutController::class, 'thenkasPage'])->
 Route::post('/reiview-submit', [ReviewController::class, 'reviewSubmit'])->name('review_submit');
 
 // about us page route
-Route::get('/about-us',[AboutUsController::class,'aboutUs'])->name('about_us');
-Route::get('/contact-us',[ContactUsController::class,'contactUs'])->name('contact_us');
+Route::get('/about-us', [AboutUsController::class, 'aboutUs'])->name('about_us');
+
+
+
+Route::controller(ContactUsController::class)->group(function () {
+    Route::get('/contact-us', 'contactUs')->name('contact_us');
+    Route::post('/contact-us', 'contactSubmit')->name('contact_submit');
+
+   
+});

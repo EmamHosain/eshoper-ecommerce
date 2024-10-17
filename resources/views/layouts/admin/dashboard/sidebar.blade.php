@@ -320,7 +320,8 @@
 
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link"> <i class="nav-icon bi bi-box-seam-fill"></i>
+                    <a href="{{ route('admin.all_contact') }}" class="nav-link"> <i
+                            class="nav-icon bi bi-box-seam-fill"></i>
                         <p>
                             All Contact
 

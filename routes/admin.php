@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\Admin\AboutUsController;
+use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ColorController;
@@ -181,6 +182,15 @@ Route::middleware('adminAuth')->group(function () {
         Route::get('/about-us','aboutUs')->name('about_us');
         Route::patch('/about-us','AboutUpdateOrCreate')->name('about_us_update_or_create');
     });
+
+    Route::controller(ContactController::class)->group(function () {
+        Route::get('/all-contact','allContact')->name('all_contact');
+        Route::get('/delete-contact/{id}','deleteContact')->name('delete_contact');
+        Route::get('/view-contact/{id}','viewContact')->name('view_contact');
+
+    });
+
+
 
 
 });
