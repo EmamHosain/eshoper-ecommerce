@@ -187,7 +187,8 @@ Route::middleware('adminAuth')->group(function () {
         Route::get('/all-contact','allContact')->name('all_contact');
         Route::get('/delete-contact/{id}','deleteContact')->name('delete_contact');
         Route::get('/view-contact/{id}','viewContact')->name('view_contact');
-
+        Route::get('/edit-contact-page','editContactPage')->name('edit_contact_page');
+        Route::patch('/update-contact-page','updateContactPageInfo')->name('update_contact_page_info');
     });
 
 

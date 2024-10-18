@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\AdminInformation;
 use App\Models\Contact;
 use App\Helper\FlashMessage;
 use Illuminate\Http\Request;
@@ -11,7 +12,10 @@ class ContactUsController extends Controller
 {
     public function contactUs()
     {
-        return view('pages.frontend.contact-us');
+        $contact = AdminInformation::first();
+        return view('pages.frontend.contact-us',[
+            'contact'=> $contact
+        ]);
     }
 
     public function contactSubmit(Request $request)

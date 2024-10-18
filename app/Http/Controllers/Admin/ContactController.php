@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Helper\FlashMessage;
 use App\Models\Contact;
 use Illuminate\Support\Str;
+use App\Helper\FlashMessage;
 use Illuminate\Http\Request;
+use App\Models\AdminInformation;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -48,4 +49,41 @@ class ContactController extends Controller
         FlashMessage::flash('success', 'Contact deleted successfully.');
         return redirect()->route('admin.all_contact');
     }
+
+    public function editContactPage()
+    {
+        $contact = AdminInformation::first();
+        return view('layouts.admin.contact.edit-contact-page', [
+            'contact' => $contact
+        ]);
+    }
+
+
+    public function updateContactPageInfo(Request $request)
+    {
+        // Validate the input data
+        $validatedData = $request->validate([
+            'contact_heading' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'address' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:20',
+            'email' => 'required|email|max:255',
+        ]);
+
+        // Use updateOrCreate method
+        AdminInformation::updateOrCreate(
+            ['email' => $validatedData['email']],
+            [   // Fields to update or create
+                'contact_heading' => $validatedData['contact_heading'],
+                'description' => $validatedData['description'],
+                'address' => $validatedData['address'],
+                'phone' => $validatedData['phone'],
+            ]
+        );
+        FlashMessage::flash('success', 'Content updated successfully.');
+
+        // Return a success response (redirect or message)
+        return redirect()->back();
+    }
+
 }

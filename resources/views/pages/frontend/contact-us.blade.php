@@ -30,10 +30,18 @@ Contact Us
                 <div class="col-12 col-lg-6">
                     <div class="row justify-content-xl-center">
                         <div class="col-12 col-xl-11">
-                            <h2 class="h1 mb-3">Get in touch</h2>
+                            <h2 class="h1 mb-3">{{ !empty($contact) ? $contact->contact_heading : 'Get in touch' }}</h2>
+
+                            @if (!empty($contact) && $contact->description)
+                            <p class="lead fs-4 mb-5">{{ $contact->description }}</p>
+                            @else
                             <p class="lead fs-4 mb-5">We're always on the lookout to work with new
                                 clients. If you're interested in working with us, please get in touch in one of the
                                 following ways.</p>
+                            @endif
+
+
+
                             <div class="d-flex mb-5">
                                 <div class="me-4 text-primary">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
@@ -44,8 +52,12 @@ Contact Us
                                 </div>
                                 <div>
                                     <h4 class="mb-3">Address</h4>
+                                    @if (!empty($contact) && $contact->address)
+                                    <address class="mb-0">{{ $contact->address }}</address>
+                                    @else
                                     <address class="mb-0">8014 Edith Blvd NE, Albuquerque, New York,
                                         United States</address>
+                                    @endif
                                 </div>
                             </div>
                             <div class="row mb-5">
@@ -61,10 +73,18 @@ Contact Us
                                         </div>
                                         <div>
                                             <h4 class="mb-3">Phone</h4>
+                                            @if (!empty($contact) && $contact->phone)
+                                            <p class="mb-0">
+                                                <a class="link-secondary text-decoration-none">{{ $contact->phone }}</a>
+                                            </p>
+                                            @else
                                             <p class="mb-0">
                                                 <a class="link-secondary text-decoration-none"
                                                     href="tel:+15057922430">(505) 792-2430</a>
                                             </p>
+                                            @endif
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -81,10 +101,18 @@ Contact Us
                                         </div>
                                         <div>
                                             <h4 class="mb-3">E-Mail</h4>
+                                            @if (!empty($contact) && $contact->email)
+                                            <p class="mb-0">
+                                                <a class="link-secondary text-decoration-none"
+                                                    href="mailto:demo@yourdomain.com">{{ $contact->email }}</a>
+                                            </p>
+                                            @else
                                             <p class="mb-0">
                                                 <a class="link-secondary text-decoration-none"
                                                     href="mailto:demo@yourdomain.com">demo@yourdomain.com</a>
                                             </p>
+                                            @endif
+
                                         </div>
                                     </div>
                                 </div>

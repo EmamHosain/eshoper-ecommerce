@@ -124,6 +124,4 @@ Route::get('/about-us', [AboutUsController::class, 'aboutUs'])->name('about_us')
 Route::controller(ContactUsController::class)->group(function () {
     Route::get('/contact-us', 'contactUs')->name('contact_us');
     Route::post('/contact-us', 'contactSubmit')->name('contact_submit');
-
-   
 });

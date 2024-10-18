@@ -38,6 +38,8 @@ Contact Us
                             data-validation-required-message="Please enter your name" />
                         <p class="help-block text-danger"></p>
                     </div>
+
+                    
                     <div class="control-group">
                         <input type="email" class="form-control" id="email" placeholder="Your Email" required="required"
                             data-validation-required-message="Please enter your email" />
