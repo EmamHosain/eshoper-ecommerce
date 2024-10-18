@@ -3,17 +3,18 @@
 namespace App\Http\Controllers\User;
 
 use App\Models\Brand;
-use App\Models\CategorySlider;
+use App\Models\Offer;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\CategorySlider;
 use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
 {
     public function home()
     {
-        
+
         // return response()->json($sliders);
 
 
@@ -39,11 +40,19 @@ class HomeController extends Controller
 
         $brands = Brand::where('status', 1)->latest()->get();
 
+        $offer = Offer::with('product')
+            ->where('show', 'home_page')
+            ->where('status', 1)
+            ->whereHas('product')
+            ->latest()
+            ->get();
+
         return view('pages.frontend.index', [
             'categories' => $categories,
             'trandy_products' => $trandy_products,
             'new_arrived_products' => $new_arrived_products,
-            'brands' => $brands
+            'brands' => $brands,
+            'offer' => $offer
         ]);
     }
 }

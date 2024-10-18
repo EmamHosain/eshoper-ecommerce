@@ -10,6 +10,7 @@ use App\Http\Controllers\User\CouponController;
 use App\Http\Controllers\User\FacebookLoginController;
 use App\Http\Controllers\User\GoogleAuthController;
 use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\User\OfferController;
 use App\Http\Controllers\User\ReviewController;
 use App\Http\Controllers\User\SocialMediaShareController;
 use App\Http\Controllers\User\UserOrderController;
@@ -124,4 +125,12 @@ Route::get('/about-us', [AboutUsController::class, 'aboutUs'])->name('about_us')
 Route::controller(ContactUsController::class)->group(function () {
     Route::get('/contact-us', 'contactUs')->name('contact_us');
     Route::post('/contact-us', 'contactSubmit')->name('contact_submit');
+});
+
+
+// offer route start here
+Route::controller(OfferController::class)->group(function(){
+
+    Route::get('/offers','getAllOffer')->name('get_all_offer');
+
 });

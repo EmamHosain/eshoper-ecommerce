@@ -70,36 +70,48 @@ Home
 </div>
 <!-- Categories End -->
 
+<style>
+    .offer-image {
+        width: 100%;
+        object-fit: cover;
+    }
 
-<!-- Offer Start -->
-{{-- <div class="container-fluid offer pt-5">
-    <div class="row px-xl-5">
-        <div class="col-md-6 pb-4">
-            <div class="position-relative bg-secondary text-center text-md-right text-white mb-2 py-5 px-5">
-                <img src="{{ asset('assets/eshoper/img/offer-1.png') }}" alt="">
-                <div class="position-relative" style="z-index: 1;">
-                    <h5 class="text-uppercase text-primary mb-3">20% off the all order</h5>
-                    <h1 class="mb-4 font-weight-semi-bold">Spring Collection</h1>
-                    <a href="" class="btn btn-outline-primary py-md-2 px-md-3">Shop Now</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 pb-4">
-            <div class="position-relative bg-secondary text-center text-md-left text-white mb-2 py-5 px-5">
-                <img src="{{ asset('assets/eshoper/img/offer-2.png') }}" alt="">
-                <div class="position-relative" style="z-index: 1;">
-                    <h5 class="text-uppercase text-primary mb-3">20% off the all order</h5>
-                    <h1 class="mb-4 font-weight-semi-bold">Winter Collection</h1>
-                    <a href="" class="btn btn-outline-primary py-md-2 px-md-3">Shop Now</a>
-                </div>
-            </div>
-        </div>
+    /* Height for small screens (sm) */
+    @media (max-width: 767.98px) {
+        .offer-image {
+            height: 300px;
+        }
+    }
 
-
+    /* Height for medium screens (md) and above */
+    @media (min-width: 768px) {
+        .offer-image {
+            height: 300px;
+        }
+    }
+</style>
+<!-- Shop Start -->
+@if ($offer->isNotEmpty())
+<div class="container-fluid pt-5">
+    <div class="text-center mb-4">
+        <h2 class="section-title px-5"><span class="px-2">New Offer</span></h2>
     </div>
-</div> --}}
-<!-- Offer End -->
-
+    <div class="row px-xl-5 mb-3">
+        <!-- Shop Sidebar Start -->
+        {{-- content here --}}
+        @foreach ($offer as $item)
+        <div class="col-12 col-md-6 my-2">
+            <a href="{{ route('product_details',['id'=>$item->product->id,'slug'=> $item->product->slug]) }}">
+                <img src="{{ asset($item->banner_image) }}" alt="{{ $item->product->product_name }}"
+                    class="img-fluid offer-image">
+            </a>
+        </div>
+        @endforeach
+        <!-- Shop Sidebar End -->
+    </div>
+</div>
+@endif
+<!-- Shop End -->
 
 <!-- trandy Products Start -->
 <div class="container-fluid pt-5">

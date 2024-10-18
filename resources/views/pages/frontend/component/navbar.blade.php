@@ -13,6 +13,10 @@
             <a href="{{ route('search_by_product') }}"
                 class="nav-item nav-link {{ Route::currentRouteName() ===  'search_by_product' ? 'active' : ''}}">Products</a>
 
+            <a href="{{ route('get_all_offer') }}"
+                class="nav-item nav-link {{ Route::currentRouteName() ===  'get_all_offer' ? 'active' : ''}}">Offer</a>
+
+
             <a href="{{ route('about_us') }}"
                 class="nav-item nav-link {{ Route::currentRouteName() === 'about_us' ? 'active' : '' }}">About Us</a>
             <a href="{{ route('contact_us') }}"

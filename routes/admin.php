@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\Admin\AboutUsController;
 use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\OfferController;
 use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ColorController;
@@ -179,18 +180,28 @@ Route::middleware('adminAuth')->group(function () {
 
     // page setting route 
     Route::controller(AboutUsController::class)->group(function () {
-        Route::get('/about-us','aboutUs')->name('about_us');
-        Route::patch('/about-us','AboutUpdateOrCreate')->name('about_us_update_or_create');
+        Route::get('/about-us', 'aboutUs')->name('about_us');
+        Route::patch('/about-us', 'AboutUpdateOrCreate')->name('about_us_update_or_create');
     });
 
     Route::controller(ContactController::class)->group(function () {
-        Route::get('/all-contact','allContact')->name('all_contact');
-        Route::get('/delete-contact/{id}','deleteContact')->name('delete_contact');
-        Route::get('/view-contact/{id}','viewContact')->name('view_contact');
-        Route::get('/edit-contact-page','editContactPage')->name('edit_contact_page');
-        Route::patch('/update-contact-page','updateContactPageInfo')->name('update_contact_page_info');
+        Route::get('/all-contact', 'allContact')->name('all_contact');
+        Route::get('/delete-contact/{id}', 'deleteContact')->name('delete_contact');
+        Route::get('/view-contact/{id}', 'viewContact')->name('view_contact');
+        Route::get('/edit-contact-page', 'editContactPage')->name('edit_contact_page');
+        Route::patch('/update-contact-page', 'updateContactPageInfo')->name('update_contact_page_info');
     });
 
+
+    // offer route start here
+    Route::controller(OfferController::class)->group(function () {
+        Route::get('/all-offer', 'index')->name('all_offer');
+        Route::get('/add-offer', 'add')->name('add_offer');
+        Route::post('/store-offer', 'store')->name('store_offer');
+        Route::get('/edit-offer/{id}', 'edit')->name('edit_offer');
+        Route::patch('/update-offer/{id}', 'update')->name('update_offer');
+        Route::get('/delete-offer/{id}', 'delete')->name('delete_offer');
+    });
 
 
 
