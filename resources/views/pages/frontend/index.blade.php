@@ -101,7 +101,7 @@ Home
         {{-- content here --}}
         @foreach ($offer as $item)
         <div class="col-12 col-md-6 my-2">
-            <a href="{{ route('product_details',['id'=>$item->product->id,'slug'=> $item->product->slug]) }}">
+            <a href="{{ route('product_details', ['id' => $item->product->id, 'slug' => $item->product->slug]) }}">
                 <img src="{{ asset($item->banner_image) }}" alt="{{ $item->product->product_name }}"
                     class="img-fluid offer-image">
             </a>
@@ -136,13 +136,14 @@ Home
                 <p>Amet lorem at rebum amet dolores. Elitr lorem dolor sed amet diam labore at justo ipsum eirmod
                     duo labore labore.</p>
             </div>
-            <form action="">
+            <form id="subscriber_user_submit">
                 <div class="input-group">
-                    <input type="text" class="form-control border-white p-4" placeholder="Email Goes Here">
+                    <input type="text" name="email" class="form-control border-white p-4" placeholder="Email Goes Here">
                     <div class="input-group-append">
-                        <button class="btn btn-primary px-4">Subscribe</button>
+                        <button type="submit" class="btn btn-primary px-4">Subscribe</button>
                     </div>
                 </div>
+                <p id="subscriber_user_error" class=" text-danger" style="font-size: 13px"></p>
             </form>
         </div>
     </div>
@@ -273,6 +274,50 @@ Home
                     }
                 });
             })
+
+
+            // subscriber user
+
+            $('#subscriber_user_submit').on('submit', function(event) {
+                event.preventDefault();
+
+                $.ajax({
+                    url: "{{ route('subscriber_user_submit') }}",
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    dataType: 'json',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        console.log(response);
+
+                        if (response.errors) {
+                            $('#subscriber_user_error').text(response.errors.email);
+                            return;
+                        }
+
+                        // Checking for errors properly
+                        if (!response.error) {
+                            Toast.fire({
+                                icon: 'success',
+                                title: response.success,
+                            }).then(() => {
+                                window.location.reload();
+                            });
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: response.error,
+                            });
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText); // Logs more detailed error info
+                        alert('An error occurred while submitting the data. Please try again.');
+                    }
+                });
+            });
 
 
 

@@ -69,7 +69,7 @@ Products
         @endforeach
 
         @else
-        <h1 class="text-center w-100">No Offer</h1>
+        <h1 class="text-center w-100">No Offer Available</h1>
         @endif
         <!-- Shop Sidebar End -->
     </div>

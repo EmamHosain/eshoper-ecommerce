@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\SearchProductController;
+use App\Http\Controllers\SubscriberUserController;
 use App\Http\Controllers\User\AboutUsController;
 use App\Http\Controllers\User\Auth\PasswordResetController;
 use App\Http\Controllers\User\Auth\UserAuthController;
@@ -135,5 +136,7 @@ Route::controller(OfferController::class)->group(function(){
     Route::get('/offers','getAllOffer')->name('get_all_offer');
 
 });
-
 Route::get('/search', [SearchProductController::class, 'search'])->name('search_product');
+// subscriber user route start 
+Route::post('subscriber-user-submit',[SubscriberUserController::class,'submit'])->name('subscriber_user_submit');
+// subscriber user route end here

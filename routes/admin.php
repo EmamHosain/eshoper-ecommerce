@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\Auth\AdminAuthController;
 use App\Http\Controllers\Admin\CategorySliderController;
 use App\Http\Controllers\Admin\CustomerManageController;
 use App\Http\Controllers\Admin\ShippingManageController;
+use App\Http\Controllers\Admin\SubscriberUserController;
 
 
 // admin auth route start here
@@ -42,7 +43,6 @@ Route::middleware('adminAuth')->group(function () {
 
 
 Route::middleware('adminAuth')->group(function () {
-
     // admin profile route start here
     Route::controller(AdminProfileController::class)->group(function () {
         Route::get('/profile', 'getProfilePage')->name('profile_page');
@@ -50,9 +50,6 @@ Route::middleware('adminAuth')->group(function () {
         Route::get('/change-password', 'changePasswordPage')->name('change_password_page');
         Route::patch('/change-password', 'changePasswordSubmit')->name('change_password_submit');
     });
-
-
-
 
 
     // brand route start 
@@ -201,6 +198,12 @@ Route::middleware('adminAuth')->group(function () {
         Route::get('/edit-offer/{id}', 'edit')->name('edit_offer');
         Route::patch('/update-offer/{id}', 'update')->name('update_offer');
         Route::get('/delete-offer/{id}', 'delete')->name('delete_offer');
+    });
+
+
+    Route::controller(SubscriberUserController::class)->group(function () {
+        Route::get('/all-subscriber-user', 'getAllSubscriberUser')->name('get_all_subscriber_user');
+        Route::get('/delete-subscriber-user/{id}', 'deleteSubscriberUser')->name('delete_subscriber_user');
     });
 
 

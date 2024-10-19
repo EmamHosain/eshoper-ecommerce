@@ -328,7 +328,8 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('admin.edit_contact_page') }}" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
+                            <a href="{{ route('admin.edit_contact_page') }}" class="nav-link"> <i
+                                    class="nav-icon bi bi-circle"></i>
                                 <p>Edit contact page info</p>
                             </a>
                         </li>
@@ -349,6 +350,15 @@
                         <p>
                             All Contact
 
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('admin.get_all_subscriber_user') }}" class="nav-link"> <i
+                            class="nav-icon bi bi-box-seam-fill"></i>
+                        <p>
+                            All Subscriber User
                         </p>
                     </a>
                 </li>
