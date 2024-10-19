@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SearchProductController;
 use App\Http\Controllers\User\AboutUsController;
 use App\Http\Controllers\User\Auth\PasswordResetController;
 use App\Http\Controllers\User\Auth\UserAuthController;
@@ -134,3 +135,5 @@ Route::controller(OfferController::class)->group(function(){
     Route::get('/offers','getAllOffer')->name('get_all_offer');
 
 });
+
+Route::get('/search', [SearchProductController::class, 'search'])->name('search_product');
