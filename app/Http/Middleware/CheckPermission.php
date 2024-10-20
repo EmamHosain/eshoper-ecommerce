@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Helper\FlashMessage;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,14 +17,12 @@ class CheckPermission
      */
     public function handle(Request $request, Closure $next, $permission): Response
     {
-        $notification = [
-            'alert-type' => 'warning',
-            'message' => 'You do not have permission to access this page.'
-        ];
+       
         $user = Auth::guard('admin')->user();
         if ($user && $user->can($permission)) {
             return $next($request);
         }
-        return redirect()->route('admin.dashboard_index')->with($notification);
+        FlashMessage::flash('error','You do not have permission to access this page.');
+        return redirect()->route('admin.admin_dasboard');
     }
 }

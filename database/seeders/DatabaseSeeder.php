@@ -37,7 +37,9 @@ class DatabaseSeeder extends Seeder
             ProductImageSeeder::class,
             CategorySliderSeeder::class,
             ShippingManageSeeder::class,
-            CustomerAddressSeeder::class
+            CustomerAddressSeeder::class,
+            PermissionSeeder::class,
+            RoleSeeder::class
         ]);
     }
 }

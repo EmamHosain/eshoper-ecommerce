@@ -39,7 +39,7 @@ Add Brand
                     <div class="card card-primary card-outline mb-4">
                         <!--begin::Header-->
                         <div class="card-header">
-                            <div class="card-title">Add Category</div>
+                            <div class="card-title">Add Brand</div>
                         </div>
                         <!--end::Header-->
                         <!--begin::Form-->

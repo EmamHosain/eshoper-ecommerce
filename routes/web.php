@@ -140,3 +140,6 @@ Route::get('/search', [SearchProductController::class, 'search'])->name('search_
 // subscriber user route start 
 Route::post('subscriber-user-submit',[SubscriberUserController::class,'submit'])->name('subscriber_user_submit');
 // subscriber user route end here
+
+
+

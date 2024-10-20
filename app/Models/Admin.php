@@ -3,13 +3,16 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class Admin extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
+
 
     /**
      * The attributes that are mass assignable.
@@ -21,8 +24,11 @@ class Admin extends Authenticatable
         'email',
         'password',
         'photo',
-        'token'
+        'token',
+        'role'
     ];
+
+    protected $guard = 'admin';
 
     /**
      * The attributes that should be hidden for serialization.
@@ -46,4 +52,11 @@ class Admin extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public static function getPermissionGroups()
+    {
+        $groups = Permission::select('group_name')->groupBy('group_name')->get();
+        return $groups;
+    }
+
 }
