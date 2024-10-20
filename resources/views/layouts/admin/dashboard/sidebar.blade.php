@@ -364,7 +364,8 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ route('logout') }}" class="nav-link"> <i class="nav-icon bi bi-box-arrow-in-right"></i>
+                    <a href="{{ route('admin.logout') }}" class="nav-link"> <i
+                            class="nav-icon bi bi-box-arrow-in-right"></i>
                         <p>
                             Logout
 
