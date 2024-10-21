@@ -40,11 +40,12 @@ Wishlist
                     @if (count($products) > 0)
                     @foreach ($products as $product)
                     <tr>
-                        <td class="align-left">
-                            {{ $product->id }}
-                            <img src="{{ $product->productImages->first() ? asset($product->productImages->first()->product_image) : asset('assets/eshoper/img/product-1.jpg') }}"
-                                alt="" style="width: 50px;">
-                            <span class=" text-capitalize">{{ $product->product_name }}</span>
+                        <td class="align-left d-flex">
+                            <a href="{{ route('product_details',['id'=> $product->id,'slug'=> $product->slug]) }}">
+                                <img src="{{ $product->productImages->first() ? asset($product->productImages->first()->product_image) : asset('assets/eshoper/img/product-1.jpg') }}"
+                                    alt="{{ $product->product_name }}" style="width: 50px;">
+                                <span class=" text-capitalize ml-2">{{ $product->product_name }}</span>
+                            </a>
                         </td>
 
 

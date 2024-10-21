@@ -55,13 +55,21 @@ Add To Cart
 
                     @php
                     $total_price = $item['price'] * $item['quantity'];
+                    $product = App\Models\Product::find($item['id']);
                     @endphp
+
+
                     <tr>
-                        <td class="align-middle">
-                            <img src="{{ !empty($item['image']) ? asset($item['image']) : asset('assets/empty-image-300x240.jpg') }}"
-                                alt="" style="width: 50px;">
-                            <span class=" text-capitalize">{{ $item['name'] }}</span>
+                        <td class="align-middle d-flex">
+                            <a href="{{ route('product_details',['id'=>$product->id,'slug'=>$product->slug]) }}">
+                                <img src="{{ !empty($item['image']) ? asset($item['image']) : asset('assets/empty-image-300x240.jpg') }}"
+                                    alt="" style="width: 50px;">
+                                <span class="text-capitalize ml-2"> {{ $item['name'] }}</span>
+                            </a>
+
                         </td>
+
+
                         <td class="align-middle">${{ $item['price'] }}</td>
                         <td class="align-middle">{{ $item['color'] }}</td>
                         <td class="align-middle">{{ $item['size'] }}</td>
@@ -117,7 +125,7 @@ Add To Cart
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-3 pt-1">
                         <h6 class="font-weight-medium">Subtotal</h6>
-                        <h6 class="font-weight-medium">${{  $sub_total }}</h6>
+                        <h6 class="font-weight-medium">${{ $sub_total }}</h6>
                     </div>
                     {{-- <div class="d-flex justify-content-between">
                         <h6 class="font-weight-medium">Shipping</h6>

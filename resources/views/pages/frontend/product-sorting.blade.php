@@ -179,7 +179,7 @@ Products
 
         <!-- Shop Product Start -->
         <div class="col-lg-9 col-md-12">
-            <div class=" pb-3">
+            <div class="pb-3">
                 <div class="row">
                     <div class="col-12 pb-1">
                         <div class="d-flex align-items-center justify-content-between mb-4">
@@ -220,6 +220,7 @@ Products
 
 
                 <div id="product-list" class="row">
+                    {{-- <div id="product_container_sm"></div> --}}
                     @include('pages.frontend.product-list')
                 </div>
 
@@ -240,6 +241,10 @@ Products
             var filter = {
 
             };
+
+
+
+
             $('.filter_checkbox').change(function() {
                 var id = $(this).val();
                 var type = $(this).data('type');
@@ -264,6 +269,9 @@ Products
                     }
                 }
 
+
+
+
                 // Make AJAX request
                 $.ajax({
                     url: "{{ route('filter_product') }}", // Your filter route
@@ -271,10 +279,11 @@ Products
                     data: filter,
                     success: function(response) {
                         $('#product-list').html(response.view);
-
                         $('html, body').animate({
-                            scrollTop: $('#product-container').offset().top
-                        }, 1000); // Adjust duration as needed
+                            scrollTop: $(
+                                    '#product-container')
+                                .offset().top
+                        }, 1000); 
                     },
                     error: function(xhr) {
                         console.error(xhr); // Log any errors for debugging
@@ -282,13 +291,15 @@ Products
                             'An error occurred while fetching the products. Please try again.'
                         );
                     }
-                });
-
+                })
 
             });
 
 
-            // start here
+
+
+
+          
             // search by category 
             function fetchFilteredProducts(page) {
                 $.ajax({
@@ -307,7 +318,7 @@ Products
                             scrollTop: $(
                                     '#product-container')
                                 .offset().top
-                        }, 1000); // Adjust duration as needed
+                        }, 1000); 
                     },
                     error: function(xhr) {
                         console.error(xhr); // Log errors
@@ -367,7 +378,7 @@ Products
                                     scrollTop: $(
                                             '#product-container')
                                         .offset().top
-                                }, 1000); // Adjust duration as needed
+                                }, 1000);
                             },
                             error: function(xhr, status, error) {
                                 // Handle errors
@@ -375,10 +386,13 @@ Products
                                     xhr.responseText);
                             }
                         });
-                    }, 500); // Delay for 300ms (adjust as needed)
+                    }, 1000);
 
                 });
             });
+
+
+
 
             // search by popularity
             $('.popularity').on('click', function() {
@@ -387,7 +401,7 @@ Products
                 var type = $(this).data('type');
                 var value = $(this).data('id')
 
-                if(filter['popularity']){
+                if (filter['popularity']) {
                     delete filter['popularity'];
                 }
                 if (!filter['popularity']) {
@@ -442,7 +456,9 @@ Products
                         );
                     }
                 });
-            })
+            });
+
+
         });
 </script>
 @endsection
