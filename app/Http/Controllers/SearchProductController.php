@@ -12,10 +12,9 @@ class SearchProductController extends Controller
         // Initialize results
         $query = $request->query('query');
         $results = [];
-        // Fetch results with eager loading and only necessary fields
-        $results = Product::with(
-            'productImages'
-        )
+       
+        if(!empty($query)){
+            $results = Product::with('productImages')
             ->whereHas('productImages', function ($query) {
                 if (!empty($query->product_image)) {
                     $query->select('product_image');
@@ -25,6 +24,8 @@ class SearchProductController extends Controller
             ->where('status', 1)
             ->where('product_name', 'LIKE', "%" . $query . "%")
             ->get();
+        }
+       
 
 
         return response()->json([

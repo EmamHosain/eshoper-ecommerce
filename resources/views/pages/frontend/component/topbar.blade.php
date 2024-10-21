@@ -62,13 +62,14 @@
                     </div>
                     <div class="modal-body">
                         <!-- Modal body with search field -->
-                        <div id="search_submit" class="d-flex">
-                            <input type="text" class="form-control" id="searchProduct" placeholder="Search product...">
-                            <button id="submit_button"><i class="fa fa-search"></i></button>
-                        </div>
-
+                        <form id="search_submit_form">
+                            <div id="search_submit" class="d-flex">
+                                <input type="text" class="form-control" id="searchProduct"
+                                    placeholder="Search product...">
+                                <button type="submit" id="submit_button"><i class="fa fa-search"></i></button>
+                            </div>
+                        </form>
                         <div id="searchContent" class="mt-3">
-
                         </div>
                     </div>
 
@@ -77,13 +78,8 @@
         </div>
         {{-- modal start --}}
 
-
-
         {{-- modal end --}}
         {{-- search product end --}}
-
-
-
 
         <div class="col-lg-3 col-6 text-right">
             @php
@@ -107,7 +103,8 @@
     $(document).ready(function() {
         // Show the modal when input gets focus
 
-        $('#submit_button').on('click', function() {
+        $('#search_submit_form').on('submit', function(event) {
+            event.preventDefault();
             var value = $('#searchProduct').val();
             $.ajax({
                 url: "{{ route('search_product') }}?query="+value,
@@ -116,7 +113,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(response) {
-                    console.log(response)
+                    // console.log(response)
                     $('#searchContent').html(response.view);
                     $('#searchContent').css({
                         'max-height': '400px',
@@ -148,7 +145,6 @@
         $('#closeBtn').on('click', function() {
             $('#searchModal').modal('hide');
             $('#searchProduct').val('')
-
             $('#searchContent').empty();
         });
 
