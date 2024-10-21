@@ -114,7 +114,7 @@ class CheckoutController extends Controller
 
     public function checkoutSubmit(Request $request)
     {
-        
+
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -131,7 +131,7 @@ class CheckoutController extends Controller
         try {
             // Check if validation fails
             if ($validator->fails()) {
-                return response()->json(['errors' => $validator->errors()], 422);
+                return response()->json(['errors' => $validator->errors()]);
             }
 
             $payment_method_type = $request->input('payment_method');

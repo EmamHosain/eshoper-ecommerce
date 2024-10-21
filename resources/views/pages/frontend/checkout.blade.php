@@ -43,7 +43,7 @@
                                 <label>First Name <span class=" text-danger">*</span></label>
                                 <input class="form-control" type="text" id="shipping_first_name" name="first_name"
                                     value="{{ !empty($customer) ? $customer->first_name : '' }}" placeholder="John">
-                                <p></p>
+                                <p id="shipping_first_name_error"></p>
                             </div>
                             <div class="col-12 col-md-6 form-group">
                                 <label>Last Name <span class=" text-danger">*</span></label>
@@ -111,7 +111,7 @@
                                     @endforeach
                                 </select>
 
-                                <p id="shipping_area_message" style="font-size: 13px"></p> <!-- Changed id here -->
+                                <p class="shipping_area_error"></p> <!-- Changed id here -->
                             </div>
 
 
@@ -289,7 +289,7 @@
                     success: function(response) {
                         $('#place_order').prop('disabled', false);
 
-                        console.log(response);
+                        console.log(response.errors);
                         if (response.errors) {
                             $('#place_order').prop('disabled', false);
                             var errors = response.errors;
@@ -300,8 +300,9 @@
                             if (errors.first_name) {
                                 $('#shipping_first_name').addClass('is-invalid')
                                     .siblings("p")
-                                    .addClass('invalid-feedback')
+                                    .addClass('text-danger')
                                     .html(errors.first_name);
+
                             }
 
                             // Shipping Last Name
@@ -355,15 +356,18 @@
 
                             // Shipping ZIP Code
                             if (errors.zip) {
-                                $('#shipping_zip').addClass('is-invalid')
+                                $('#shipping_zip')
+                                    .addClass('is-invalid')
                                     .siblings("p")
                                     .addClass('invalid-feedback')
                                     .html(errors.zip);
                             }
                             if (errors.shipping_area) {
-                                console.log('shipping_area', errors.shipping_area)
+                                // console.log('shipping_area', errors.shipping_area)
                                 $('#shipping_area')
-                                    .addClass('text-danger')
+                                    .addClass('is-invalid')
+                                    .siblings("p")
+                                    .addClass('invalid-feedback')
                                     .html(errors.shipping_area);
                             }
 
