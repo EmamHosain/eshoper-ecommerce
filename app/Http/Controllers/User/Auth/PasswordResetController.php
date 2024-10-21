@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\User\Auth;
 
+use App\Helper\FlashMessage;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -29,8 +30,9 @@ class PasswordResetController extends Controller
             $request->only('email')
         );
 
+
         return $status === Password::RESET_LINK_SENT
-            ? back()->with(['status' => __($status)])
+            ? back()->with(['success' => 'Email has been sent successfully.'])
             : back()->withErrors(['email' => __($status)]);
     }
 
@@ -62,7 +64,7 @@ class PasswordResetController extends Controller
         );
 
         return $status === Password::PASSWORD_RESET
-            ? redirect()->route('login')->with('status', __($status))
+            ? redirect()->route('login')->with('success', 'Password updated successfully.')
             : back()->withErrors(['email' => [__($status)]]);
     }
 }

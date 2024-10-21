@@ -28,7 +28,7 @@ Products
         <div class="d-inline-flex">
             <p class="m-0"><a href="{{ route('index') }}">Home</a></p>
             <p class="m-0 px-2">-</p>
-            <p class="m-0">Shop</p>
+            <p class="m-0">Offer</p>
         </div>
     </div>
 </div>
