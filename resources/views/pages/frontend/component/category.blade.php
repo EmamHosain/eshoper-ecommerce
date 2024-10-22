@@ -11,16 +11,16 @@
                 $query->where('status', 1);
             },
         ])
-            ->whereHas('products', function ($query) {
-                $query->where('status', 1);
-            })
+            // ->whereHas('products', function ($query) {
+            //     $query->where('status', 1);
+            // })
             ->where('status', 1)
             ->latest()
             ->get();
     @endphp
     <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light"
         id="navbar-vertical" style="width: calc(100% - 30px); z-index: 1;">
-        <div class="navbar-nav w-100 overflow-auto" style="height: 410px">
+        <div class="navbar-nav w-100 overflow-auto" style="max-height: 410px">
 
             @foreach ($categories as $category)
                 <a href="{{ route('search_by_product', ['category' => $category->slug]) }}"
