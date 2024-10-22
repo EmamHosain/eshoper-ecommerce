@@ -52,7 +52,7 @@ class UserAuthController extends Controller
 
         // Create a new user record
         $user = User::create([
-            'name' => $request->name,
+            'first_name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
