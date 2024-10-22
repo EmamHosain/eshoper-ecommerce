@@ -1,75 +1,63 @@
-@extends('pages.user.auth.auth-master')
-@section('authTitle')
-Admin | Send Email
+@extends('layouts.user.master')
+
+@section('title')
+Admin Forgot Password
 @endsection
+
+
+
+@section('header')
+@include('pages.frontend.component.header2')
+@endsection
+
 @section('content')
-<body class="login-page bg-body-secondary">
-    <div class="login-box">
-        <div class="card card-outline card-primary">
-            @if (session('status'))
-            <div class="alert alert-success">
-                {{ session('status') }}
-            </div>
-            @endif
-
-            @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
-
-            <div class="card-header"> <a href="#"
-                    class="link-dark text-center link-offset-2 link-opacity-100 link-opacity-50-hover">
-                    <h1 class="mb-0"> <b>Admin</b>
-                    </h1>
-                </a> </div>
-            <div class="card-body login-card-body">
-                <p class="login-box-msg">Forgot Your Password? Enter Your Email</p>
-
-                {{-- login form start --}}
-                <form action="{{ route('admin.forgot_password_submit') }}" method="post">
-                    @csrf
-                    <!-- Email Field -->
-                    <div class="mb-3">
-                        <div class="input-group">
-                            <div class="form-floating">
-                                <input id="loginEmail" type="email" name="email"
-                                    class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}"
-                                    placeholder="Enter your email">
-                                <label for="loginEmail">Email</label>
-                            </div>
-                            <div class="input-group-text">
-                                <span class="bi bi-envelope"></span>
-                            </div>
-                        </div>
-                        @error('email')
-                        <div class="text-danger">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-
-                    <!-- Email Validation Error -->
-
-
-
-                    <!-- Sign In Button -->
-                    <div class="col-4">
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">Send</button>
-                        </div>
-                    </div>
-            </div>
-            </form>
-            {{-- login form end --}}
-
-        </div> <!-- /.login-card-body -->
+<div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Admin Forgot Password</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="{{ route('index') }}">Home</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Forgot Password</p>
+        </div>
     </div>
-    </div> <!-- /.login-box -->
-    <!--begin::Third Party Plugin(OverlayScrollbars)-->
+</div>
+<!-- Page Header End -->
 
-    @endsection
+
+<div class="login-box">
+    <div class="card card-outline card-primary " style="width: 400px; margin:0px auto;">
+        <div class="card-header text-center">
+            <h3 class="card-title">Forgor Password</h3>
+        </div>
+        <div class="card-body">
+            <form action="{{route('admin.forgot_password_submit') }}" method="post">
+                @csrf
+                <!-- Email Field -->
+                <div class="mb-3">
+                    <div class="input-group">
+                        <div class="form-floating flex-grow-1">
+                            <label for="loginEmail">Email</label>
+                            <input id="loginEmail" type="email" name="email"
+                                class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}"
+                                placeholder="Enter your email">
+
+                        </div>
+                    </div>
+                    @error('email')
+                    <div class="text-danger">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
+                <!-- Remember Me & Sign In Button -->
+                <div class="row mb-3">
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary btn-block">Send</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@endsection

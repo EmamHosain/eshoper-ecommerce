@@ -117,7 +117,7 @@ class AdminAuthController extends Controller
         ]);
 
         FlashMessage::flash('success', 'Your password has been successfully reset.');
-        return redirect()->route('login')->with(['status' => 'Your password has been successfully reset.']);
+        return redirect()->route('admin.login');
     }
 
 }
