@@ -23,21 +23,21 @@ class DatabaseSeeder extends Seeder
             'last_name' => 'User',
             'email' => 'user@gmail.com',
             'password' => 'password',
-            'photo' => $faker->imageUrl(200, 200, 'users', true),
+            // 'photo' => $faker->imageUrl(200, 200, 'users', true),
         ]);
 
 
         $this->call([
             AdminSeeder::class,
-            BrandSeeder::class,
-            CategorySeeder::class,
-            ColorSeeder::class,
-            ProductSizeSeeder::class,
-            ProductSeeder::class,
-            ProductImageSeeder::class,
-            CategorySliderSeeder::class,
-            ShippingManageSeeder::class,
-            CustomerAddressSeeder::class,
+            // BrandSeeder::class,
+            // CategorySeeder::class,
+            // ColorSeeder::class,
+            // ProductSizeSeeder::class,
+            // ProductSeeder::class,
+            // ProductImageSeeder::class,
+            // CategorySliderSeeder::class,
+            // ShippingManageSeeder::class,
+            // CustomerAddressSeeder::class,
             PermissionSeeder::class,
             RoleSeeder::class
         ]);
