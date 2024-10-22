@@ -43,7 +43,7 @@
 
 <ul class="item-container">
 
-    @if ($products->isNotEmpty())
+    @if (count($products) > 0)
     <li class=" d-block mb-2">Search Result : {{ count($products) }} product</li>
     @foreach ($products as $product)
     <li class="item">
