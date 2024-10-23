@@ -39,11 +39,11 @@ class SizeController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'size' => 'required|string|max:255|unique:sizes,size',
+            'size' => 'required|string|max:255|unique:sizes,size_name',
         ]);
 
         Size::create([
-            'size' => $validated['size'],
+            'size_name' => $validated['size'],
         ]);
 
         FlashMessage::flash('success', 'Size created successfully.');
@@ -62,7 +62,9 @@ class SizeController extends Controller
         ]);
 
         $oldSize = $size->replicate();
-        $size->update($validated);
+        $size->update([
+            'size_name' => $validated['size']
+        ]);
 
         if ($oldSize->isDirty()) {
             FlashMessage::flash('success', 'Size updated successfully.');

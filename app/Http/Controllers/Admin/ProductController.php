@@ -129,6 +129,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $validated = $request->validate([
             'product_name' => 'required|string|max:255|unique:products,product_name',
             'category' => 'required|exists:categories,id',
@@ -141,9 +142,9 @@ class ProductController extends Controller
             'status' => 'nullable|numeric|between:0,1',
             'popularity' => 'required|in:arrived,trandy',
             'image' => 'nullable|array', // updated to handle multiple images
-            'image.*' => 'image|mimes:jpg,jpeg,png,svg|max:1024|dimensions:min_width=500,min_height=500', // height and width validation
-            'color' => 'required|array',
-            'size_name' => 'required|array',
+            'image.*' => 'image|mimes:jpg,jpeg,png,svg|max:2048|dimensions:min_width=500,min_height=500', // height and width validation
+            'color' => 'nullable|array',
+            'size_name' => 'nullable|array',
             'short_description' => 'required',
         ]);
 
