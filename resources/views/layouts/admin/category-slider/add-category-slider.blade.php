@@ -116,17 +116,15 @@ Add Category Slider
                                         class="text-danger h4">*</span></label>
                                 <div style="font-size: 12px">Image must be or grater than (1200 x 600)</div>
 
-                                <div class="input-group mb-3">
-                                    <input type="file" class="form-control @error('slider') is-invalid @enderror"
-                                        id="category_slider" name="slider">
-                                    <label class="input-group-text" for="category_slider">Upload</label>
-
-
-
+                                <div class="mb-3">
+                                    <div class="input-group ">
+                                        <input type="file" class="form-control @error('slider') is-invalid @enderror"
+                                            id="category_slider" name="slider">
+                                        <label class="input-group-text" for="category_slider">Upload</label>
+                                    </div>
                                     @error('slider')
                                     <div style="font-size: 13px" class="text-danger">{{ $message }}</div>
                                     @enderror
-
                                 </div>
 
                                 <div class="mb-3">

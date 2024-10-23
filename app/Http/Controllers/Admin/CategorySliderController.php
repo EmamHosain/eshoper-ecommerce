@@ -102,7 +102,7 @@ class CategorySliderController extends Controller
         $validated = $request->validate([
             'category' => 'required|exists:categories,id',
             'status' => 'nullable|numeric|between:0,1',
-            'slider' => 'required|image|mimes:jpg,jpeg,png|max:1024|dimensions:min_width=1200,min_height=600',
+            'slider' => 'required|image|mimes:jpg,jpeg,png|dimensions:min_width=1200,min_height=600',
             'heading_one' => 'nullable',
             'heading_two' => 'nullable',
             'button_text' => 'nullable|string',
@@ -155,10 +155,16 @@ class CategorySliderController extends Controller
         $validated = $request->validate([
             'category' => 'required|exists:categories,id',
             'status' => 'nullable|numeric|between:0,1',
-            'slider' => 'nullable|image|mimes:jpg,jpeg,png|max:1024|dimensions:min_width=1200,min_height=600',
+            'slider' => 'nullable|image|mimes:jpg,jpeg,png|dimensions:min_width=1200,min_height=600',
+            'heading_one'=> 'nullable',
+            'heading_two' => 'nullable',
+            'button_text' => 'nullable|string',
+            'button_link' => 'nullable|url',
         ]);
 
 
+
+        $oldData = $categorySlider->replicate();
         // Handle category slider image upload and image processing using Intervention Image
         if ($request->hasFile('slider')) {
 
@@ -181,11 +187,27 @@ class CategorySliderController extends Controller
         }
 
         // Update the category slider
-        $categorySlider->slider_image = $validated['slider_image'] ?? $categorySlider->slider_image;
-        $categorySlider->status = $validated['status'];
+        if (isset($validated['slider_image'])) {
+            $categorySlider->slider_image = $validated['slider_image'];
+        }
+
+        // $categorySlider->slider_image = $validated['slider_image'] ?? $categorySlider->slider_image;
+        $categorySlider->status = $validated['status'] ?? 1;
+
+        if(isset($validated['category'])){
+            $categorySlider->category_id = $validated['category'];
+        }
+        $categorySlider->heading_one = $validated['heading_one'];
+        $categorySlider->heading_two = $validated['heading_two'];
+        $categorySlider->button_text = $validated['button_text'];
+        $categorySlider->button_link = $validated['button_link'];
+
+
         $categorySlider->save();
 
-        FlashMessage::flash('success', 'Category slider updated successfully.');
+        if($$oldData->isDirty()){
+            FlashMessage::flash('success', 'Category slider updated successfully.');
+        }
         return redirect()->route('admin.all_category_slider');
     }
 

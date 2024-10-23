@@ -40,8 +40,7 @@
                     <div class="d-flex flex-column justify-content-start">
 
                         @php
-                        $categories = App\Models\Category::where('status', 1)->whereHas('products')->where('status',
-                        1)->latest()->take(10)->get();
+                        $categories = App\Models\Category::where('status', 1)->latest()->take(10)->get();
                         @endphp
 
                         @foreach ($categories as $category)
