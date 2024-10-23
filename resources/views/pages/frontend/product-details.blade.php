@@ -96,7 +96,7 @@ Product Details
 
             <input type="hidden" id="product_id" value="{{ $product->id }}">
 
-            <p class="mb-4">{{ $product->short_description }}</p>
+            <p class="mb-4">{!! $product->short_description !!}</p>
 
             @if (!empty($product->sizes))
             <div class="d-flex mb-3">
@@ -200,14 +200,14 @@ Product Details
                 <div class="tab-pane fade show active" id="pills-description" role="tabpanel"
                     aria-labelledby="pills-order-online-tab">
                     <h4 class="mb-3">Product Description</h4>
-                    {{ $product->description ?? 'No Description' }}
+                    {!! $product->description ?? 'No Description' !!}
                 </div>
 
                 <!-- Information Tab -->
                 <div class="tab-pane fade" id="pills-information" role="tabpanel"
                     aria-labelledby="pills-information-tab">
                     <h4 class="mb-3">Additional Information</h4>
-                    {{ $product->information ?? 'No Information' }}
+                    {!! $product->information ?? 'No Information' !!}
                 </div>
 
                 <!-- Reviews Tab -->

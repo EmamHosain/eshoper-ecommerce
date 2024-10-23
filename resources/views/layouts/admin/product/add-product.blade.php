@@ -284,7 +284,7 @@ Add Product
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">Add Product</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
                             </div>
                         </form>
                     </div>

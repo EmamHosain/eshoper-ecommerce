@@ -45,7 +45,7 @@ class ProductController extends Controller
             ])
                 ->where('status', 1)
                 ->withCount('productImages')
-                ->latest()->get();
+                ->orderByDesc('id')->get();
 
 
 
@@ -142,7 +142,7 @@ class ProductController extends Controller
             'status' => 'nullable|numeric|between:0,1',
             'popularity' => 'required|in:arrived,trandy',
             'image' => 'nullable|array', // updated to handle multiple images
-            'image.*' => 'image|mimes:jpg,jpeg,png,svg|max:2048|dimensions:min_width=500,min_height=500', // height and width validation
+            'image.*' => 'image|max:2048|dimensions:min_width=500,min_height=500', // height and width validation
             'color' => 'nullable|array',
             'size_name' => 'nullable|array',
             'short_description' => 'required',
@@ -263,15 +263,15 @@ class ProductController extends Controller
             'status' => 'nullable|numeric|between:0,1',
             'popularity' => 'required|in:arrived,trandy',
             'image' => 'nullable|array', // updated to handle multiple images
-            'image.*' => 'image|mimes:jpg,jpeg,png,svg|max:1024|dimensions:min_width=500,min_height=500',
-            'color' => 'required|array',
-            'size_name' => 'required|array',
+            'image.*' => 'image|max:2048|dimensions:min_width=500,min_height=500',
+            'color' => 'nullable|array',
+            'size_name' => 'nullable|array',
             'short_description' => 'required',
         ]);
 
 
 
-
+        $oldData = $product->replicate();
 
 
         $product->product_name = $validated['product_name'];
@@ -336,7 +336,9 @@ class ProductController extends Controller
         }
 
         // Flash message and redirect
-        FlashMessage::flash('success', 'Product updated successfully.');
+        if($oldData->isDirty()){
+            FlashMessage::flash('success', 'Product updated successfully.');
+        }
         return redirect()->route('admin.all_product');
     }
 
