@@ -13,7 +13,7 @@ Reset Password
 
 
 @section('content')
-<div class="container-fluid bg-secondary mb-5">
+<div class="container-fluid bg-secondary mb-5 px-xl-5">
     <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
         <h1 class="font-weight-semi-bold text-uppercase mb-3">Our Shop</h1>
         <div class="d-inline-flex">
@@ -26,13 +26,13 @@ Reset Password
 <!-- Page Header End -->
 
 
-<div class="login-box">
-    <div class="card card-outline card-primary " style="width: 400px; margin:0px auto;">
-        <div class="card-header text-center">
+<div class="login-box container-fluid px-xl-5">
+    <div class="card card-outline card-primary " style="max-width: 400px; margin:0px auto;">
+        <div class="card-header text-center px-xl-5">
             <h3 class="card-title">Reset Password</h3>
         </div>
 
-        <div class="card-body">
+        <div class="card-body px-xl-5">
             <form action="{{ route('password.update') }}" method="post">
                 @csrf
                 <input type="hidden" name="token" value="{{ $token }}">

@@ -54,7 +54,9 @@
             <div class="col-10 ms-2">
                 <!-- Added margin start (ms) for spacing -->
                 <h4 class="product-name">{{ $product->product_name }}</h4>
-                <p class="product-desc">{{ $product->short_description }}</p>
+                <p class="product-desc">
+                    {!! $product->short_description !!}
+                </p>
             </div>
         </a>
     </li>

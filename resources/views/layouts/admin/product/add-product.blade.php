@@ -157,9 +157,9 @@ Add Product
                                 {{-- product information --}}
                                 <div class="mb-3">
                                     <label for="description" class="form-label">Product Information</label>
-                                    <textarea class="form-control @error('description') is-invalid @enderror"
+                                    <textarea class="form-control @error('information') is-invalid @enderror"
                                         name="information" id="product_information" aria-label="With textarea">{{
-                                        old('description') }}</textarea>
+                                        old('information') }}</textarea>
                                 </div>
 
 

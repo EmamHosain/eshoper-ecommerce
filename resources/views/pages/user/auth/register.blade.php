@@ -9,7 +9,7 @@ Register
 @endsection
 
 @section('content')
-<div class="container-fluid bg-secondary mb-5">
+<div class="container-fluid bg-secondary mb-5 px-xl-5">
     <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
         <h1 class="font-weight-semi-bold text-uppercase mb-3">Register</h1>
         <div class="d-inline-flex">
@@ -20,12 +20,12 @@ Register
     </div>
 </div>
 
-<div class="login-box">
-    <div class="card card-outline card-primary" style="width: 400px; margin:0px auto;">
-        <div class="card-header text-center">
+<div class="login-box container-fluid px-xl-5">
+    <div class="card card-outline card-primary" style="max-width: 400px; margin:0px auto;">
+        <div class="card-header text-center px-xl-5">
             <h3 class="card-title">Register</h3>
         </div>
-        <div class="card-body">
+        <div class="card-body px-xl-5">
             {{-- registration form start --}}
             <form action="{{ route('register_submit') }}" method="post">
                 @csrf
@@ -75,17 +75,8 @@ Register
                 </div>
 
                 <!-- Terms Checkbox and Sign Up Button -->
-                <div class="row mb-3">
-                    <div class="col-8 d-inline-flex align-items-center">
-                        <div class="form-check">
-                            <input class="form-check-input @error('terms') is-invalid @enderror" type="checkbox"
-                                name="terms" id="flexCheckDefault" {{ old('terms') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="flexCheckDefault">
-                                I agree to the <a href="#">terms</a>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-4">
+                <div class="mb-3">
+                    <div class="">
                         <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
                     </div>
                 </div>

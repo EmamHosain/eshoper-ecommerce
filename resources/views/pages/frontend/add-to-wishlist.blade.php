@@ -24,9 +24,11 @@ Wishlist
 
 
 <!-- Cart Start -->
-<div class="container pt-5">
-    <div class="row px-xl-5">
-        <div class="col-12 table-responsive mb-5">
+<!-- Cart Start -->
+<div class="container-fluid pt-5 px-xl-5">
+    <div class="container mx-auto">
+        <!-- Added custom responsive class and overflow-x for small screens -->
+        <div class="table-responsive mb-5 overflow-auto">
             <table class="table table-bordered text-center mb-0">
                 <thead class="bg-secondary text-dark">
                     <tr>
@@ -35,23 +37,21 @@ Wishlist
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody class="align-middle">
+                <tbody class="align-middle overflow-x-auto">
 
                     @if (count($products) > 0)
                     @foreach ($products as $product)
                     <tr>
                         <td class="align-left d-flex">
                             <a href="{{ route('product_details',['id'=> $product->id,'slug'=> $product->slug]) }}">
-                                <img src="{{ $product->productImages->first() ? asset($product->productImages->first()->product_image) : asset('assets/eshoper/img/product-1.jpg') }}"
+                                <img src="{{ $product->productImages->first() ? asset($product->productImages->first()->product_image) : asset('assets/empty-image-300x240.jpg') }}"
                                     alt="{{ $product->product_name }}" style="width: 50px;">
-                                <span class=" text-capitalize ml-2">{{ $product->product_name }}</span>
+                                <span class="text-capitalize ml-2">{{ Str::limit($product->product_name,40) }}</span>
                             </a>
                         </td>
 
-
-
-                        <td class="align-middle">
-                            ${{ $product->is_discount ? $product->discount_price : $product->price }}</td>
+                        <td class="align-middle">${{ $product->is_discount ? $product->discount_price : $product->price
+                            }}</td>
 
                         <td class="align-middle">
                             <button class="btn btn-sm btn-primary remove_item_from_wishlist"
@@ -59,32 +59,52 @@ Wishlist
                                 <i class="fa fa-times"></i>
                             </button>
 
-
                             <button class="btn btn-sm btn-primary add_to_cart" data-id="{{ $product->id }}">
                                 <i class="fas fa-shopping-cart"></i>
                             </button>
-
                         </td>
 
                     </tr>
                     @endforeach
                     @else
                     <tr>
-                        <td class="" colspan="3">
+                        <td colspan="3">
                             <h5>No Product Available</h5>
                             <a href="{{ route('index') }}">Back To Shopping</a>
                         </td>
                     </tr>
                     @endif
 
-
                 </tbody>
             </table>
         </div>
-
-
     </div>
 </div>
+
+<!-- Optional: Extra CSS for better small-device scrolling -->
+<style>
+    @media (max-width: 576px) {
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            /* Smooth scrolling on iOS */
+        }
+
+        /* Ensure images and text are spaced properly in small screens */
+        .table td img {
+            max-width: 100%;
+            /* Make images responsive */
+        }
+
+        .table td {
+            white-space: nowrap;
+            /* Prevent text wrapping */
+        }
+    }
+</style>
+
+
+
 <script>
     $(document).ready(function() {
 

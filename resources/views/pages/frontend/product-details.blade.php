@@ -42,7 +42,7 @@ Product Details
                     @foreach ($product->productImages as $index => $item)
                     <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
                         <img class="w-100 h-100"
-                            src="{{ $item->product_image ? asset($item->product_image) : asset('assets/eshoper/img/product-1.jpg') }}"
+                            src="{{ $item->product_image ? asset($item->product_image) : asset('assets/empty-image-300x240.jpg') }}"
                             alt="{{ $product->product_name }}">
                     </div>
                     @endforeach
@@ -316,7 +316,7 @@ Product Details
                         <a href="{{ route('product_details', ['id' => $item->id, 'slug' => $item->slug]) }}">
                             <img class="img-fluid w-100" src="{{ $item->productImages->first()
                                             ? asset($item->productImages->first()->product_image)
-                                            : asset('assets/eshoper/img/product-2.jpg') }}" alt="">
+                                            : asset('assets/empty-image-300x240.jpg') }}" alt="">
                         </a>
                     </div>
                     <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">

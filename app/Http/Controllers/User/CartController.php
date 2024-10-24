@@ -67,7 +67,7 @@ class CartController extends Controller
             $cart_items[$product_id] = [
                 'id' => $product->id,
                 'name' => $product->product_name,
-                'image' => $product->productImages->first()->product_image,
+                'image' => $product->productImages->isNotEmpty() ? $product->productImages->first()->product_image : '',
                 'color' => $color ?? 'Empty',
                 'size' => $size ?? 'Empty',
                 'price' => $price,

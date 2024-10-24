@@ -5,7 +5,7 @@
         <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
             <a href="{{ route('product_details', ['id' => $product->id, 'slug' => $product->slug]) }}">
                 <img class="img-fluid w-100"
-                    src="{{ $product->productImages->first() ? asset($product->productImages->first()->product_image) : asset('assets/eshoper/img/product-2.jpg') }}"
+                    src="{{ $product->productImages->first() ? asset($product->productImages->first()->product_image) : asset('assets/empty-image-300x240.jpg') }}"
                     alt="">
             </a>
         </div>
