@@ -26,6 +26,7 @@ Add To Cart
 <!-- Cart Start -->
 <div class="container-fluid pt-5">
     <div class="row px-xl-5">
+
         <div class="col-lg-8 table-responsive mb-5">
             <table class="table table-bordered text-center mb-0">
                 <thead class="bg-secondary text-dark">

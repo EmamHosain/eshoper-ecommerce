@@ -29,7 +29,7 @@ Wishlist
     <div class="container mx-auto">
         <!-- Added custom responsive class and overflow-x for small screens -->
         <div class="table-responsive mb-5 overflow-auto">
-            <table class="table table-bordered text-center mb-0">
+            <table class="table table-bordered text-center mb-0 overflow-auto">
                 <thead class="bg-secondary text-dark">
                     <tr>
                         <th>Products</th>
@@ -42,7 +42,7 @@ Wishlist
                     @if (count($products) > 0)
                     @foreach ($products as $product)
                     <tr>
-                        <td class="align-left d-flex">
+                        <td class="align-middle d-flex">
                             <a href="{{ route('product_details',['id'=> $product->id,'slug'=> $product->slug]) }}">
                                 <img src="{{ $product->productImages->first() ? asset($product->productImages->first()->product_image) : asset('assets/empty-image-300x240.jpg') }}"
                                     alt="{{ $product->product_name }}" style="width: 50px;">
@@ -53,13 +53,13 @@ Wishlist
                         <td class="align-middle">${{ $product->is_discount ? $product->discount_price : $product->price
                             }}</td>
 
-                        <td class="align-middle">
+                        <td class="text-nowrap align-middle">
                             <button class="btn btn-sm btn-primary remove_item_from_wishlist"
                                 data-id="{{ $product->id }}">
                                 <i class="fa fa-times"></i>
                             </button>
 
-                            <button class="btn btn-sm btn-primary add_to_cart" data-id="{{ $product->id }}">
+                            <button class="btn btn-sm btn-primary add_to_cart ml-2" data-id="{{ $product->id }}">
                                 <i class="fas fa-shopping-cart"></i>
                             </button>
                         </td>
@@ -94,11 +94,6 @@ Wishlist
         .table td img {
             max-width: 100%;
             /* Make images responsive */
-        }
-
-        .table td {
-            white-space: nowrap;
-            /* Prevent text wrapping */
         }
     }
 </style>
